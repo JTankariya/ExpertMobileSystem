@@ -1,0 +1,258 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A8E174A6-58D5-4FF5-91CB-FEE25AD860F7}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ExpertMobileSystem</RootNamespace>
+    <AssemblyName>ExpertMobileSystem</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Classes\CryptorEngine.cs" />
+    <Compile Include="Forms\frmDashboardMaster.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmDashboardMaster.designer.cs">
+      <DependentUpon>frmDashboardMaster.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmLoading.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmLoading.Designer.cs">
+      <DependentUpon>frmLoading.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmSubMenuMaster.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmSubMenuMaster.designer.cs">
+      <DependentUpon>frmSubMenuMaster.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\MenuMster.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MenuMster.designer.cs">
+      <DependentUpon>MenuMster.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmChagePassword.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmChagePassword.designer.cs">
+      <DependentUpon>frmChagePassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmMDI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmMDI.designer.cs">
+      <DependentUpon>frmMDI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmAdminMaster.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmAdminMaster.designer.cs">
+      <DependentUpon>frmAdminMaster.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmClientMaster.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmClientMaster.designer.cs">
+      <DependentUpon>frmClientMaster.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmSearch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmSearch.designer.cs">
+      <DependentUpon>frmSearch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmUserLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmUserLogin.designer.cs">
+      <DependentUpon>frmUserLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\Operation.cs" />
+    <Compile Include="Forms\ConnectToMySQL.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ConnectToMySQL.Designer.cs">
+      <DependentUpon>ConnectToMySQL.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\GenSQL.cs" />
+    <Compile Include="Classes\Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\ConnectToMySQL.resx">
+      <DependentUpon>ConnectToMySQL.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmDashboardMaster.resx">
+      <DependentUpon>frmDashboardMaster.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmLoading.resx">
+      <DependentUpon>frmLoading.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmSubMenuMaster.resx">
+      <DependentUpon>frmSubMenuMaster.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MenuMster.resx">
+      <DependentUpon>MenuMster.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmChagePassword.resx">
+      <DependentUpon>frmChagePassword.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmMDI.resx">
+      <DependentUpon>frmMDI.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmAdminMaster.resx">
+      <DependentUpon>frmAdminMaster.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmClientMaster.resx">
+      <DependentUpon>frmClientMaster.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmSearch.resx">
+      <DependentUpon>frmSearch.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmUserLogin.resx">
+      <DependentUpon>frmUserLogin.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ConnectToMySQL.csproj" />
+    <Content Include="Resources\loader.gif" />
+    <None Include="Resources\Loading Image.png" />
+    <None Include="Resources\1354171085_print_printer1.png" />
+    <None Include="Resources\web.png" />
+    <None Include="Resources\users.png" />
+    <None Include="Resources\Telephone.png" />
+    <None Include="Resources\Tax.png" />
+    <None Include="Resources\search21.ico" />
+    <None Include="Resources\search2.ico" />
+    <None Include="Resources\Restore.png" />
+    <None Include="Resources\Reports.png" />
+    <None Include="Resources\Receipt.png" />
+    <None Include="Resources\ppf.jpg" />
+    <None Include="Resources\payment.png" />
+    <None Include="Resources\passport.png" />
+    <None Include="Resources\Parameter.png" />
+    <None Include="Resources\Outward.png" />
+    <None Include="Resources\openlock.png" />
+    <None Include="Resources\login_icon.png" />
+    <None Include="Resources\Login New2.jpg" />
+    <None Include="Resources\license_key.png" />
+    <None Include="Resources\Liascense.jpg" />
+    <None Include="Resources\Inward.png" />
+    <None Include="Resources\Insurance.jpg" />
+    <None Include="Resources\family.png" />
+    <None Include="Resources\Expiry.jpg" />
+    <None Include="Resources\employee.png" />
+    <None Include="Resources\electricity.png" />
+    <None Include="Resources\Edit.png" />
+    <None Include="Resources\credit_card.png" />
+    <None Include="Resources\Courier.jpg" />
+    <None Include="Resources\Company2.png" />
+    <None Include="Resources\close11.ico" />
+    <None Include="Resources\close1.ico" />
+    <None Include="Resources\close.ico" />
+    <None Include="Resources\changepassword.jpg" />
+    <None Include="Resources\Cancel Button.png" />
+    <None Include="Resources\Backup.png" />
+    <None Include="Resources\accept1.ico" />
+    <None Include="Resources\accept.ico" />
+    <None Include="Resources\1361292578_gtk-print-preview1.png" />
+    <None Include="Resources\1354782162_document-export.png" />
+    <None Include="Resources\1354171085_print_printer.png" />
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ExpertMobileSystem%28Client%29\ExpertMobileSystem%28Client%29.csproj">
+      <Project>{816C372E-9E36-4FEB-AAE7-DE3C36551A7A}</Project>
+      <Name>ExpertMobileSystem%28Client%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

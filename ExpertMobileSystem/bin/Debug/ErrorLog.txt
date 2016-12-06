@@ -1,0 +1,36 @@
+====================================================================
+Error Msg: Could not find file 'D:\ExpertMobileSystem\ExpertMobileSystem\ExpertMobileSystem\bin\Debug\MOBILE.ico'.
+
+--------------------------------------------------------------------
+Error Stack :    at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share)
+   at System.Drawing.Icon..ctor(String fileName, Int32 width, Int32 height)
+   at System.Drawing.Icon..ctor(String fileName)
+   at ExpertMobileSystem_Client_.frmMDI..ctor() in D:\ExpertMobileSystem\ExpertMobileSystem\ExpertMobileSystem(Client)\Forms\frmMDI.cs:line 39
+====================================================================
+
+====================================================================
+Error Msg: Could not find file 'D:\ExpertMobileSystem\ExpertMobileSystem\ExpertMobileSystem\bin\Debug\MOBILE.ico'.
+
+--------------------------------------------------------------------
+Error Stack :    at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share)
+   at System.Drawing.Icon..ctor(String fileName, Int32 width, Int32 height)
+   at System.Drawing.Icon..ctor(String fileName)
+   at ExpertMobileSystem_Client_.frmMDI..ctor() in D:\ExpertMobileSystem\ExpertMobileSystem\ExpertMobileSystem(Client)\Forms\frmMDI.cs:line 39
+====================================================================
+
+====================================================================
+Error Msg: Could not find file 'D:\ExpertMobileSystem\ExpertMobileSystem\ExpertMobileSystem\bin\Debug\MOBILE.ico'.
+
+--------------------------------------------------------------------
+Error Stack :    at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share)
+   at System.Drawing.Icon..ctor(String fileName, Int32 width, Int32 height)
+   at System.Drawing.Icon..ctor(String fileName)
+   at ExpertMobileSystem_Client_.frmMDI..ctor() in D:\ExpertMobileSystem\ExpertMobileSystem\ExpertMobileSystem(Client)\Forms\frmMDI.cs:line 56
+====================================================================
+
