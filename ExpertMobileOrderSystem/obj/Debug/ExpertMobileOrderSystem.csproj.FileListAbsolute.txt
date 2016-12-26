@@ -1,0 +1,11 @@
+E:\Jayesh\GitHub\ExpertMobileSystem\ExpertMobileOrderSystem\obj\Debug\ResolveAssemblyReference.cache
+E:\Jayesh\GitHub\ExpertMobileSystem\ExpertMobileOrderSystem\obj\Debug\ExpertMobileOrderSystem.frmUserLogin.resources
+E:\Jayesh\GitHub\ExpertMobileSystem\ExpertMobileOrderSystem\obj\Debug\ExpertMobileOrderSystem.frmMain.resources
+E:\Jayesh\GitHub\ExpertMobileSystem\ExpertMobileOrderSystem\obj\Debug\ExpertMobileOrderSystem.Properties.Resources.resources
+E:\Jayesh\GitHub\ExpertMobileSystem\ExpertMobileOrderSystem\obj\Debug\ExpertMobileOrderSystem.csproj.GenerateResource.Cache
+E:\Jayesh\GitHub\ExpertMobileSystem\ExpertMobileOrderSystem\obj\Debug\ExpertMobileOrderSystem.frmLoading.resources
+E:\Jayesh\GitHub\ExpertMobileSystem\ExpertMobileOrderSystem\obj\Debug\ExpertMobileOrderSystem.frmChangePassword.resources
+E:\Jayesh\GitHub\ExpertMobileSystem\ExpertMobileOrderSystem\bin\Debug\ExpertMobileOrderSystem.exe
+E:\Jayesh\GitHub\ExpertMobileSystem\ExpertMobileOrderSystem\bin\Debug\ExpertMobileOrderSystem.pdb
+E:\Jayesh\GitHub\ExpertMobileSystem\ExpertMobileOrderSystem\obj\Debug\ExpertMobileOrderSystem.exe
+E:\Jayesh\GitHub\ExpertMobileSystem\ExpertMobileOrderSystem\obj\Debug\ExpertMobileOrderSystem.pdb
