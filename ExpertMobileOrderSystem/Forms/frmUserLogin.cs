@@ -11,6 +11,7 @@ using System.Threading;
 using System.Drawing.Drawing2D;
 using System.Net;
 using System.Data.SqlClient;
+using System.Diagnostics;
 
 namespace ExpertMobileOrderSystem
 {
@@ -84,7 +85,6 @@ namespace ExpertMobileOrderSystem
                     Operation.ClientUserName = dt.Rows[0]["Username"].ToString();
                     SetCompanyInfo(dt);
                     Operation.CurrentDate = DateTime.Now;
-                    this.Hide();
                     flag = true;
                     if (Operation.CloseApp)
                     {
@@ -101,8 +101,8 @@ namespace ExpertMobileOrderSystem
                         Operation.GetIniValue();
                         ExpertMobileOrderSystem.Operation.CloseSplash();
                         this.Hide();
-                        this.ParentForm.WindowState = FormWindowState.Minimized;
-                        this.Parent.Show();
+                        frmMain objMain = new frmMain();
+                        objMain.Show();
                     }
                 }
                 if (!flag)
@@ -189,8 +189,21 @@ namespace ExpertMobileOrderSystem
 
         private void frmUserLogin_Load(object sender, EventArgs e)
         {
+            try
+            {
+                Process[] p = Process.GetProcessesByName("ExpertMobileOrderSystem");
+
+                if (p.Length > 1)
+                {
+                    MessageBox.Show("ExpertMobileOrderSystem is already running.....", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                Operation.writeLog("====================================================================" + Environment.NewLine + "Error Msg: " + ex.Message + Environment.NewLine + Environment.NewLine + "--------------------------------------------------------------------" + Environment.NewLine + "Error Stack : " + ex.StackTrace + Environment.NewLine + "====================================================================" + Environment.NewLine, Operation.ErrorLog);
+            }
             Paint += draw;
-            Operation.lastScreen.Hide();
             Invalidate();
         }
     }

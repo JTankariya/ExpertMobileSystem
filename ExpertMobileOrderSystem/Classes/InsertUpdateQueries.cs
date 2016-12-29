@@ -20,7 +20,7 @@ namespace ExpertMobileOrderSystem.Classes
                 {
                     string cName = columns[i].Split('(')[0];
                     string cType = columns[i].Split('(')[1].TrimEnd(')');
-                    if (cName.ToUpper() != "CLIENTCOMPANYID")
+                    if (cName.ToUpper() != "CLIENTCOMPANYID" && cName.ToUpper() != "OPERATIONFLAG")
                     {
                         columnNames += "[" + cName + "],";
                         if (cType == "smallint" || cType == "bit")
@@ -46,8 +46,11 @@ namespace ExpertMobileOrderSystem.Classes
                     }
                     else
                     {
-                        columnNames += "[ClientCompanyID],";
-                        columnValues += ClientCompanyId + ",";
+                        if (cName.ToUpper() != "CLIENTCOMPANYID")
+                        {
+                            columnNames += "[ClientCompanyID],";
+                            columnValues += ClientCompanyId + ",";
+                        }
                     }
                 }
                 columnNames = columnNames.TrimEnd(',');
@@ -60,11 +63,11 @@ namespace ExpertMobileOrderSystem.Classes
             {
                 switch (tableName)
                 {
-                    case TableNames.PGROUP:
-                    case TableNames.PRODUCT:
-                    case TableNames.RATE:
-                    case TableNames.RATE2:
-                    case TableNames.PARTY:
+                    case TableNames.OSPGROUP:
+                    case TableNames.OSPRODUCT:
+                    case TableNames.OSRATE:
+                    case TableNames.OSRATE2:
+                    case TableNames.OSACT:
                         if (operationType == OperationTypes.UPDATE)
                         {
                             var strQuery = GetUpdateQuery(columns, drNew, ClientCompanyId);

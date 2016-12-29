@@ -7,13 +7,11 @@ namespace ExpertMobileOrderSystem.enums
 {
     public enum TableNames
     {
-        PRODUCT = 1,
-        PARTY = 2,
-        PGROUP = 3,
-        RATE = 4,
-        RATE2 = 5,
-        ORDER = 6,
-        ORDER2 = 7
+        OSPRODUCT = 1,
+        OSACT = 2,
+        OSPGROUP = 3,
+        OSRATE = 4,
+        OSRATE2 = 5
     }
 
     public enum OperationTypes

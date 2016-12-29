@@ -32,6 +32,7 @@
             this.btnSync = new System.Windows.Forms.Button();
             this.toolUploadStatus = new System.Windows.Forms.StatusStrip();
             this.toolUploadProgress = new System.Windows.Forms.ToolStripProgressBar();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolUploadStatus.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -54,7 +55,8 @@
             // toolUploadStatus
             // 
             this.toolUploadStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolUploadProgress});
+            this.toolUploadProgress,
+            this.toolStripStatusLabel1});
             this.toolUploadStatus.Location = new System.Drawing.Point(0, 384);
             this.toolUploadStatus.Name = "toolUploadStatus";
             this.toolUploadStatus.Size = new System.Drawing.Size(665, 22);
@@ -66,6 +68,12 @@
             this.toolUploadProgress.Size = new System.Drawing.Size(100, 16);
             this.toolUploadProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(45, 17);
+            this.toolStripStatusLabel1.Text = "Name :";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -75,6 +83,7 @@
             this.Controls.Add(this.toolUploadStatus);
             this.Controls.Add(this.btnSync);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.IsMdiContainer = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmMain";
@@ -93,6 +102,7 @@
         private System.Windows.Forms.Button btnSync;
         private System.Windows.Forms.StatusStrip toolUploadStatus;
         private System.Windows.Forms.ToolStripProgressBar toolUploadProgress;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
 }
 
