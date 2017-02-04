@@ -307,26 +307,6 @@ namespace ExpertMobileOrderSystem
                                         dtToInsertInExpert.Rows[i]["Code"] = newCode;
                                         strQueries.Add("Update " + tName + " set Code = '" + newCode + "',OperationFlag=NULL where ClientCompanyId=" + ClientCompanyId + " and Code='" + oldCode + "' and OperationFlag is not null");
                                     }
-
-                                    //var dtcheckCode = GetDataFromExpert(expconn, "select * from " + tableName + " where Code='" + dtToInsertInExpert.Rows[i]["Code"] + "' and Name <> '" + dtToInsertInExpert.Rows[i]["Name"] + "'");
-                                    //if (dtcheckCode.Rows.Count > 0)
-                                    //{
-                                    //    //This is a case where new entry has been done in expert and in web with same code but with different name
-                                    //    var newCode = 100001;
-                                    //    var oldCode = 0;
-                                    //    var dtMax = GetDataFromExpert(expconn, "select * from PGroup order by Code desc");
-                                    //    if (dtMax != null && dtMax.Rows.Count > 0)
-                                    //    {
-                                    //        newCode = Convert.ToInt32(dtMax.Rows[0]["Code"]) + 1;
-                                    //    }
-                                    //    else
-                                    //    {
-                                    //        newCode = 100001;
-                                    //    }
-                                    //    oldCode = Convert.ToInt32(dtToInsertInExpert.Rows[i]["Code"]);
-                                    //    dtToInsertInExpert.Rows[i]["Code"] = newCode;
-                                    //    strQueries.Add("Update " + tName + " set Code = '" + newCode + "' where ClientCompanyId=" + ClientCompanyId + " and Code='" + oldCode + "' and OperationFlag is not null");
-                                    //}
                                 }
                                 expertQueries.Add(InsertUpdateQueries.GetQueriesForExpert((TableNames)Enum.Parse(typeof(TableNames), tName), OperationTypes.INSERT, dtToInsertInExpert.Rows[i], null, ClientCompanyId, tableColumns) + "~" + tName + "~Code~" + dtToInsertInExpert.Rows[i]["Code"]);
                             }

@@ -189,21 +189,9 @@ namespace ExpertMobileOrderSystem
 
         private void frmUserLogin_Load(object sender, EventArgs e)
         {
-            try
-            {
-                Process[] p = Process.GetProcessesByName("ExpertMobileOrderSystem");
-
-                if (p.Length > 1)
-                {
-                    MessageBox.Show("ExpertMobileOrderSystem is already running.....", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    this.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                Operation.writeLog("====================================================================" + Environment.NewLine + "Error Msg: " + ex.Message + Environment.NewLine + Environment.NewLine + "--------------------------------------------------------------------" + Environment.NewLine + "Error Stack : " + ex.StackTrace + Environment.NewLine + "====================================================================" + Environment.NewLine, Operation.ErrorLog);
-            }
+            
             Paint += draw;
+            
             Invalidate();
         }
     }
