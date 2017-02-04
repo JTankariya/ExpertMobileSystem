@@ -75,7 +75,7 @@ namespace ExpertMobileOrderSystem
                 ExpertMobileOrderSystem.Operation.ShowSplash();
                 string strAppPath = null;
                 strAppPath = Application.StartupPath;
-                string str = "select * from ClientMaster where UserName = '" + txtUserName.Text.Trim() + "' and Password = '" + Operation.Encryptdata(txtpassword.Text.Trim()) + "' ";
+                string str = "select * from [Order.ClientMaster] where UserName = '" + txtUserName.Text.Trim() + "' and Password = '" + Operation.Encryptdata(txtpassword.Text.Trim()) + "' ";
                 bool flag = false;
                 DataTable dt = Operation.GetDataTable(str, Operation.Conn);
                 if (dt.Rows.Count > 0)

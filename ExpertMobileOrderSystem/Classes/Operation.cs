@@ -22,8 +22,8 @@ namespace ExpertMobileOrderSystem
         public static Form lastScreen;
         public static string IniFile = "ExpertUploadSettings.ini";
         public static string DBFIniFile = "Database.ini";
-        public static string ConnStr = @"server=208.91.198.59;user id=mehul;password=mitesh@8277_;database=ExpertMobile;persist security info=True";
-        //public static string ConnStr = @"server=DESKTOP-GS5OJK2\SQLEXPRESS;database=ExpertMobile27112016;Integrated Security=True";
+        //public static string ConnStr = @"server=208.91.198.59;user id=mehul;password=mitesh@8277_;database=ExpertMobile;persist security info=True";
+        public static string ConnStr = @"server=DESKTOP-GS5OJK2\SQLEXPRESS;database=ExpertMobile21012017;Integrated Security=True";
         public static string LogFile = "Logfile.ini";
         public static string ErrorLog = "ErrorLog.txt";
         public static Boolean IsInternetExits = false;
@@ -137,6 +137,29 @@ namespace ExpertMobileOrderSystem
             {
                 if (TempConn.State != ConnectionState.Open)
                     TempConn.Open();
+                cmd.CommandTimeout = 0;
+                Result = cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Operation.writeLog("===========================ExecuteNonQuery====================================" + Environment.NewLine + "Date & Time : " + DateTime.Now.ToShortDateString() + DateTime.Now.ToShortTimeString() + Environment.NewLine + "Query : " + Query + Environment.NewLine + "Error Msg: " + ex.Message + Environment.NewLine + Environment.NewLine + "--------------------------------------------------------------------" + Environment.NewLine + "Error Stack : " + ex.StackTrace + Environment.NewLine + "====================================================================" + Environment.NewLine, Operation.ErrorLog);
+                //MessageBox.Show("Error in ExecuteNonQuery.\n" + ex.Message, Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Conn.Close();
+            }
+            return Result;
+        }
+
+        public static int ExecuteNonQuery(string Query, OleDbConnection expConn)
+        {
+            OleDbCommand cmd = new OleDbCommand(Query, expConn);
+            int Result = 0;
+            try
+            {
+                if (expConn.State != ConnectionState.Open)
+                    expConn.Open();
                 cmd.CommandTimeout = 0;
                 Result = cmd.ExecuteNonQuery();
             }
