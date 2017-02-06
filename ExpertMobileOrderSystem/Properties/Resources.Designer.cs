@@ -67,6 +67,41 @@ namespace ExpertMobileOrderSystem.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap _1486415013_icons_user {
+            get {
+                object obj = ResourceManager.GetObject("1486415013_icons_user", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap _1486415757_03_Office {
+            get {
+                object obj = ResourceManager.GetObject("1486415757_03.Office", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap _1486416542_key {
+            get {
+                object obj = ResourceManager.GetObject("1486416542_key", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap _1486416649_settings {
+            get {
+                object obj = ResourceManager.GetObject("1486416649_settings", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap _1486416909_lock_24 {
+            get {
+                object obj = ResourceManager.GetObject("1486416909_lock-24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap accept {
             get {
                 object obj = ResourceManager.GetObject("accept", resourceCulture);
@@ -105,6 +140,13 @@ namespace ExpertMobileOrderSystem.Properties {
         internal static System.Drawing.Bitmap Login_New2 {
             get {
                 object obj = ResourceManager.GetObject("Login New2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap search2 {
+            get {
+                object obj = ResourceManager.GetObject("search2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

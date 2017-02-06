@@ -159,18 +159,10 @@ namespace ExpertMobileOrderSystem
         {
             try
             {
-
-
-
-
                 if (validation())
                 {
                     int result;
-                     
-                    //result = Operation.ExecuteNonQuery("update AdminMaster set password='" + Operation.Encryptdata(txtNew.Text) + "' where adminid='" + lblUserId.Text + "'", Operation.Conn);
-                    result = Operation.ExecuteNonQuery("update ClientMaster set password='" + Operation.Encryptdata(txtNew.Text) + "' where UserName='" + txtUserName.Text + "'", Operation.Conn);
-                    //result = Operation.ExecuteNonQuery("update ClientMaster set password='" + CryptorEngine.Encrypt(txtNew.Text,true) + "' where UserName='" + txtUserName.Text + "'", Operation.Conn);
-                    
+                    result = Operation.ExecuteNonQuery("update [Order.ClientMaster] set password='" + Operation.Encryptdata(txtNew.Text) + "' where UserName='" + txtUserName.Text + "'", Operation.Conn);
                     if (result == 1)
                     {
                         MessageBox.Show("Password changed successfully.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -178,13 +170,7 @@ namespace ExpertMobileOrderSystem
                         txtNew.Text = "";
                         txtOld.Text = "";
                         lblUserId.Text = "0";
-                       // txtUserName.Text = "";
                     }
-                }
-                else
-                {
-                    MessageBox.Show("Error while changing password, Please try after some time.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    lblUserId.Text = "0";  
                 }
             }
             catch(Exception ex)
@@ -202,17 +188,6 @@ namespace ExpertMobileOrderSystem
                 txtUserName.Focus();
                 return false;
             }
-
-            //if (Convert.ToString(Operation.ExecuteScalar("select UserId from UserLogIn where UserName like '" + txtUserName.Text + "'", Operation.Conn)) == "")
-            //{
-            //    MessageBox.Show("There is no user with given username, Please enter correct username.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
-            //    txtOld.Focus();
-            //    return false;
-            //}
-            //else
-            //{
-            //    lblUserId.Text = Convert.ToString(Operation.ExecuteScalar("select UserId from UserLogIn where UserName like '" + txtUserName.Text + "'", Operation.Conn));
-            //}
             if (txtOld.Text == "")
             {
                 MessageBox.Show("Please enter old password.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
@@ -231,26 +206,18 @@ namespace ExpertMobileOrderSystem
                 txtConfirm.Focus();
                 return false;
             }
+            if (Operation.Encryptdata(txtOld.Text) != Operation.objComp.Password)
+            {
+                MessageBox.Show("Old password doesn't match with system, Please enter correct old password.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                txtConfirm.Focus();
+                return false;
+            }
             if (txtNew.Text != txtConfirm.Text)
             {
                 MessageBox.Show("Your new password and confirm password are not mathcing, Please try again.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 txtConfirm.Focus();
                 return false;
             }
-
-            //DataTable dt = Operation.GetDataTable("select MobileNo, password from ClientMaster where UserName='" + txtUserName.Text + "'", Operation.Conn);
-            //if (txtOld.Text != Operation.Decryptdata( dt.Rows[0]["password"].ToString()))
-            //{
-            //    MessageBox.Show("Please enter correct old Password.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
-            //    txtOld.Focus();
-            //    return false;
-            //}
-            //if (txtMobile.Text != dt.Rows[0]["mobileno"].ToString())
-            //{
-            //    MessageBox.Show("Please enter correct MobileNo.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
-            //    txtMobile.Focus();
-            //    return false;
-            //}
             return true;
         }
 
@@ -275,11 +242,6 @@ namespace ExpertMobileOrderSystem
             Invalidate();
         }
 
-        private void Label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void txtMobile_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!(char.IsDigit(e.KeyChar) || e.KeyChar == '-' || e.KeyChar == (char)8))
@@ -296,16 +258,5 @@ namespace ExpertMobileOrderSystem
             }
             catch { }
         }
-
-        private void Label5_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Label6_Click(object sender, EventArgs e)
-        {
-
-        }
-
     }
 }

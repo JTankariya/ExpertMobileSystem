@@ -9,3 +9,8 @@ E:\Jayesh\GitHub\ExpertMobileSystem\ExpertMobileOrderSystem\bin\Debug\ExpertMobi
 E:\Jayesh\GitHub\ExpertMobileSystem\ExpertMobileOrderSystem\bin\Debug\ExpertMobileOrderSystem.pdb
 E:\Jayesh\GitHub\ExpertMobileSystem\ExpertMobileOrderSystem\obj\Debug\ExpertMobileOrderSystem.exe
 E:\Jayesh\GitHub\ExpertMobileSystem\ExpertMobileOrderSystem\obj\Debug\ExpertMobileOrderSystem.pdb
+E:\Jayesh\GitHub\ExpertMobileSystem\ExpertMobileOrderSystem\obj\Debug\ExpertMobileOrderSystem.frmUserMaster.resources
+E:\Jayesh\GitHub\ExpertMobileSystem\ExpertMobileOrderSystem\obj\Debug\ExpertMobileOrderSystem.frmSearch.resources
+E:\Jayesh\GitHub\ExpertMobileSystem\ExpertMobileOrderSystem\obj\Debug\ExpertMobileOrderSystem.frmCompanyMaster.resources
+E:\Jayesh\GitHub\ExpertMobileSystem\ExpertMobileOrderSystem\obj\Debug\ExpertMobileOrderSystem.frmCompanyAllocation.resources
+E:\Jayesh\GitHub\ExpertMobileSystem\ExpertMobileOrderSystem\obj\Debug\ExpertMobileOrderSystem.frmSettings.resources

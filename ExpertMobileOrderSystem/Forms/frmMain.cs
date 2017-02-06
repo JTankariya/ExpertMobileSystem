@@ -730,5 +730,35 @@ namespace ExpertMobileOrderSystem
                 #endregion
             }
         }
+
+        private void btnUsers_Click(object sender, EventArgs e)
+        {
+            frmUserMaster user = new frmUserMaster();
+            user.ShowDialog();
+        }
+
+        private void btnCompanies_Click(object sender, EventArgs e)
+        {
+            frmCompanyMaster company = new frmCompanyMaster();
+            company.ShowDialog();
+        }
+
+        private void btnUserCompanyAllocation_Click(object sender, EventArgs e)
+        {
+            frmCompanyAllocation allocation = new frmCompanyAllocation();
+            allocation.ShowDialog();
+        }
+
+        private void btnChangePassword_Click(object sender, EventArgs e)
+        {
+            frmChangePassword pw = new frmChangePassword();
+            pw.ShowDialog();
+        }
+
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
+            frmSettings settings = new frmSettings();
+            settings.ShowDialog();
+        }
     }
 }

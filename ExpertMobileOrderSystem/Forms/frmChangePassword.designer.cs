@@ -71,7 +71,6 @@
             this.Label1.Size = new System.Drawing.Size(91, 18);
             this.Label1.TabIndex = 28;
             this.Label1.Text = "User Name";
-            this.Label1.Click += new System.EventHandler(this.Label1_Click);
             // 
             // txtConfirm
             // 
@@ -119,7 +118,6 @@
             this.Label6.Size = new System.Drawing.Size(118, 18);
             this.Label6.TabIndex = 25;
             this.Label6.Text = "New Password";
-            this.Label6.Click += new System.EventHandler(this.Label6_Click);
             // 
             // Label5
             // 
@@ -131,7 +129,6 @@
             this.Label5.Size = new System.Drawing.Size(109, 18);
             this.Label5.TabIndex = 23;
             this.Label5.Text = "Old Password";
-            this.Label5.Click += new System.EventHandler(this.Label5_Click);
             // 
             // Label4
             // 
