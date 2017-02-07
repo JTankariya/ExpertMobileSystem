@@ -367,14 +367,13 @@ namespace ExpertMobileSystem_Client_
             {
                 Application.DoEvents();
                 string isSuperadmin = "";
-                // string user = Operation.ExecuteScalar("select UserName from UserLogIn where UserId='" + Operation.UserId.ToString() + "'", Operation.Conn).ToString();
                 if (Operation.IsSuperAdmin == true)
                 {
                     isSuperadmin = "(Super_Admin)";
                 }
-
                 ControlMessage.Text = Operation.ClientUserName + isSuperadmin;
                 this.WindowState = FormWindowState.Minimized;
+                
             }
             catch (Exception ex)
             {
@@ -1140,7 +1139,7 @@ namespace ExpertMobileSystem_Client_
                 foreach (string tName in tableNames)
                 {
                     Operation.writeLog("====================================================================" + Environment.NewLine + tName + " Process Started: " + startTime.ToString("dd/MM/yyyy hh:mm:ss tt"), Operation.LogFile);
-                    
+
                     if (File.Exists(Application.StartupPath + "\\" + UploadingExpertDir + "\\" + tName + ".DBF") && !Operation.ForceSync)
                     {
                         Operation.writeLog("File : " + tName + " execution Start at: " + DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss tt"), Operation.LogFile);

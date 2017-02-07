@@ -30,81 +30,81 @@ namespace ExpertMobileOrderSystem
 
         private void frmMain_Load(object sender, EventArgs e)
         {
+            toolUserInfo.Text = "Welcome " + Operation.objComp.UserName;
+            //try
+            //{
+            //    if (Operation.IsInternetOnorOff())
+            //    {
+            //        Operation.IsInternetExits = true;
+            //    }
+            //    else
+            //    {
+            //        Application.DoEvents();
+            //        while (!Operation.IsInternetExits == true)
+            //        {
+            //            Application.DoEvents();
+            //            if (Operation.IsInternetOnorOff())
+            //                Operation.IsInternetExits = true;
+            //            else
+            //                Operation.IsInternetExits = false;
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Operation.writeLog("====================================================================" + Environment.NewLine + "Error Msg: " + ex.Message + Environment.NewLine + Environment.NewLine + "--------------------------------------------------------------------" + Environment.NewLine + "Error Stack : " + ex.StackTrace + Environment.NewLine + "====================================================================" + Environment.NewLine, Operation.ErrorLog);
+            //}
 
-            try
-            {
-                if (Operation.IsInternetOnorOff())
-                {
-                    Operation.IsInternetExits = true;
-                }
-                else
-                {
-                    Application.DoEvents();
-                    while (!Operation.IsInternetExits == true)
-                    {
-                        Application.DoEvents();
-                        if (Operation.IsInternetOnorOff())
-                            Operation.IsInternetExits = true;
-                        else
-                            Operation.IsInternetExits = false;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Operation.writeLog("====================================================================" + Environment.NewLine + "Error Msg: " + ex.Message + Environment.NewLine + Environment.NewLine + "--------------------------------------------------------------------" + Environment.NewLine + "Error Stack : " + ex.StackTrace + Environment.NewLine + "====================================================================" + Environment.NewLine, Operation.ErrorLog);
-            }
+            //Application.EnableVisualStyles();
+            //Operation.Conn = new SqlConnection(Operation.ConnStr);
+            //try
+            //{
+            //    string path = Application.StartupPath + "\\UserDetail.ini";
+            //    if (File.Exists(path))
+            //    {
+            //        string fileUserDetail = File.ReadAllText(path);
+            //        string fileUserDetailDecrypt = Operation.Decryptdata(fileUserDetail);
+            //        string[] lines = fileUserDetailDecrypt.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            //        string[] hdd = lines[0].Split(':');
+            //        string[] mac = lines[1].Split(':');
+            //        string[] myuser = lines[2].Split(':');
+            //        string[] mypass = lines[3].Split(':');
+            //        string username = Operation.Decryptdata(myuser[1].ToString());
+            //        string pass = mypass[1].ToString();
+            //        string userHDD = HardwareInfo.GetHDDSerialNo().ToString();
+            //        string userMAC = HardwareInfo.GetMACAddress().ToString();
+            //        if (Operation.Decryptdata(hdd[1].ToString()).Contains(userHDD))
+            //        {
+            //            string str = "select * from [Order.ClientMaster] where UserName = '" + username + "' and Password = '" + pass.Trim() + "' ";
+            //            try
+            //            {
+            //                DataTable dt = Operation.GetDataTable(str, Operation.Conn);
+            //                if (dt.Rows.Count > 0)
+            //                {
+            //                    Operation.LogFile = Application.StartupPath + "\\LogFile.txt";
+            //                    Operation.Clientid = dt.Rows[0]["Clientid"].ToString();
+            //                    Operation.ClientUserName = dt.Rows[0]["Username"].ToString();
+            //                    new frmUserLogin().SetCompanyInfo(dt);
+            //                    Operation.CurrentDate = Operation.GetNetworkTime();
+            //                }
+            //                else
+            //                {
+            //                    this.Hide();
+            //                }
+            //            }
+            //            catch (Exception ex)
+            //            {
+            //                Operation.writeLog("====================================================================" + Environment.NewLine + "Error Msg: " + ex.Message + Environment.NewLine + Environment.NewLine + "--------------------------------------------------------------------" + Environment.NewLine + "Error Stack : " + ex.StackTrace + Environment.NewLine + "====================================================================" + Environment.NewLine, Operation.ErrorLog);
+            //                return;
+            //            }
+            //        }
+            //    }
 
-            Application.EnableVisualStyles();
-            Operation.Conn = new SqlConnection(Operation.ConnStr);
-            try
-            {
-                string path = Application.StartupPath + "\\UserDetail.ini";
-                if (File.Exists(path))
-                {
-                    string fileUserDetail = File.ReadAllText(path);
-                    string fileUserDetailDecrypt = Operation.Decryptdata(fileUserDetail);
-                    string[] lines = fileUserDetailDecrypt.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-                    string[] hdd = lines[0].Split(':');
-                    string[] mac = lines[1].Split(':');
-                    string[] myuser = lines[2].Split(':');
-                    string[] mypass = lines[3].Split(':');
-                    string username = Operation.Decryptdata(myuser[1].ToString());
-                    string pass = mypass[1].ToString();
-                    string userHDD = HardwareInfo.GetHDDSerialNo().ToString();
-                    string userMAC = HardwareInfo.GetMACAddress().ToString();
-                    if (Operation.Decryptdata(hdd[1].ToString()).Contains(userHDD))
-                    {
-                        string str = "select * from [Order.ClientMaster] where UserName = '" + username + "' and Password = '" + pass.Trim() + "' ";
-                        try
-                        {
-                            DataTable dt = Operation.GetDataTable(str, Operation.Conn);
-                            if (dt.Rows.Count > 0)
-                            {
-                                Operation.LogFile = Application.StartupPath + "\\LogFile.txt";
-                                Operation.Clientid = dt.Rows[0]["Clientid"].ToString();
-                                Operation.ClientUserName = dt.Rows[0]["Username"].ToString();
-                                new frmUserLogin().SetCompanyInfo(dt);
-                                Operation.CurrentDate = Operation.GetNetworkTime();
-                            }
-                            else
-                            {
-                                this.Hide();
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Operation.writeLog("====================================================================" + Environment.NewLine + "Error Msg: " + ex.Message + Environment.NewLine + Environment.NewLine + "--------------------------------------------------------------------" + Environment.NewLine + "Error Stack : " + ex.StackTrace + Environment.NewLine + "====================================================================" + Environment.NewLine, Operation.ErrorLog);
-                            return;
-                        }
-                    }
-                }
+            //}
+            //catch
+            //{
 
-            }
-            catch
-            {
-
-            }
+            //}
         }
 
         private void btnSync_Click(object sender, EventArgs e)
@@ -128,6 +128,11 @@ namespace ExpertMobileOrderSystem
         private int ClientCompanyId = 0;
         private void NewDataUpload()
         {
+            this.Invoke(new MethodInvoker(delegate
+            {
+                toolUploadProgress.Visible = true;
+                toolUploadProgress.Value = 0;
+            }));
             try
             {
                 Operation.writeLog("Upload Start Time : " + DateTime.Now.ToLongTimeString(), Operation.LogFile);
@@ -165,8 +170,6 @@ namespace ExpertMobileOrderSystem
                             dtExpertAct = GetDataFromExpert(expconn, "select * from [" + tableName + "]");
                             this.Invoke(new MethodInvoker(delegate
                             {
-                                toolUploadStatus.Visible = true;
-                                toolUploadProgress.Visible = true;
                                 toolUploadProgress.Value = 0;
                                 toolUploadStatus.Text = "Processing Existing " + tableName + ".dbf : ";
                             }));
@@ -216,8 +219,6 @@ namespace ExpertMobileOrderSystem
                                 List<string> tableColumns = GetTableColumns((TableNames)Enum.Parse(typeof(TableNames), tName), true);
                                 this.Invoke(new MethodInvoker(delegate
                                 {
-                                    toolUploadStatus.Visible = true;
-                                    toolUploadProgress.Visible = true;
                                     toolUploadProgress.Value = 0;
                                     toolUploadStatus.Text = "Processing " + tName + ".dbf : ";
                                 }));
@@ -378,7 +379,6 @@ namespace ExpertMobileOrderSystem
             {
                 this.Invoke(new MethodInvoker(delegate
                 {
-                    toolUploadStatus.Visible = false;
                     toolUploadProgress.Visible = false;
                 }));
             }
@@ -759,6 +759,28 @@ namespace ExpertMobileOrderSystem
         {
             frmSettings settings = new frmSettings();
             settings.ShowDialog();
+        }
+
+        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (this.WindowState != FormWindowState.Minimized)
+            {
+                this.WindowState = FormWindowState.Minimized;
+                e.Cancel = true;
+                notifyIcon1.Visible = true;
+                notifyIcon1.ShowBalloonTip(100);
+                this.Hide();
+                return;
+            }
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                Application.Exit();
+            }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

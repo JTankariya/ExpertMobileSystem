@@ -28,40 +28,43 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.toolUploadStatus = new System.Windows.Forms.StatusStrip();
             this.toolUploadProgress = new System.Windows.Forms.ToolStripProgressBar();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.btnUserCompanyAllocation = new System.Windows.Forms.Button();
             this.btnSettings = new System.Windows.Forms.Button();
             this.btnChangePassword = new System.Windows.Forms.Button();
             this.btnCompanies = new System.Windows.Forms.Button();
             this.btnUsers = new System.Windows.Forms.Button();
             this.btnSync = new System.Windows.Forms.Button();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolUserInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolUploadStatus.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolUploadStatus
             // 
+            this.toolUploadStatus.GripMargin = new System.Windows.Forms.Padding(10);
+            this.toolUploadStatus.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
             this.toolUploadStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolUploadProgress,
-            this.toolStripStatusLabel1});
-            this.toolUploadStatus.Location = new System.Drawing.Point(0, 384);
+            this.toolUserInfo});
+            this.toolUploadStatus.Location = new System.Drawing.Point(0, 217);
             this.toolUploadStatus.Name = "toolUploadStatus";
             this.toolUploadStatus.Size = new System.Drawing.Size(665, 22);
             this.toolUploadStatus.TabIndex = 1;
             // 
             // toolUploadProgress
             // 
+            this.toolUploadProgress.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.toolUploadProgress.Name = "toolUploadProgress";
             this.toolUploadProgress.Size = new System.Drawing.Size(100, 16);
             this.toolUploadProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
-            // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(45, 17);
-            this.toolStripStatusLabel1.Text = "Name :";
+            this.toolUploadProgress.Visible = false;
             // 
             // btnUserCompanyAllocation
             // 
@@ -70,7 +73,7 @@
             this.btnUserCompanyAllocation.Font = new System.Drawing.Font("Calibri", 15.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
             this.btnUserCompanyAllocation.Image = global::ExpertMobileOrderSystem.Properties.Resources._1486416909_lock_24;
             this.btnUserCompanyAllocation.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnUserCompanyAllocation.Location = new System.Drawing.Point(467, 40);
+            this.btnUserCompanyAllocation.Location = new System.Drawing.Point(467, 12);
             this.btnUserCompanyAllocation.Name = "btnUserCompanyAllocation";
             this.btnUserCompanyAllocation.Size = new System.Drawing.Size(186, 80);
             this.btnUserCompanyAllocation.TabIndex = 9;
@@ -86,7 +89,7 @@
             this.btnSettings.Font = new System.Drawing.Font("Calibri", 20.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSettings.Image = global::ExpertMobileOrderSystem.Properties.Resources._1486416649_settings;
             this.btnSettings.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSettings.Location = new System.Drawing.Point(229, 153);
+            this.btnSettings.Location = new System.Drawing.Point(229, 125);
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.Size = new System.Drawing.Size(203, 80);
             this.btnSettings.TabIndex = 8;
@@ -101,7 +104,7 @@
             this.btnChangePassword.Font = new System.Drawing.Font("Calibri", 20.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnChangePassword.Image = global::ExpertMobileOrderSystem.Properties.Resources._1486416542_key;
             this.btnChangePassword.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnChangePassword.Location = new System.Drawing.Point(12, 153);
+            this.btnChangePassword.Location = new System.Drawing.Point(12, 125);
             this.btnChangePassword.Name = "btnChangePassword";
             this.btnChangePassword.Size = new System.Drawing.Size(183, 80);
             this.btnChangePassword.TabIndex = 7;
@@ -116,7 +119,7 @@
             this.btnCompanies.Font = new System.Drawing.Font("Calibri", 20.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCompanies.Image = global::ExpertMobileOrderSystem.Properties.Resources._1486415757_03_Office;
             this.btnCompanies.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCompanies.Location = new System.Drawing.Point(229, 40);
+            this.btnCompanies.Location = new System.Drawing.Point(229, 12);
             this.btnCompanies.Name = "btnCompanies";
             this.btnCompanies.Size = new System.Drawing.Size(203, 80);
             this.btnCompanies.TabIndex = 5;
@@ -132,7 +135,7 @@
             this.btnUsers.Font = new System.Drawing.Font("Calibri", 20.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnUsers.Image = global::ExpertMobileOrderSystem.Properties.Resources._1486415013_icons_user;
             this.btnUsers.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnUsers.Location = new System.Drawing.Point(12, 40);
+            this.btnUsers.Location = new System.Drawing.Point(12, 12);
             this.btnUsers.Name = "btnUsers";
             this.btnUsers.Size = new System.Drawing.Size(183, 80);
             this.btnUsers.TabIndex = 3;
@@ -147,7 +150,7 @@
             this.btnSync.Font = new System.Drawing.Font("Calibri", 20.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSync.Image = global::ExpertMobileOrderSystem.Properties.Resources._1482787339_sync;
             this.btnSync.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSync.Location = new System.Drawing.Point(467, 153);
+            this.btnSync.Location = new System.Drawing.Point(467, 125);
             this.btnSync.Name = "btnSync";
             this.btnSync.Size = new System.Drawing.Size(186, 80);
             this.btnSync.TabIndex = 0;
@@ -156,12 +159,44 @@
             this.btnSync.UseVisualStyleBackColor = true;
             this.btnSync.Click += new System.EventHandler(this.btnSync_Click);
             // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.notifyIcon1.BalloonTipText = "Expert Order Sync Utility is minimized to system tray.";
+            this.notifyIcon1.BalloonTipTitle = "Expert Order Sync";
+            this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "Expert Order Sync";
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exitToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(107, 30);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(106, 26);
+            this.exitToolStripMenuItem.Text = "&Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // toolUserInfo
+            // 
+            this.toolUserInfo.Name = "toolUserInfo";
+            this.toolUserInfo.Size = new System.Drawing.Size(650, 17);
+            this.toolUserInfo.Spring = true;
+            this.toolUserInfo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolUserInfo.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(665, 406);
+            this.ClientSize = new System.Drawing.Size(665, 239);
             this.Controls.Add(this.btnUserCompanyAllocation);
             this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.btnChangePassword);
@@ -177,8 +212,10 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Order Sync Utility";
             this.Load += new System.EventHandler(this.frmMain_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.toolUploadStatus.ResumeLayout(false);
             this.toolUploadStatus.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -189,12 +226,15 @@
         private System.Windows.Forms.Button btnSync;
         private System.Windows.Forms.StatusStrip toolUploadStatus;
         private System.Windows.Forms.ToolStripProgressBar toolUploadProgress;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.Button btnUsers;
         private System.Windows.Forms.Button btnCompanies;
         private System.Windows.Forms.Button btnChangePassword;
         private System.Windows.Forms.Button btnSettings;
         private System.Windows.Forms.Button btnUserCompanyAllocation;
+        private System.Windows.Forms.NotifyIcon notifyIcon1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripStatusLabel toolUserInfo;
     }
 }
 
