@@ -1,6 +1,6 @@
 ﻿namespace ExpertMobileOrderSystem
 {
-    partial class frmCompanyMaster 
+    partial class frmWithoutCompanyMaster 
     {
         /// <summary>
         /// Required designer variable.
@@ -30,6 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmWithoutCompanyMaster));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.txtm2 = new System.Windows.Forms.TextBox();
@@ -50,7 +52,10 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.dgvCompany = new System.Windows.Forms.DataGridView();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.dgvWCompany = new System.Windows.Forms.DataGridView();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.dgvBCompany = new System.Windows.Forms.DataGridView();
             this.btnBrowseFolder = new System.Windows.Forms.Button();
             this.txtpath = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -91,11 +96,16 @@
             this.txtcompVAT = new System.Windows.Forms.TextBox();
             this.txtCompAutho = new System.Windows.Forms.TextBox();
             this.label31 = new System.Windows.Forms.Label();
+            this.lblBillableId = new System.Windows.Forms.Label();
+            this.lblWithoutId = new System.Windows.Forms.Label();
             this.statusStrip1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvCompany)).BeginInit();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvWCompany)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBCompany)).BeginInit();
             this.CompanyDetail.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -179,6 +189,7 @@
             this.btnView.Text = "&View";
             this.btnView.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnView.UseVisualStyleBackColor = true;
+            this.btnView.Visible = false;
             this.btnView.Click += new System.EventHandler(this.btnView_Click);
             // 
             // btnAdd
@@ -195,6 +206,7 @@
             this.btnAdd.Text = "&Add";
             this.btnAdd.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Visible = false;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnDelete
@@ -211,6 +223,7 @@
             this.btnDelete.Text = "&Delete";
             this.btnDelete.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Visible = false;
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnSave
@@ -298,7 +311,10 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.dgvCompany);
+            this.tabPage1.Controls.Add(this.lblWithoutId);
+            this.tabPage1.Controls.Add(this.lblBillableId);
+            this.tabPage1.Controls.Add(this.groupBox2);
+            this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Controls.Add(this.btnBrowseFolder);
             this.tabPage1.Controls.Add(this.txtpath);
             this.tabPage1.Controls.Add(this.label10);
@@ -310,29 +326,73 @@
             this.tabPage1.Text = "Expert Company";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // dgvCompany
+            // groupBox2
             // 
-            this.dgvCompany.AllowUserToAddRows = false;
-            this.dgvCompany.AllowUserToDeleteRows = false;
-            this.dgvCompany.AllowUserToResizeRows = false;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Verdana", 8.25F);
-            this.dgvCompany.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvCompany.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.groupBox2.Controls.Add(this.dgvWCompany);
+            this.groupBox2.Location = new System.Drawing.Point(395, 47);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(378, 260);
+            this.groupBox2.TabIndex = 90;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Without";
+            // 
+            // dgvWCompany
+            // 
+            this.dgvWCompany.AllowUserToAddRows = false;
+            this.dgvWCompany.AllowUserToDeleteRows = false;
+            this.dgvWCompany.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Verdana", 8.25F);
+            this.dgvWCompany.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvWCompany.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvCompany.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.dgvCompany.BackgroundColor = System.Drawing.Color.White;
-            this.dgvCompany.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.dgvCompany.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvCompany.Location = new System.Drawing.Point(13, 58);
-            this.dgvCompany.Name = "dgvCompany";
-            this.dgvCompany.ReadOnly = true;
-            this.dgvCompany.RowHeadersVisible = false;
+            this.dgvWCompany.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvWCompany.BackgroundColor = System.Drawing.Color.White;
+            this.dgvWCompany.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dgvWCompany.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvWCompany.Location = new System.Drawing.Point(6, 22);
+            this.dgvWCompany.Name = "dgvWCompany";
+            this.dgvWCompany.ReadOnly = true;
+            this.dgvWCompany.RowHeadersVisible = false;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Verdana", 8.25F);
+            this.dgvWCompany.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvWCompany.Size = new System.Drawing.Size(366, 232);
+            this.dgvWCompany.TabIndex = 88;
+            this.dgvWCompany.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvWCompany_CellContentDoubleClick);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.dgvBCompany);
+            this.groupBox1.Location = new System.Drawing.Point(13, 47);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(374, 260);
+            this.groupBox1.TabIndex = 89;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Billable";
+            // 
+            // dgvBCompany
+            // 
+            this.dgvBCompany.AllowUserToAddRows = false;
+            this.dgvBCompany.AllowUserToDeleteRows = false;
+            this.dgvBCompany.AllowUserToResizeRows = false;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Verdana", 8.25F);
+            this.dgvBCompany.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvBCompany.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvBCompany.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvBCompany.BackgroundColor = System.Drawing.Color.White;
+            this.dgvBCompany.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.dgvBCompany.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvBCompany.Location = new System.Drawing.Point(6, 22);
+            this.dgvBCompany.Name = "dgvBCompany";
+            this.dgvBCompany.ReadOnly = true;
+            this.dgvBCompany.RowHeadersVisible = false;
             dataGridViewCellStyle4.Font = new System.Drawing.Font("Verdana", 8.25F);
-            this.dgvCompany.RowsDefaultCellStyle = dataGridViewCellStyle4;
-            this.dgvCompany.Size = new System.Drawing.Size(766, 249);
-            this.dgvCompany.TabIndex = 88;
-            this.dgvCompany.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCompany_CellContentDoubleClick);
+            this.dgvBCompany.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            this.dgvBCompany.Size = new System.Drawing.Size(362, 232);
+            this.dgvBCompany.TabIndex = 88;
+            this.dgvBCompany.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCompany_CellContentDoubleClick);
             // 
             // btnBrowseFolder
             // 
@@ -469,7 +529,7 @@
             this.label3.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(434, 36);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(67, 16);
+            this.label3.Size = new System.Drawing.Size(66, 16);
             this.label3.TabIndex = 138;
             this.label3.Text = "To Date:";
             // 
@@ -499,7 +559,7 @@
             this.label21.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label21.Location = new System.Drawing.Point(54, 187);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(67, 16);
+            this.label21.Size = new System.Drawing.Size(66, 16);
             this.label21.TabIndex = 134;
             this.label21.Text = "Website:";
             // 
@@ -662,10 +722,9 @@
             this.label15.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label15.Location = new System.Drawing.Point(441, 251);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(60, 16);
+            this.label15.Size = new System.Drawing.Size(59, 16);
             this.label15.TabIndex = 118;
             this.label15.Text = "TANNO:";
-            this.label15.Click += new System.EventHandler(this.label15_Click);
             // 
             // txtTANNO
             // 
@@ -732,7 +791,7 @@
             this.label19.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label19.Location = new System.Drawing.Point(460, 191);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(41, 16);
+            this.label19.Size = new System.Drawing.Size(40, 16);
             this.label19.TabIndex = 112;
             this.label19.Text = "CST:";
             // 
@@ -777,7 +836,29 @@
             this.label31.TabIndex = 107;
             this.label31.Text = "Authorised:";
             // 
-            // frmCompanyMaster
+            // lblBillableId
+            // 
+            this.lblBillableId.AutoSize = true;
+            this.lblBillableId.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBillableId.Location = new System.Drawing.Point(16, 310);
+            this.lblBillableId.Name = "lblBillableId";
+            this.lblBillableId.Size = new System.Drawing.Size(62, 16);
+            this.lblBillableId.TabIndex = 91;
+            this.lblBillableId.Text = "Phone2:";
+            this.lblBillableId.Visible = false;
+            // 
+            // lblWithoutId
+            // 
+            this.lblWithoutId.AutoSize = true;
+            this.lblWithoutId.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblWithoutId.Location = new System.Drawing.Point(398, 310);
+            this.lblWithoutId.Name = "lblWithoutId";
+            this.lblWithoutId.Size = new System.Drawing.Size(62, 16);
+            this.lblWithoutId.TabIndex = 92;
+            this.lblWithoutId.Text = "Phone2:";
+            this.lblWithoutId.Visible = false;
+            // 
+            // frmWithoutCompanyMaster
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
@@ -790,11 +871,11 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.KeyPreview = true;
             this.MaximizeBox = false;
-            this.Name = "frmCompanyMaster";
+            this.Name = "frmWithoutCompanyMaster";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Show;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Company Master";
-            this.Load += new System.EventHandler(this.frmPartymaster_Load);
+            this.Load += new System.EventHandler(this.frmWithoutCompanyMaster_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmPartymaster_FormClosing);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmPartymaster_KeyDown);
             this.statusStrip1.ResumeLayout(false);
@@ -804,7 +885,10 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvCompany)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvWCompany)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBCompany)).EndInit();
             this.CompanyDetail.ResumeLayout(false);
             this.CompanyDetail.PerformLayout();
             this.ResumeLayout(false);
@@ -832,7 +916,7 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
-        public System.Windows.Forms.DataGridView dgvCompany;
+        public System.Windows.Forms.DataGridView dgvBCompany;
         private System.Windows.Forms.Button btnBrowseFolder;
         public System.Windows.Forms.TextBox txtpath;
         internal System.Windows.Forms.Label label10;
@@ -873,6 +957,11 @@
         public System.Windows.Forms.TextBox txtcompVAT;
         public System.Windows.Forms.TextBox txtCompAutho;
         internal System.Windows.Forms.Label label31;
+        private System.Windows.Forms.GroupBox groupBox2;
+        public System.Windows.Forms.DataGridView dgvWCompany;
+        private System.Windows.Forms.GroupBox groupBox1;
+        internal System.Windows.Forms.Label lblWithoutId;
+        internal System.Windows.Forms.Label lblBillableId;
        // public System.Windows.Forms.DateTimePicker dtpdate;
         //this.dtpdate.CustomFormat = "dd/MM/yyyy";
     }

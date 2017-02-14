@@ -68,9 +68,7 @@ namespace ExpertMobileOrderSystem
                         if (dt.Rows.Count > 0)
                         {
                             Operation.LogFile = Application.StartupPath + "\\LogFile.txt";
-                            Operation.Clientid = dt.Rows[0]["Clientid"].ToString();
-                            Operation.ClientUserName = dt.Rows[0]["Username"].ToString();
-                            new frmUserLogin().SetCompanyInfo(dt);
+                            Operation.currClient = new Client(dt.Rows[0]);
                             Operation.CurrentDate = Operation.GetNetworkTime();
                             Application.Run(new frmMain());
                         }

@@ -19,10 +19,7 @@ namespace ExpertMobileOrderSystem
     public partial class frmUserMaster : Form
     {
         public string filename = Guid.NewGuid().ToString();
-        //bool blEventExit = false;
-
         bool Loaded = false;
-        //private Thread WaitingThread;
 
         public frmUserMaster()
         {
@@ -75,8 +72,6 @@ namespace ExpertMobileOrderSystem
 
         private void frmPartymaster_Load(object sender, EventArgs e)
         {
-
-        
             if (Loaded == false)
             {
                 btnAdd_Click(sender, e);
@@ -87,7 +82,7 @@ namespace ExpertMobileOrderSystem
         }
         private bool CheckMaximumUser()
         {
-            if (Operation.objComp.NoOfAccessUser <= Operation.objComp.TotalCreatedUser)
+            if (Operation.currClient.NoOfAccessUsers <= Operation.currClient.TotalCreatedUser)
             {
                 MessageBox.Show("You have Created Maximum Number Of User.\n To Add More user Please Contact Administrator.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
@@ -102,10 +97,6 @@ namespace ExpertMobileOrderSystem
                 e.SuppressKeyPress = true;
                 SendKeys.Send("{Tab}");
             }
-            //if (e.KeyCode == Keys.OemQuotes)
-            //{
-            //    e.SuppressKeyPress = true;
-            //}
 
             if ((e.KeyCode == Keys.Escape))
             {
@@ -123,7 +114,6 @@ namespace ExpertMobileOrderSystem
                 if (!CheckMaximumUser())
                 {
                     return false;
-
                 }
             }
 
@@ -146,7 +136,7 @@ namespace ExpertMobileOrderSystem
                 return false;
             }
             object pass = Operation.ExecuteScalar("Select * from ClientUserMaster where MobileNo = '" + txtmobile.Text + "'", Operation.Conn);
-            if ((lblid.Text.ToString() != (pass!=null ? pass.ToString() : "")) && (pass!=null))
+            if ((lblid.Text.ToString() != (pass != null ? pass.ToString() : "")) && (pass != null))
             {
                 MessageBox.Show("Mobile Number '" + txtmobile.Text + "' Already Registered.Please Enter Another One.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txtmobile.Focus();
@@ -165,21 +155,14 @@ namespace ExpertMobileOrderSystem
                 return false;
             }
 
-            if (dtpdate.Value < DateTime.Today || dtpdate.Value > Operation.objComp.AccountExpiredOn)
+            if (dtpdate.Value < DateTime.Today || dtpdate.Value > Operation.currClient.AccountExpiredOn)
             {
-                MessageBox.Show("Expiry date should be Greater Than Today and Less than :" + Operation.objComp.AccountExpiredOn.ToShortDateString(), Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                dtpdate.Value = Operation.objComp.AccountExpiredOn;
+                MessageBox.Show("Expiry date should be Greater Than Today and Less than :" + Operation.currClient.AccountExpiredOn.ToShortDateString(), Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                dtpdate.Value = Operation.currClient.AccountExpiredOn;
                 dtpdate.Focus();
                 return false;
 
             }
-            //if (!Regex.IsMatch(txtemail.Text, "\\b[A-Z0-9._%-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}\\b", RegexOptions.IgnoreCase) && txtemail.Text != "")
-            //{
-            //    MessageBox.Show("Please Enter Valid Email Address.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
-            //    txtemail.Focus();
-            //    return false;
-            //}
-
             return true;
         }
         private void btnAdd_Click(object sender, EventArgs e)
@@ -190,7 +173,7 @@ namespace ExpertMobileOrderSystem
             txtFirstname.Text = "";
             txtLastname.Text = "";
             txtmobile.Text = "";
-            dtpdate.Value = Operation.objComp.AccountExpiredOn;
+            dtpdate.Value = Operation.currClient.AccountExpiredOn;
             txtmobile.Text = "";
             btnDelete.Enabled = false;
         }
@@ -198,9 +181,9 @@ namespace ExpertMobileOrderSystem
         private bool IncreaseCreatedUserCount()
         {
             ArrayList IncreaseQ = new ArrayList();
-            Operation.objComp.TotalCreatedUser += 1;
+            Operation.currClient.TotalCreatedUser += 1;
 
-            IncreaseQ.Add("update [Order.ClientMaster] set TotalCreatedUser = " + Operation.objComp.TotalCreatedUser + " where ClientID = " + Operation.objComp.ClientId + "");
+            IncreaseQ.Add("update [Order.ClientMaster] set TotalCreatedUser = " + Operation.currClient.TotalCreatedUser + " where ClientID = " + Operation.currClient.Id + "");
             if (!Operation.ExecuteTransaction(IncreaseQ, Operation.Conn))
                 return false;
             else
@@ -210,9 +193,9 @@ namespace ExpertMobileOrderSystem
         {
 
             ArrayList DecreaseQ = new ArrayList();
-            Operation.objComp.TotalCreatedUser -= 1;
+            Operation.currClient.TotalCreatedUser -= 1;
 
-            DecreaseQ.Add("update [Order.ClientMaster] set TotalCreatedUser = " + Operation.objComp.TotalCreatedUser + " where ClientID = " + Operation.objComp.ClientId + "");
+            DecreaseQ.Add("update [Order.ClientMaster] set TotalCreatedUser = " + Operation.currClient.TotalCreatedUser + " where ClientID = " + Operation.currClient.Id + "");
             if (!Operation.ExecuteTransaction(DecreaseQ, Operation.Conn))
                 return false;
             else
@@ -220,30 +203,21 @@ namespace ExpertMobileOrderSystem
         }
         private void btnSave_Click(object sender, EventArgs e)
         {
-
             if (!Validate_form())
                 return;
-
             btnSave.Enabled = false;
-
             try
             {
                 ArrayList Queries = new ArrayList();
                 if (lblid.Text == "0")
                 {
-                    Queries.Add("Insert into [Order.ClientUserMaster] ( Clientid ,Password,MobileNo,FirstName,LastName,AccountExpiredOn,CreatedDate ) " +
-                        "values(" + Operation.Clientid + ",'" + Operation.Encryptdata(txtPassword.Text) + "','" + txtmobile.Text + "','" + txtFirstname.Text + "','" + txtLastname.Text + "','" + dtpdate.Value.ToString("yyyy-MM-dd") + "','" + DateTime.Today.ToString("yyyy-MM-dd") + "')");
-
-                    //Queries.Add("Insert into ClientUserMaster ( Clientid ,Password,MobileNo,FirstName,LastName,AccountExpiredOn,CreatedDate ) " +
-                    //    "values(" + Operation.Clientid + ",'" + CryptorEngine.Encrypt(txtPassword.Text,true) + "','" + txtmobile.Text + "','" + txtFirstname.Text + "','" + txtLastname.Text + "','" + dtpdate.Value.ToString("yyyy-MM-dd") + "','" + DateTime.Today.ToString("yyyy-MM-dd") + "')");
+                    Queries.Add("Insert into [Order.ClientUserMaster] ( Clientid ,Password,MobileNo,FirstName,LastName,AccountExpiredOn,CreatedDate,UserTypeId,UserName ) " +
+                        "values(" + Operation.currClient.Id + ",'" + Operation.Encryptdata(txtPassword.Text) + "','" + txtmobile.Text + "','" + txtFirstname.Text + "','" + txtLastname.Text + "','" + dtpdate.Value.ToString("yyyy-MM-dd") + "','" + DateTime.Today.ToString("yyyy-MM-dd") + "'," + UserTypes.DISTRIBUTOR + ",'" + txtUserName.Text + "')");
                 }
                 else
                 {
                     Queries.Add("update [Order.ClientUserMaster] set Password='" + Operation.Encryptdata(txtPassword.Text) + "',MobileNo= '" + txtmobile.Text + "',FirstName='" + txtFirstname.Text.Trim() + "',LastName='" + txtLastname.Text.Trim() + "'" +
-                                ",AccountExpiredOn='" + dtpdate.Value.ToString("yyyy-MM-dd") + "' where ClientUserID = " + lblid.Text + " ");
-
-                    //Queries.Add("update ClientUserMaster set Password='" + CryptorEngine.Encrypt(txtPassword.Text,true) + "',MobileNo= '" + txtmobile.Text + "',FirstName='" + txtFirstname.Text.Trim() + "',LastName='" + txtLastname.Text.Trim() + "'" +
-                    //            ",AccountExpiredOn='" + dtpdate.Value.ToString("yyyy-MM-dd") + "' where ClientUserID = " + lblid.Text + " ");
+                                ",AccountExpiredOn='" + dtpdate.Value.ToString("yyyy-MM-dd") + "',UserTypeId=" + UserTypes.DISTRIBUTOR + ",UserName='" + txtUserName.Text + "' where ClientID = " + lblid.Text + " ");
                 }
                 if (Operation.ExecuteTransaction(Queries, Operation.Conn))
                 {
@@ -276,9 +250,7 @@ namespace ExpertMobileOrderSystem
         private void fillgrid()
         {
             frmSearch view = new frmSearch();
-            Operation.gViewQuery = "select ClientUserid,CreatedDate,FirstName, LastName, MobileNo, AccountExpiredOn from [Order.ClientUserMaster] where ClientId = " + Operation.Clientid + "";
-
-            ////            view.dgvSearch.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            Operation.gViewQuery = "select Clientid,CreatedDate,FirstName, LastName, MobileNo, AccountExpiredOn from [Order.ClientUserMaster] where ClientId = " + Operation.currClient.Id + "";
             Operation.Bindgrid(Operation.gViewQuery, view.dgvSearch);
             view.dgvSearch.Columns[0].Visible = false;
             view.OrderByColoumn = "CreatedDate";
@@ -287,15 +259,13 @@ namespace ExpertMobileOrderSystem
             view.dgvSearch.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
             if (Operation.ViewID != null && Operation.ViewID != string.Empty)
             {
-                //if (!Operation.CheckLock("Partymaster,link", false))
-                //    return;
                 filldata();
                 Operation.ViewID = "";
             }
         }
         public void filldata()
         {
-            filldata(Operation.GetDataTable("Select * from [Order.ClientUserMaster] where ClientUserId=" + Operation.ViewID.ToString(), Operation.Conn));
+            filldata(Operation.GetDataTable("Select * from [Order.ClientUserMaster] where ClientId=" + Operation.ViewID.ToString(), Operation.Conn));
         }
         private void filldata(DataTable dt)
         {
@@ -303,13 +273,13 @@ namespace ExpertMobileOrderSystem
             {
                 if (dt.Rows.Count > 0)
                 {
-                    lblid.Text = dt.Rows[0]["ClientUserID"].ToString();
+                    lblid.Text = dt.Rows[0]["ClientID"].ToString();
                     txtmobile.Text = dt.Rows[0]["MobileNo"].ToString();
                     txtFirstname.Text = dt.Rows[0]["FirstName"].ToString();
+                    txtUserName.Text = dt.Rows[0]["UserName"].ToString();
                     txtLastname.Text = dt.Rows[0]["LastName"].ToString();
                     dtpdate.Value = Convert.ToDateTime(dt.Rows[0]["AccountExpiredOn"]);
                     txtPassword.Text = Operation.Decryptdata(dt.Rows[0]["Password"].ToString());
-                    //txtPassword.Text = CryptorEngine.Decrypt(dt.Rows[0]["Password"].ToString(),true);
                     txtrepass.Text = txtPassword.Text;
                     btnDelete.Enabled = true;
                 }
@@ -325,29 +295,16 @@ namespace ExpertMobileOrderSystem
             {
                 MessageBox.Show("Please Select Record first.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 return;
-                //ElseIf MsgBox("Are you sure you want to Delete the record?", MsgBoxStyle.YesNo, "Shah Software") = MsgBoxResult.Yes Then
             }
-            //else if (!(Operation.RightsStr.Contains(Convert.ToInt32(Operation.Rights.DELETE).ToString())))
-            //{
-            //    MessageBox.Show("You don't have rights, Please contact your Administrator.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //    return;
-            //}
-            else if (!Operation.CheckReference(Convert.ToInt32(lblid.Text), "[Order.ClientUserCompanyMaster],ClientUserID"))
+            else if (!Operation.CheckReference(Convert.ToInt32(lblid.Text), "[Order.ClientUserCompanyMaster],ClientID"))
                 return;
             else if (MessageBox.Show("Are you sure you want to delete this record?", Operation.MsgTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 string query = null;
-                query = "Delete from [Order.ClientUserMaster] where ClientUserID= " + lblid.Text.Trim();
+                query = "Delete from [Order.ClientUserMaster] where ClientID= " + lblid.Text.Trim();
                 Operation.ExecuteNonQuery(query, Operation.Conn);
-                {
-                    DecreaseCreatedUserCount();
-                    CheckMaximumUser();
-                    //ArrayList Queries =  new ArrayList();
-                    //Queries.Add(DecreaseCreatedUserCount());
-                    //Operation.ExecuteTransaction(Queries, Operation.Conn);
-
-                }
-                //  Operation.UserLog(query, this.Name, Operation.Rights.DELETE.ToString());
+                DecreaseCreatedUserCount();
+                CheckMaximumUser();
                 MessageBox.Show("Record Deleted Succeessfully.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 lblid.Text = "0";
                 btnAdd_Click(sender, e);
@@ -355,45 +312,18 @@ namespace ExpertMobileOrderSystem
             }
         }
 
-        private void frmPartymaster_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            // Operation.ExecuteNonQuery("Update PartyMaster set inedit=False where link=" + lblid.Text, Operation.Conn);
-
-
-        }
-
-        private void cmbAgentName_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.F3)
-            {
-                frmUserMaster p1 = new frmUserMaster();
-                //  frmMDI.partyMaster = 3;
-                p1.ShowDialog();
-                //  Operation.BindComboBox(cmbAgentName, "SELECT max(PartyMaster.link) as link, iif(isnull(PartyMaster.partyName),'-- Select Agent Name--',PartyMaster.partyName) as partyName FROM PartyMaster   where (((PartyMaster.partyType)=" + Convert.ToInt32(Operation.PartyType.Agent) + ")) group by partyName order by partyName", "-- Select Agent Name--", "partyName", "link");
-
-            }
-        }
-
-
-
-
         private void txtNoUser_Validated(object sender, EventArgs e)
         {
             TextBox txt = sender as TextBox;
             if (txt.Text == "")
             {
                 txt.Text = "0";
-
-
             }
         }
-
-
         private void chkviewPass_CheckedChanged(object sender, EventArgs e)
         {
             if (chkviewPass.Checked == true)
             {
-
                 txtPassword.PasswordChar = '\0';
                 txtrepass.PasswordChar = '\0';
 
@@ -402,8 +332,6 @@ namespace ExpertMobileOrderSystem
             {
                 txtPassword.PasswordChar = '*';
                 txtrepass.PasswordChar = '*';
-
-
             }
         }
     }

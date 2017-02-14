@@ -29,7 +29,7 @@ namespace ExpertMobileOrderSystem
         }
         private void Bind_UserGrid()
         {
-            string Q = "select ClientUserid, FirstName, LastName, MobileNo, CreatedDate, AccountExpiredOn  from [Order.ClientUserMaster] where Clientid = " + Operation.objComp.ClientId + " order by FirstName, LastName, CreatedDate, AccountExpiredOn";
+            string Q = "select ClientUserid, FirstName, LastName, MobileNo, CreatedDate, AccountExpiredOn  from [Order.ClientUserMaster] where Clientid = " + Operation.currClient.Id + " order by FirstName, LastName, CreatedDate, AccountExpiredOn";
             Operation.Bindgrid(Q, dgvUser);
             dgvUser.Columns[0].Visible = false;
             DataGridViewCheckBoxColumn chkSelect = new DataGridViewCheckBoxColumn();
@@ -49,7 +49,7 @@ namespace ExpertMobileOrderSystem
         }
         private void Bind_CompanyGrid()
         {
-            string Q = "select ClientCompanyId, CompanyName, CompanyFromDate, CompanyToDate,CompanyPhone, CompanyMobileNo  from [Order.ClientCompanyMaster] where Clientid = " + Operation.objComp.ClientId + " order by CompanyName, CompanyFromDate, CompanyToDate ";
+            string Q = "select ClientCompanyId, CompanyName, CompanyFromDate, CompanyToDate,CompanyPhone, CompanyMobileNo  from [Order.ClientCompanyMaster] where Clientid = " + Operation.currClient.Id + " order by CompanyName, CompanyFromDate, CompanyToDate ";
             Operation.Bindgrid(Q, dgvCompany);
             dgvCompany.Columns[0].Visible = false;
             DataGridViewCheckBoxColumn chkSelect = new DataGridViewCheckBoxColumn();
@@ -74,7 +74,7 @@ namespace ExpertMobileOrderSystem
                 "CompanyPhone ,FirstName, LastName, MobileNo FROM [Order.ClientUserCompanyMaster] " +
                 "left join [Order.ClientUserMaster] on [Order.ClientUserCompanyMaster].ClientUserid = [Order.ClientUserMaster].ClientUserid " +
                 "left join [Order.ClientCompanyMaster] on [Order.ClientUserCompanyMaster].ClientCompanyid = [Order.ClientCompanyMaster].ClientCompanyId" +
-                " where [Order.ClientUserCompanyMaster].Clientid = " + Operation.objComp.ClientId;
+                " where [Order.ClientUserCompanyMaster].Clientid = " + Operation.currClient.Id;
             DataTable dt = Operation.GetDataTable(Q, Operation.Conn);
             if (dt.Rows.Count > 0)
             {
@@ -153,8 +153,8 @@ namespace ExpertMobileOrderSystem
                 {
                     if (dgvDetail.Rows[i].Cells["Link"].Value == null)
                     {
-                        Query.Add("insert into [Order.ClientUserCompanyMaster] (Clientid,ClientUserID,ClientCompanyID ) values(" + 
-                            Operation.objComp.ClientId + "," + dgvDetail.Rows[i].Cells["Userid"].Value + "," + dgvDetail.Rows[i].Cells["Companyid"].Value + ")");
+                        Query.Add("insert into [Order.ClientUserCompanyMaster] (Clientid,ClientUserID,ClientCompanyID ) values(" +
+                            Operation.currClient.Id + "," + dgvDetail.Rows[i].Cells["Userid"].Value + "," + dgvDetail.Rows[i].Cells["Companyid"].Value + ")");
                     }
                 }
                 if (Query.Count != 0)

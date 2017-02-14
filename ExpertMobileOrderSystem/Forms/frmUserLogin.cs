@@ -81,9 +81,7 @@ namespace ExpertMobileOrderSystem
                 if (dt.Rows.Count > 0)
                 {
                     Operation.LogFile = Application.StartupPath + "\\LogFile.txt";
-                    Operation.Clientid = dt.Rows[0]["Clientid"].ToString();
-                    Operation.ClientUserName = dt.Rows[0]["Username"].ToString();
-                    SetCompanyInfo(dt);
+                    Operation.currClient = new Client(dt.Rows[0]);
                     Operation.CurrentDate = DateTime.Now;
                     flag = true;
                     if (Operation.CloseApp)
@@ -150,30 +148,28 @@ namespace ExpertMobileOrderSystem
                 this.Close();
         }
 
-        public void SetCompanyInfo(DataTable dt)
-        {
+        //public void SetCompanyInfo(DataTable dt)
+        //{
+        //    Operation.objComp.AccountExpiredOn = Convert.ToDateTime(dt.Rows[0]["AccountExpiredOn"]);
+        //    Operation.objComp.ClientId = Convert.ToInt32(dt.Rows[0]["ClientId"]);
+        //    Operation.objComp.ClientCreatedDate = Convert.ToDateTime(dt.Rows[0]["ClientCreatedDate"]);
+        //    Operation.objComp.CompanyAddress = dt.Rows[0]["CompanyAddress"].ToString();
+        //    Operation.objComp.CompanyName = dt.Rows[0]["CompanyName"].ToString();
+        //    Operation.objComp.CreatedAdminID = Convert.ToInt32(dt.Rows[0]["CreatedAdminID"]);
+        //    Operation.objComp.Email = dt.Rows[0]["Email"].ToString();
+        //    Operation.objComp.FirstName = dt.Rows[0]["FirstName"].ToString();
+        //    Operation.objComp.LastName = dt.Rows[0]["LastName"].ToString();
+        //    Operation.objComp.MobileNo = dt.Rows[0]["MobileNo"].ToString();
+        //    Operation.objComp.NoOfAccessUser = Convert.ToInt32(dt.Rows[0]["NoOfAccessUsers"]);
+        //    Operation.objComp.NoOfCompanyPerUser = Convert.ToInt32(dt.Rows[0]["NoOfCompanyPerUser"]);
+        //    Operation.objComp.NoOfDays = Convert.ToInt32(dt.Rows[0]["NoOfDays"]);
+        //    Operation.objComp.Password = dt.Rows[0]["Password"].ToString();
+        //    Operation.objComp.UserName = dt.Rows[0]["UserName"].ToString();
+        //    Operation.objComp.TotalCreatedUser = Convert.ToInt32(dt.Rows[0]["TotalCreatedUser"]);
+        //    Operation.objComp.TotalCreatedCompany = Convert.ToInt32(dt.Rows[0]["TotalCreatedCompany"]);
+        //    Operation.objComp.QueryRights = Convert.ToBoolean(dt.Rows[0]["QueryRights"]);
 
-
-            Operation.objComp.AccountExpiredOn = Convert.ToDateTime(dt.Rows[0]["AccountExpiredOn"]);
-            Operation.objComp.ClientId = Convert.ToInt32(dt.Rows[0]["ClientId"]);
-            Operation.objComp.ClientCreatedDate = Convert.ToDateTime(dt.Rows[0]["ClientCreatedDate"]);
-            Operation.objComp.CompanyAddress = dt.Rows[0]["CompanyAddress"].ToString();
-            Operation.objComp.CompanyName = dt.Rows[0]["CompanyName"].ToString();
-            Operation.objComp.CreatedAdminID = Convert.ToInt32(dt.Rows[0]["CreatedAdminID"]);
-            Operation.objComp.Email = dt.Rows[0]["Email"].ToString();
-            Operation.objComp.FirstName = dt.Rows[0]["FirstName"].ToString();
-            Operation.objComp.LastName = dt.Rows[0]["LastName"].ToString();
-            Operation.objComp.MobileNo = dt.Rows[0]["MobileNo"].ToString();
-            Operation.objComp.NoOfAccessUser = Convert.ToInt32(dt.Rows[0]["NoOfAccessUsers"]);
-            Operation.objComp.NoOfCompanyPerUser = Convert.ToInt32(dt.Rows[0]["NoOfCompanyPerUser"]);
-            Operation.objComp.NoOfDays = Convert.ToInt32(dt.Rows[0]["NoOfDays"]);
-            Operation.objComp.Password = dt.Rows[0]["Password"].ToString();
-            Operation.objComp.UserName = dt.Rows[0]["UserName"].ToString();
-            Operation.objComp.TotalCreatedUser = Convert.ToInt32(dt.Rows[0]["TotalCreatedUser"]);
-            Operation.objComp.TotalCreatedCompany = Convert.ToInt32(dt.Rows[0]["TotalCreatedCompany"]);
-            Operation.objComp.QueryRights = Convert.ToBoolean(dt.Rows[0]["QueryRights"]);
-
-        }
+        //}
         private void draw(object sender, PaintEventArgs e)
         {
 

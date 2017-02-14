@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.Drawing.Imaging;
 using System.Collections;
-
+using System.Linq;
 using System.Drawing.Printing;
 using System.Threading;
 using System.IO;
@@ -17,23 +17,20 @@ using System.Drawing.Drawing2D;
 
 namespace ExpertMobileOrderSystem
 {
-    public partial class frmCompanyMaster : Form
+    public partial class frmWithoutCompanyMaster : Form
     {
         public string filename = Guid.NewGuid().ToString();
-
-        public frmCompanyMaster()
+        private bool IsUpdate = false;
+        public frmWithoutCompanyMaster()
         {
-           
             InitializeComponent();
-            Load += frmPartymaster_Load;
             try
             { this.Icon = new System.Drawing.Icon(Application.StartupPath + "\\MOBILE.ico"); }
             catch { }
-           
+
         }
         private void draw(object sender, PaintEventArgs e)
         {
-
             try
             {
                 using (LinearGradientBrush brush = new LinearGradientBrush(ClientRectangle, Operation.strFirstColor, Operation.strSecondColor, LinearGradientMode.Vertical))
@@ -67,17 +64,6 @@ namespace ExpertMobileOrderSystem
                 e.Handled = true;
         }
 
-
-        private void frmPartymaster_Load(object sender, EventArgs e)
-        {
-            Application.DoEvents();
-            Paint += draw;
-            Invalidate();
-            this.Location = new Point(this.Location.X + 15, this.Location.Y);
-            btnAdd_Click(sender, e);
-            this.Location = new Point(this.Location.X + 15, this.Location.Y);
-        }
-
         private void frmPartymaster_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -97,28 +83,27 @@ namespace ExpertMobileOrderSystem
         }
         private bool Validate_form()
         {
-
             if (!File.Exists(txtpath.Text + "\\Company.dbf"))
             {
                 MessageBox.Show("Company.dbf file was not found in Path :" + txtpath.Text + ". \n please Select Path First");
                 txtpath.Focus();
                 return false;
             }
-            if (txtcompCode.Text == "0")
+            if (dgvBCompany.SelectedCells.Count == 0 || (dgvBCompany.SelectedCells[0].ColumnIndex == 0 && dgvBCompany.SelectedCells[0].RowIndex == 0))
             {
-                MessageBox.Show("Please Select Company First..", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                tabControl1.SelectedIndex = 0;
+                MessageBox.Show("Please select any billable company first.");
                 return false;
             }
-            if (lblid.Text == "0")
+            if (dgvWCompany.SelectedCells.Count == 0 || (dgvWCompany.SelectedCells[0].ColumnIndex == 0 && dgvWCompany.SelectedCells[0].RowIndex == 0))
             {
-                if (!CheckMaximumCompany())
-                {
-                    return false;
-
-                }
+                MessageBox.Show("Please select any without company first.");
+                return false;
             }
-
+            if (dgvBCompany.SelectedCells[0].RowIndex == dgvWCompany.SelectedCells[0].RowIndex)
+            {
+                MessageBox.Show("Billable company can not be without company, Please select any other without company.");
+                return false;
+            }
             return true;
         }
         private bool CheckMaximumCompany()
@@ -134,7 +119,7 @@ namespace ExpertMobileOrderSystem
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            dgvCompany.DataSource = null;
+            dgvBCompany.DataSource = null;
             lblid.Text = "0";
             txtcompCode.Text = "0";
             txtcompname.Text = "";
@@ -198,56 +183,69 @@ namespace ExpertMobileOrderSystem
         }
         private void btnSave_Click(object sender, EventArgs e)
         {
+            if (Validate_form())
+            {
+                string pathmysql = txtpath.Text.Replace("\\", "\\\\");
+                btnSave.Enabled = false;
+                try
+                {
+                    ArrayList Queries = new ArrayList();
+                    if (!IsUpdate)
+                    {
+                        if (!isAlreadyExistCompany())
+                            return;
+                        dgvCompany_CellContentDoubleClick(null, null);
+                        Queries.Add("insert into [Order.ClientCompanyMaster] ( ClientID,CompanyName,CompanyFromDate,CompanyToDate,CompanyAdd1,CompanyAdd2,CompanyAdd3,CompanyAdd4 " +
+                            ",CompanyPhone, CompanyMobileNo, CompanyEmail, CompanyWebsite, CompanyVAT, CompanyCST, CompanyITNO, CompanyLICNO, CompanyTANNO, CompanyAuthorised, CompanyRemarks, ExpertPath, CompanyCode,IsWithout) " +
+                           " values(" + Operation.currClient.Id + ",'" + txtcompname.Text + "','" + dtpfromdate.Value.ToString("yyyy-MM-dd") + "','" + dtptodate.Value.ToString("yyyy-MM-dd") + "'" +
+                           ",'" + txtadd1.Text + "','" + txtadd2.Text + "','" + txtadd3.Text + "','" + txtadd4.Text + "','" + txtcompphone.Text + "','" + txtcompmobile.Text + "'" +
+                            ",'" + txtcompemail.Text + "','" + txtwebsite.Text + "','" + txtcompVAT.Text + "','" + txtcompCST.Text + "','" + txtcompITNO.Text + "','" + txtcompLICNO.Text + "','" + txtTANNO.Text + "','" + txtCompAutho.Text + "','" + txtremark.Text + "','" + pathmysql + "'," + txtcompCode.Text + ",0)");
+                        dgvWCompany_CellContentDoubleClick(null, null);
+                        Queries.Add("insert into [Order.ClientCompanyMaster] ( ClientID,CompanyName,CompanyFromDate,CompanyToDate,CompanyAdd1,CompanyAdd2,CompanyAdd3,CompanyAdd4 " +
+                                                    ",CompanyPhone, CompanyMobileNo, CompanyEmail, CompanyWebsite, CompanyVAT, CompanyCST, CompanyITNO, CompanyLICNO, CompanyTANNO, CompanyAuthorised, CompanyRemarks, ExpertPath, CompanyCode,IsWithout) " +
+                                                   " values(" + Operation.currClient.Id + ",'" + txtcompname.Text + "','" + dtpfromdate.Value.ToString("yyyy-MM-dd") + "','" + dtptodate.Value.ToString("yyyy-MM-dd") + "'" +
+                                                   ",'" + txtadd1.Text + "','" + txtadd2.Text + "','" + txtadd3.Text + "','" + txtadd4.Text + "','" + txtcompphone.Text + "','" + txtcompmobile.Text + "'" +
+                                                    ",'" + txtcompemail.Text + "','" + txtwebsite.Text + "','" + txtcompVAT.Text + "','" + txtcompCST.Text + "','" + txtcompITNO.Text + "','" + txtcompLICNO.Text + "','" + txtTANNO.Text + "','" + txtCompAutho.Text + "','" + txtremark.Text + "','" + pathmysql + "'," + txtcompCode.Text + ",1)");
+                    }
+                    else
+                    {
+                        if (!isAlreadyExistCompany())
+                            return;
+                        dgvCompany_CellContentDoubleClick(null, null);
+                        Queries.Add("update  [Order.ClientCompanyMaster] set  CompanyName='" + txtcompname.Text + "',CompanyFromDate='" + dtpfromdate.Value.ToString("yyyy-MM-dd") + "',CompanyToDate='" + dtptodate.Value.ToString("yyyy-MM-dd") + "'" +
+                        ",CompanyAdd1='" + txtadd1.Text + "',CompanyAdd2='" + txtadd2.Text + "',CompanyAdd3='" + txtadd3.Text + "',CompanyAdd4='" + txtadd4.Text + "' " +
+                            ",CompanyPhone='" + txtcompphone.Text + "', CompanyMobileNo='" + txtcompmobile.Text + "', CompanyEmail='" + txtcompemail.Text + "', CompanyWebsite='" + txtwebsite.Text + "', CompanyVAT='" + txtcompVAT.Text + "', CompanyCST='" + txtcompCST.Text + "', CompanyITNO='" + txtcompITNO.Text + "', CompanyLICNO='" + txtcompLICNO.Text + "'" +
+                            ", CompanyTANNO='" + txtTANNO.Text + "', CompanyAuthorised='" + txtCompAutho.Text + "', CompanyRemarks='" + txtremark.Text + "', ExpertPath='" + pathmysql + "',CompanyCode='" + txtcompCode.Text + "' Where ClientCompanyID = " + lblid.Text + "");
+                        dgvWCompany_CellContentDoubleClick(null, null);
+                        Queries.Add("update  [Order.ClientCompanyMaster] set  CompanyName='" + txtcompname.Text + "',CompanyFromDate='" + dtpfromdate.Value.ToString("yyyy-MM-dd") + "',CompanyToDate='" + dtptodate.Value.ToString("yyyy-MM-dd") + "'" +
+                        ",CompanyAdd1='" + txtadd1.Text + "',CompanyAdd2='" + txtadd2.Text + "',CompanyAdd3='" + txtadd3.Text + "',CompanyAdd4='" + txtadd4.Text + "' " +
+                            ",CompanyPhone='" + txtcompphone.Text + "', CompanyMobileNo='" + txtcompmobile.Text + "', CompanyEmail='" + txtcompemail.Text + "', CompanyWebsite='" + txtwebsite.Text + "', CompanyVAT='" + txtcompVAT.Text + "', CompanyCST='" + txtcompCST.Text + "', CompanyITNO='" + txtcompITNO.Text + "', CompanyLICNO='" + txtcompLICNO.Text + "'" +
+                            ", CompanyTANNO='" + txtTANNO.Text + "', CompanyAuthorised='" + txtCompAutho.Text + "', CompanyRemarks='" + txtremark.Text + "', ExpertPath='" + pathmysql + "',CompanyCode='" + txtcompCode.Text + "' Where ClientCompanyID = " + lblid.Text + "");
 
-            if (!Validate_form())
-                return;
-            string pathmysql = txtpath.Text.Replace("\\","\\\\");
-            btnSave.Enabled = false;
-            try
-            {
-                ArrayList Queries = new ArrayList();
-                if (lblid.Text == "0")
-                {
-                    if (!isAlreadyExistCompany())
-                        return;
-                    Queries.Add("insert into [Order.ClientCompanyMaster] ( ClientID,CompanyName,CompanyFromDate,CompanyToDate,CompanyAdd1,CompanyAdd2,CompanyAdd3,CompanyAdd4 " +
-                        ",CompanyPhone, CompanyMobileNo, CompanyEmail, CompanyWebsite, CompanyVAT, CompanyCST, CompanyITNO, CompanyLICNO, CompanyTANNO, CompanyAuthorised, CompanyRemarks, ExpertPath, CompanyCode) " +
-                       " values(" + Operation.currClient.Id + ",'" + txtcompname.Text + "','" + dtpfromdate.Value.ToString("yyyy-MM-dd") + "','" + dtptodate.Value.ToString("yyyy-MM-dd") + "'" +
-                       ",'" + txtadd1.Text + "','" + txtadd2.Text + "','" + txtadd3.Text + "','" + txtadd4.Text + "','" + txtcompphone.Text + "','" + txtcompmobile.Text + "'" +
-                        ",'" + txtcompemail.Text + "','" + txtwebsite.Text + "','" + txtcompVAT.Text + "','" + txtcompCST.Text + "','" + txtcompITNO.Text + "','" + txtcompLICNO.Text + "','" + txtTANNO.Text + "','" + txtCompAutho.Text + "','" + txtremark.Text + "','" + pathmysql + "'," + txtcompCode.Text + ")");
+                    }
+                    if (Operation.ExecuteTransaction(Queries, Operation.Conn))
+                    {
+                        MessageBox.Show("Record Saved Succeessfully.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        FetchCompanies();
+                        //if (lblid.Text == "0")
+                        //    IncreaseCreatedCompanyCount();
+                        //btnAdd_Click(sender, e);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error while Saving, Please Try after Some Time.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    if (!isAlreadyExistCompany())
-                        return;
-                    string Update = "update  [Order.ClientCompanyMaster] set  CompanyName='" + txtcompname.Text + "',CompanyFromDate='" + dtpfromdate.Value.ToString("yyyy-MM-dd") + "',CompanyToDate='" + dtptodate.Value.ToString("yyyy-MM-dd") + "'" +
-                    ",CompanyAdd1='" + txtadd1.Text + "',CompanyAdd2='" + txtadd2.Text + "',CompanyAdd3='" + txtadd3.Text + "',CompanyAdd4='" + txtadd4.Text + "' " +
-                        ",CompanyPhone='" + txtcompphone.Text + "', CompanyMobileNo='" + txtcompmobile.Text + "', CompanyEmail='" + txtcompemail.Text + "', CompanyWebsite='" + txtwebsite.Text + "', CompanyVAT='" + txtcompVAT.Text + "', CompanyCST='" + txtcompCST.Text + "', CompanyITNO='" + txtcompITNO.Text + "', CompanyLICNO='" + txtcompLICNO.Text + "'" +
-                        ", CompanyTANNO='" + txtTANNO.Text + "', CompanyAuthorised='" + txtCompAutho.Text + "', CompanyRemarks='" + txtremark.Text + "', ExpertPath='" + pathmysql + "',CompanyCode='" + txtcompCode.Text + "' Where ClientCompanyID = " + lblid.Text + "";
-                    Queries.Add(Update);
+                    MessageBox.Show("Error Occured, Please Try after Some Time.\n" + ex.Message, Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                if (Operation.ExecuteTransaction(Queries, Operation.Conn))
+                finally
                 {
-                    MessageBox.Show("Record Saved Succeessfully.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    if (lblid.Text == "0")
-                        IncreaseCreatedCompanyCount();
-                    btnAdd_Click(sender, e);
+                    this.Cursor = Cursors.Default;
+                    btnSave.Enabled = true;
                 }
-                else
-                {
-                    MessageBox.Show("Error while Saving, Please Try after Some Time.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                   
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error Occured, Please Try after Some Time.\n" + ex.Message, Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                btnSave.Enabled = true;
-            }
-            finally
-            {
-                this.Cursor = Cursors.Default;
-                btnSave.Enabled = true;
             }
         }
         private bool IncreaseCreatedCompanyCount()
@@ -370,35 +368,15 @@ namespace ExpertMobileOrderSystem
         {
             if (e.KeyCode == Keys.F3)
             {
-                frmCompanyMaster p1 = new frmCompanyMaster();
+                frmWithoutCompanyMaster p1 = new frmWithoutCompanyMaster();
                 p1.ShowDialog();
             }
-        }
-
-
-
-
-        private void txtNoUser_Validated(object sender, EventArgs e)
-        {
-            TextBox txt = sender as TextBox;
-            if (txt.Text == "")
-            {
-                txt.Text = "0";
-
-
-            }
-        }
-
-
-        private void chkviewPass_CheckedChanged(object sender, EventArgs e)
-        {
-         
         }
 
         private void btnBrowseFolder_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-dialog.SelectedPath = (txtpath.Text == "" ? "C:\\" : txtpath.Text) ;
+            dialog.SelectedPath = (txtpath.Text == "" ? "C:\\" : txtpath.Text);
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 string ExpertFolder = dialog.SelectedPath;
@@ -415,7 +393,6 @@ dialog.SelectedPath = (txtpath.Text == "" ? "C:\\" : txtpath.Text) ;
                     {
                         CreateExpertComapanyConnection(txtpath.Text);
                         FillCompanyGrid();
-
                     }
                 }
                 else
@@ -431,21 +408,53 @@ dialog.SelectedPath = (txtpath.Text == "" ? "C:\\" : txtpath.Text) ;
         }
         private void FillCompanyGrid()
         {
-
             string Q = "Select Code,Name As [Company Name],Format(DFR,'dd/MM/yyyy') as [From Date],Format(DTO,'dd/MM/yyyy') as [To Date] from COMPANY order by Name,DFR,DTO";
-
-            LocalConnection.Bindgrid(Q, dgvCompany);
-            dgvCompany.Columns[0].Visible = false;
-
-            dgvCompany.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-
-
+            LocalConnection.Bindgrid(Q, dgvBCompany);
+            dgvWCompany.DataSource = ((DataTable)dgvBCompany.DataSource).Copy();
+            dgvWCompany.Columns[0].Visible = false;
+            dgvBCompany.Columns[0].Visible = false;
         }
 
         private void dgvCompany_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            int i = dgvCompany.CurrentRow.Index;
-            DataTable dt = LocalConnection.GetDataTable("select * from company where code = " + dgvCompany.Rows[i].Cells["CODE"].Value + "", LocalConnection.ExpertCompanyConn);
+            int i = 0;
+            if (dgvBCompany.CurrentRow != null)
+                i = dgvBCompany.CurrentRow.Index;
+            else
+                i = dgvBCompany.SelectedRows[0].Index;
+            DataTable dt = LocalConnection.GetDataTable("select * from company where code = " + dgvBCompany.Rows[i].Cells["CODE"].Value + "", LocalConnection.ExpertCompanyConn);
+            if (dt.Rows.Count > 0)
+            {
+                txtcompname.Text = dt.Rows[0]["NAME"].ToString();
+                dtpfromdate.Value = Convert.ToDateTime(dt.Rows[0]["DFR"]);
+                dtptodate.Value = Convert.ToDateTime(dt.Rows[0]["DTO"]);
+                txtadd1.Text = dt.Rows[0]["ADD1"].ToString();
+                txtadd2.Text = dt.Rows[0]["ADD2"].ToString();
+                txtadd3.Text = dt.Rows[0]["ADD3"].ToString();
+                txtcompmobile.Text = dt.Rows[0]["MOBILE"].ToString();
+                txtcompphone.Text = dt.Rows[0]["PHONE"].ToString();
+                txtcompemail.Text = dt.Rows[0]["EMAIL"].ToString();
+                txtwebsite.Text = dt.Rows[0]["WEBSITE"].ToString();
+                txtcompVAT.Text = dt.Rows[0]["VATNO"].ToString();
+                txtcompCST.Text = dt.Rows[0]["CSTNO"].ToString();
+                txtcompITNO.Text = dt.Rows[0]["ITNO"].ToString();
+                txtcompLICNO.Text = dt.Rows[0]["LICNO"].ToString();
+                txtTANNO.Text = dt.Rows[0]["TAN"].ToString();
+                txtCompAutho.Text = dt.Rows[0]["AUTH_SIGN"].ToString();
+                txtremark.Text = dt.Rows[0]["REMARKS"].ToString();
+                txtcompCode.Text = dt.Rows[0]["CODE"].ToString();
+            }
+            tabControl1.SelectedIndex = 1;
+        }
+
+        private void dgvWCompany_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int i = 0;
+            if (dgvWCompany.CurrentRow != null)
+                i = dgvWCompany.CurrentRow.Index;
+            else
+                i = dgvWCompany.SelectedRows[0].Index;
+            DataTable dt = LocalConnection.GetDataTable("select * from company where code = " + dgvWCompany.Rows[i].Cells["CODE"].Value + "", LocalConnection.ExpertCompanyConn);
             if (dt.Rows.Count > 0)
             {
                 txtcompname.Text = dt.Rows[0]["NAME"].ToString();
@@ -467,16 +476,49 @@ dialog.SelectedPath = (txtpath.Text == "" ? "C:\\" : txtpath.Text) ;
                 txtCompAutho.Text = dt.Rows[0]["AUTH_SIGN"].ToString();
                 txtremark.Text = dt.Rows[0]["REMARKS"].ToString();
                 txtcompCode.Text = dt.Rows[0]["CODE"].ToString();
-
-
-
             }
             tabControl1.SelectedIndex = 1;
         }
 
-        private void label15_Click(object sender, EventArgs e)
+        private void frmWithoutCompanyMaster_Load(object sender, EventArgs e)
         {
+            Application.DoEvents();
+            Paint += draw;
+            Invalidate();
+            FetchCompanies();
+        }
 
+        private void FetchCompanies()
+        {
+            var without = Operation.currClient.WithoutCompany;
+            if (without != null)
+            {
+                IsUpdate = true;
+                txtpath.Text = without["ExpertPath"].ToString();
+                lblWithoutId.Text = without["ClientCompanyId"].ToString();
+                CreateExpertComapanyConnection(txtpath.Text);
+                FillCompanyGrid();
+                var billables = Operation.currClient.BillableCompanies;
+                foreach (DataRow billable in billables)
+                {
+                    foreach (DataGridViewRow row in dgvBCompany.Rows)
+                    {
+                        if (row.Cells["Company Name"].Value.ToString().ToUpper() == billable["CompanyName"].ToString().ToUpper())
+                        {
+                            row.Selected = true;
+                            lblBillableId.Text = billable["ClientCompanyId"].ToString();
+                        }
+                    }
+                }
+
+                foreach (DataGridViewRow row in dgvWCompany.Rows)
+                {
+                    if (row.Cells["Company Name"].Value.ToString().ToUpper() == without["CompanyName"].ToString().ToUpper())
+                    {
+                        row.Selected = true;
+                    }
+                }
+            }
         }
     }
 }

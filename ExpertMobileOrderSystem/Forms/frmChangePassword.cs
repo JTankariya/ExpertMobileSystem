@@ -17,8 +17,8 @@ namespace ExpertMobileOrderSystem
         {
             InitializeComponent();
             Load += frmChagePassword_Load;
-            txtUserName.Text = Operation.ClientUserName;
-            lblUserId.Text = Operation.Clientid;
+            txtUserName.Text = Operation.currClient.UserName;
+            lblUserId.Text = Operation.currClient.Id.ToString();
             try
             { this.Icon = new System.Drawing.Icon(Application.StartupPath + "\\MOBILE.ico"); }
             catch { }
@@ -206,7 +206,7 @@ namespace ExpertMobileOrderSystem
                 txtConfirm.Focus();
                 return false;
             }
-            if (Operation.Encryptdata(txtOld.Text) != Operation.objComp.Password)
+            if (Operation.Encryptdata(txtOld.Text) != Operation.currClient.Password)
             {
                 MessageBox.Show("Old password doesn't match with system, Please enter correct old password.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 txtConfirm.Focus();

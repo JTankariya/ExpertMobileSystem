@@ -39,14 +39,12 @@ namespace ExpertMobileOrderSystem
         public static DataTable ReportDt = new DataTable();
         public static string ReportName = "";
         public static string ReportFTDateHead = "";
-        public static ClientInfo objComp = new ClientInfo();
+        public static Client currClient = new Client();
         public static SqlConnection Conn = null;
         public static OleDbConnection MenuConn = null;
         public static DateTime CurrentDate = DateTime.Today;
         public static string ServerName = "";
         public static bool CloseApp = false;
-        public static string Clientid = "0";
-        public static string ClientUserName = "";
         public static string CompanyId = "";
         public static bool IsSuperAdmin = false;
         public static string MultiViewId = "";
@@ -199,7 +197,7 @@ namespace ExpertMobileOrderSystem
             Query = Query.Replace("'", "''");
             //string dasd = Operation.UserId;
             string MainQ = "Insert into UserLog(UserId,CompanyId,FormName,OperationType,Query,EditDate," +
-                "ComputerName) values(" + Clientid.ToString() + "," + Operation.CompanyId + ",'" +
+                "ComputerName) values(" + currClient.Id.ToString() + "," + Operation.CompanyId + ",'" +
                 FormName.ToString() + "','" + OprType.ToString() + "','" + Query.ToString() + "',getdate(),'" +
                 System.Environment.MachineName.ToString() + "' )";
             ExecuteNonQuery(MainQ, Conn);
@@ -454,7 +452,7 @@ namespace ExpertMobileOrderSystem
                     }
                     else
                     {
-                        ExecuteNonQuery("Update " + TableName.Split(',')[0] + " set InEdit=1,EditMsg='" + ClientUserName.ToString() + " in " + Environment.MachineName.ToString() + "' where " + TableName.Split(',')[1] + " = " + ViewID.ToString(), Conn);
+                        ExecuteNonQuery("Update " + TableName.Split(',')[0] + " set InEdit=1,EditMsg='" + Operation.currClient.UserName.ToString() + " in " + Environment.MachineName.ToString() + "' where " + TableName.Split(',')[1] + " = " + ViewID.ToString(), Conn);
                         return true;
                     }
 

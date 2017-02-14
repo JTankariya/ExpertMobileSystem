@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Client.cs" />
     <Compile Include="Classes\ClientInfo.cs" />
     <Compile Include="Classes\HardwareInfo.cs" />
     <Compile Include="Classes\IniParser.cs" />
@@ -57,6 +58,19 @@
     <Compile Include="Classes\LocalConnection.cs" />
     <Compile Include="Classes\Operation.cs" />
     <Compile Include="enums\TableNames.cs" />
+    <Compile Include="enums\UserTypes.cs" />
+    <Compile Include="Forms\frmCustomerMaster.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmCustomerMaster.designer.cs">
+      <DependentUpon>frmCustomerMaster.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmWithoutCompanyMaster.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmWithoutCompanyMaster.designer.cs">
+      <DependentUpon>frmWithoutCompanyMaster.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmChangePassword.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -106,13 +120,21 @@
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Classes\Program.cs" />
-    <Compile Include="Forms\frmUserMaster.cs">
+    <Compile Include="Forms\frmEmployeeMaster.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmUserMaster.designer.cs">
-      <DependentUpon>frmUserMaster.cs</DependentUpon>
+    <Compile Include="Forms\frmEmployeeMaster.designer.cs">
+      <DependentUpon>frmEmployeeMaster.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\frmCustomerMaster.resx">
+      <DependentUpon>frmCustomerMaster.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmWithoutCompanyMaster.resx">
+      <DependentUpon>frmWithoutCompanyMaster.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmChangePassword.resx">
       <DependentUpon>frmChangePassword.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -145,8 +167,8 @@
       <DependentUpon>frmMain.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmUserMaster.resx">
-      <DependentUpon>frmUserMaster.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\frmEmployeeMaster.resx">
+      <DependentUpon>frmEmployeeMaster.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

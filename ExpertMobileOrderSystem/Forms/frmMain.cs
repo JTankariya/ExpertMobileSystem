@@ -30,7 +30,7 @@ namespace ExpertMobileOrderSystem
 
         private void frmMain_Load(object sender, EventArgs e)
         {
-            toolUserInfo.Text = "Welcome " + Operation.objComp.UserName;
+            toolUserInfo.Text = "Welcome " + Operation.currClient.UserName;
             //try
             //{
             //    if (Operation.IsInternetOnorOff())
@@ -136,8 +136,7 @@ namespace ExpertMobileOrderSystem
             try
             {
                 Operation.writeLog("Upload Start Time : " + DateTime.Now.ToLongTimeString(), Operation.LogFile);
-                DataTable dtComp = Operation.GetDataTable("Select * From [Order.ClientCompanyMaster] Where ClientId = " + Operation.Clientid, Operation.Conn);
-                foreach (DataRow dr in dtComp.Rows)
+                foreach (DataRow dr in Operation.currClient.BillableCompanies)
                 {
                     ClientCompanyId = Convert.ToInt32(dr["ClientCompanyId"]);
                     List<string> strQueries = new List<string>();
@@ -731,7 +730,7 @@ namespace ExpertMobileOrderSystem
             }
         }
 
-        private void btnUsers_Click(object sender, EventArgs e)
+        private void btnEmployees_Click(object sender, EventArgs e)
         {
             frmUserMaster user = new frmUserMaster();
             user.ShowDialog();
@@ -739,8 +738,16 @@ namespace ExpertMobileOrderSystem
 
         private void btnCompanies_Click(object sender, EventArgs e)
         {
-            frmCompanyMaster company = new frmCompanyMaster();
-            company.ShowDialog();
+            if (Operation.currClient.IsWithout)
+            {
+                frmWithoutCompanyMaster company = new frmWithoutCompanyMaster();
+                company.ShowDialog();
+            }
+            else
+            {
+                frmCompanyMaster company = new frmCompanyMaster();
+                company.ShowDialog();
+            }
         }
 
         private void btnUserCompanyAllocation_Click(object sender, EventArgs e)
@@ -781,6 +788,12 @@ namespace ExpertMobileOrderSystem
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void btnCustomers_Click(object sender, EventArgs e)
+        {
+            frmCustomerMaster customer = new frmCustomerMaster();
+            customer.ShowDialog();
         }
     }
 }

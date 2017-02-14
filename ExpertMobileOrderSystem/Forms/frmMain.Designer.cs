@@ -32,16 +32,17 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.toolUploadStatus = new System.Windows.Forms.StatusStrip();
             this.toolUploadProgress = new System.Windows.Forms.ToolStripProgressBar();
-            this.btnUserCompanyAllocation = new System.Windows.Forms.Button();
-            this.btnSettings = new System.Windows.Forms.Button();
-            this.btnChangePassword = new System.Windows.Forms.Button();
-            this.btnCompanies = new System.Windows.Forms.Button();
-            this.btnUsers = new System.Windows.Forms.Button();
-            this.btnSync = new System.Windows.Forms.Button();
+            this.toolUserInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolUserInfo = new System.Windows.Forms.ToolStripStatusLabel();
+            this.btnChangePassword = new System.Windows.Forms.Button();
+            this.btnUserCompanyAllocation = new System.Windows.Forms.Button();
+            this.btnCustomers = new System.Windows.Forms.Button();
+            this.btnSettings = new System.Windows.Forms.Button();
+            this.btnCompanies = new System.Windows.Forms.Button();
+            this.btnEmployees = new System.Windows.Forms.Button();
+            this.btnSync = new System.Windows.Forms.Button();
             this.toolUploadStatus.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -53,9 +54,9 @@
             this.toolUploadStatus.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolUploadProgress,
             this.toolUserInfo});
-            this.toolUploadStatus.Location = new System.Drawing.Point(0, 217);
+            this.toolUploadStatus.Location = new System.Drawing.Point(0, 244);
             this.toolUploadStatus.Name = "toolUploadStatus";
-            this.toolUploadStatus.Size = new System.Drawing.Size(665, 22);
+            this.toolUploadStatus.Size = new System.Drawing.Size(724, 22);
             this.toolUploadStatus.TabIndex = 1;
             // 
             // toolUploadProgress
@@ -66,98 +67,13 @@
             this.toolUploadProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.toolUploadProgress.Visible = false;
             // 
-            // btnUserCompanyAllocation
+            // toolUserInfo
             // 
-            this.btnUserCompanyAllocation.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnUserCompanyAllocation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnUserCompanyAllocation.Font = new System.Drawing.Font("Calibri", 15.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
-            this.btnUserCompanyAllocation.Image = global::ExpertMobileOrderSystem.Properties.Resources._1486416909_lock_24;
-            this.btnUserCompanyAllocation.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnUserCompanyAllocation.Location = new System.Drawing.Point(467, 12);
-            this.btnUserCompanyAllocation.Name = "btnUserCompanyAllocation";
-            this.btnUserCompanyAllocation.Size = new System.Drawing.Size(186, 80);
-            this.btnUserCompanyAllocation.TabIndex = 9;
-            this.btnUserCompanyAllocation.Text = "User Company Allocation";
-            this.btnUserCompanyAllocation.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnUserCompanyAllocation.UseVisualStyleBackColor = true;
-            this.btnUserCompanyAllocation.Click += new System.EventHandler(this.btnUserCompanyAllocation_Click);
-            // 
-            // btnSettings
-            // 
-            this.btnSettings.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSettings.Font = new System.Drawing.Font("Calibri", 20.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSettings.Image = global::ExpertMobileOrderSystem.Properties.Resources._1486416649_settings;
-            this.btnSettings.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSettings.Location = new System.Drawing.Point(229, 125);
-            this.btnSettings.Name = "btnSettings";
-            this.btnSettings.Size = new System.Drawing.Size(203, 80);
-            this.btnSettings.TabIndex = 8;
-            this.btnSettings.Text = "         Settings";
-            this.btnSettings.UseVisualStyleBackColor = true;
-            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
-            // 
-            // btnChangePassword
-            // 
-            this.btnChangePassword.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnChangePassword.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnChangePassword.Font = new System.Drawing.Font("Calibri", 20.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnChangePassword.Image = global::ExpertMobileOrderSystem.Properties.Resources._1486416542_key;
-            this.btnChangePassword.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnChangePassword.Location = new System.Drawing.Point(12, 125);
-            this.btnChangePassword.Name = "btnChangePassword";
-            this.btnChangePassword.Size = new System.Drawing.Size(183, 80);
-            this.btnChangePassword.TabIndex = 7;
-            this.btnChangePassword.Text = "         Change         Password";
-            this.btnChangePassword.UseVisualStyleBackColor = true;
-            this.btnChangePassword.Click += new System.EventHandler(this.btnChangePassword_Click);
-            // 
-            // btnCompanies
-            // 
-            this.btnCompanies.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnCompanies.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCompanies.Font = new System.Drawing.Font("Calibri", 20.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCompanies.Image = global::ExpertMobileOrderSystem.Properties.Resources._1486415757_03_Office;
-            this.btnCompanies.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCompanies.Location = new System.Drawing.Point(229, 12);
-            this.btnCompanies.Name = "btnCompanies";
-            this.btnCompanies.Size = new System.Drawing.Size(203, 80);
-            this.btnCompanies.TabIndex = 5;
-            this.btnCompanies.Text = "Companies";
-            this.btnCompanies.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnCompanies.UseVisualStyleBackColor = true;
-            this.btnCompanies.Click += new System.EventHandler(this.btnCompanies_Click);
-            // 
-            // btnUsers
-            // 
-            this.btnUsers.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnUsers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnUsers.Font = new System.Drawing.Font("Calibri", 20.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUsers.Image = global::ExpertMobileOrderSystem.Properties.Resources._1486415013_icons_user;
-            this.btnUsers.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnUsers.Location = new System.Drawing.Point(12, 12);
-            this.btnUsers.Name = "btnUsers";
-            this.btnUsers.Size = new System.Drawing.Size(183, 80);
-            this.btnUsers.TabIndex = 3;
-            this.btnUsers.Text = "          Users";
-            this.btnUsers.UseVisualStyleBackColor = true;
-            this.btnUsers.Click += new System.EventHandler(this.btnUsers_Click);
-            // 
-            // btnSync
-            // 
-            this.btnSync.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.btnSync.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSync.Font = new System.Drawing.Font("Calibri", 20.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSync.Image = global::ExpertMobileOrderSystem.Properties.Resources._1482787339_sync;
-            this.btnSync.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnSync.Location = new System.Drawing.Point(467, 125);
-            this.btnSync.Name = "btnSync";
-            this.btnSync.Size = new System.Drawing.Size(186, 80);
-            this.btnSync.TabIndex = 0;
-            this.btnSync.Text = "Start Sync";
-            this.btnSync.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnSync.UseVisualStyleBackColor = true;
-            this.btnSync.Click += new System.EventHandler(this.btnSync_Click);
+            this.toolUserInfo.Name = "toolUserInfo";
+            this.toolUserInfo.Size = new System.Drawing.Size(780, 17);
+            this.toolUserInfo.Spring = true;
+            this.toolUserInfo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolUserInfo.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal;
             // 
             // notifyIcon1
             // 
@@ -183,27 +99,139 @@
             this.exitToolStripMenuItem.Text = "&Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
-            // toolUserInfo
+            // btnChangePassword
             // 
-            this.toolUserInfo.Name = "toolUserInfo";
-            this.toolUserInfo.Size = new System.Drawing.Size(650, 17);
-            this.toolUserInfo.Spring = true;
-            this.toolUserInfo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.toolUserInfo.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal;
+            this.btnChangePassword.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnChangePassword.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnChangePassword.Font = new System.Drawing.Font("Calibri", 20.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnChangePassword.Image = global::ExpertMobileOrderSystem.Properties.Resources._1486416542_key;
+            this.btnChangePassword.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnChangePassword.Location = new System.Drawing.Point(485, 17);
+            this.btnChangePassword.Name = "btnChangePassword";
+            this.btnChangePassword.Size = new System.Drawing.Size(225, 96);
+            this.btnChangePassword.TabIndex = 7;
+            this.btnChangePassword.Text = "Change Password";
+            this.btnChangePassword.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnChangePassword.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnChangePassword.UseVisualStyleBackColor = true;
+            this.btnChangePassword.Click += new System.EventHandler(this.btnChangePassword_Click);
+            // 
+            // btnUserCompanyAllocation
+            // 
+            this.btnUserCompanyAllocation.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnUserCompanyAllocation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnUserCompanyAllocation.Font = new System.Drawing.Font("Calibri", 20.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
+            this.btnUserCompanyAllocation.Image = global::ExpertMobileOrderSystem.Properties.Resources._1486416909_lock_24;
+            this.btnUserCompanyAllocation.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnUserCompanyAllocation.Location = new System.Drawing.Point(178, 130);
+            this.btnUserCompanyAllocation.Name = "btnUserCompanyAllocation";
+            this.btnUserCompanyAllocation.Size = new System.Drawing.Size(315, 96);
+            this.btnUserCompanyAllocation.TabIndex = 9;
+            this.btnUserCompanyAllocation.Text = "User Company Allocation";
+            this.btnUserCompanyAllocation.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnUserCompanyAllocation.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnUserCompanyAllocation.UseVisualStyleBackColor = true;
+            this.btnUserCompanyAllocation.Click += new System.EventHandler(this.btnUserCompanyAllocation_Click);
+            // 
+            // btnCustomers
+            // 
+            this.btnCustomers.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnCustomers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCustomers.Font = new System.Drawing.Font("Calibri", 20.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
+            this.btnCustomers.Image = global::ExpertMobileOrderSystem.Properties.Resources._1486415013_icons_user;
+            this.btnCustomers.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnCustomers.Location = new System.Drawing.Point(332, 17);
+            this.btnCustomers.Name = "btnCustomers";
+            this.btnCustomers.Size = new System.Drawing.Size(147, 96);
+            this.btnCustomers.TabIndex = 11;
+            this.btnCustomers.Text = "Customers";
+            this.btnCustomers.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnCustomers.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnCustomers.UseVisualStyleBackColor = true;
+            this.btnCustomers.Click += new System.EventHandler(this.btnCustomers_Click);
+            // 
+            // btnSettings
+            // 
+            this.btnSettings.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSettings.Font = new System.Drawing.Font("Calibri", 20.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSettings.Image = global::ExpertMobileOrderSystem.Properties.Resources._1486416649_settings;
+            this.btnSettings.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnSettings.Location = new System.Drawing.Point(17, 130);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(153, 96);
+            this.btnSettings.TabIndex = 8;
+            this.btnSettings.Text = "Settings";
+            this.btnSettings.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnSettings.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnSettings.UseVisualStyleBackColor = true;
+            this.btnSettings.Click += new System.EventHandler(this.btnSettings_Click);
+            // 
+            // btnCompanies
+            // 
+            this.btnCompanies.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnCompanies.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCompanies.Font = new System.Drawing.Font("Calibri", 20.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCompanies.Image = global::ExpertMobileOrderSystem.Properties.Resources._1486415757_03_Office;
+            this.btnCompanies.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnCompanies.Location = new System.Drawing.Point(15, 17);
+            this.btnCompanies.Name = "btnCompanies";
+            this.btnCompanies.Size = new System.Drawing.Size(155, 96);
+            this.btnCompanies.TabIndex = 5;
+            this.btnCompanies.Text = "Companies";
+            this.btnCompanies.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnCompanies.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnCompanies.UseVisualStyleBackColor = true;
+            this.btnCompanies.Click += new System.EventHandler(this.btnCompanies_Click);
+            // 
+            // btnEmployees
+            // 
+            this.btnEmployees.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnEmployees.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEmployees.Font = new System.Drawing.Font("Calibri", 20.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
+            this.btnEmployees.Image = global::ExpertMobileOrderSystem.Properties.Resources._1486415013_icons_user;
+            this.btnEmployees.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnEmployees.Location = new System.Drawing.Point(178, 17);
+            this.btnEmployees.Name = "btnEmployees";
+            this.btnEmployees.Size = new System.Drawing.Size(147, 96);
+            this.btnEmployees.TabIndex = 3;
+            this.btnEmployees.Text = "Employees";
+            this.btnEmployees.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnEmployees.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnEmployees.UseVisualStyleBackColor = true;
+            this.btnEmployees.Click += new System.EventHandler(this.btnEmployees_Click);
+            // 
+            // btnSync
+            // 
+            this.btnSync.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.btnSync.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSync.Font = new System.Drawing.Font("Calibri", 20.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSync.Image = global::ExpertMobileOrderSystem.Properties.Resources._1482787339_sync;
+            this.btnSync.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnSync.Location = new System.Drawing.Point(499, 131);
+            this.btnSync.Name = "btnSync";
+            this.btnSync.Size = new System.Drawing.Size(186, 96);
+            this.btnSync.TabIndex = 0;
+            this.btnSync.Text = "Start Sync";
+            this.btnSync.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnSync.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.btnSync.UseVisualStyleBackColor = true;
+            this.btnSync.Click += new System.EventHandler(this.btnSync_Click);
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(665, 239);
-            this.Controls.Add(this.btnUserCompanyAllocation);
-            this.Controls.Add(this.btnSettings);
+            this.ClientSize = new System.Drawing.Size(724, 266);
             this.Controls.Add(this.btnChangePassword);
-            this.Controls.Add(this.btnCompanies);
-            this.Controls.Add(this.btnUsers);
+            this.Controls.Add(this.btnUserCompanyAllocation);
             this.Controls.Add(this.toolUploadStatus);
+            this.Controls.Add(this.btnCustomers);
+            this.Controls.Add(this.btnCompanies);
+            this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.btnSync);
+            this.Controls.Add(this.btnEmployees);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
             this.MaximizeBox = false;
@@ -226,7 +254,7 @@
         private System.Windows.Forms.Button btnSync;
         private System.Windows.Forms.StatusStrip toolUploadStatus;
         private System.Windows.Forms.ToolStripProgressBar toolUploadProgress;
-        private System.Windows.Forms.Button btnUsers;
+        private System.Windows.Forms.Button btnEmployees;
         private System.Windows.Forms.Button btnCompanies;
         private System.Windows.Forms.Button btnChangePassword;
         private System.Windows.Forms.Button btnSettings;
@@ -235,6 +263,7 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripStatusLabel toolUserInfo;
+        private System.Windows.Forms.Button btnCustomers;
     }
 }
 
