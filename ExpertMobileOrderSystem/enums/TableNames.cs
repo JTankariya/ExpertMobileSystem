@@ -5,13 +5,13 @@ using System.Text;
 
 namespace ExpertMobileOrderSystem.enums
 {
-    public enum TableNames
+    public class TableNames
     {
-        OSPRODUCT = 1,
-        OSACT = 2,
-        OSPGROUP = 3,
-        OSRATE = 4,
-        OSRATE2 = 5
+        public const string OrderACT = "[Order.ACT]";
+        public const string OrderPGroup = "[Order.PGroup]";
+        public const string OrderProduct = "[Order.Product]";
+        public const string OrderRate = "[Order.Rate]";
+        public const string OrderRate2 = "[Order.Rate2]";
     }
 
     public enum OperationTypes

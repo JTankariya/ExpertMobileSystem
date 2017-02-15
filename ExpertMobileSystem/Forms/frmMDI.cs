@@ -17,14 +17,9 @@ namespace ExpertMobileSystem
 {
     public partial class frmMDI : Form
     {
-        //clsSettings obj = new clsSettings();
-        //clsSettings objsettings = new clsSettings();
         List<String> Images = new List<string>();
         int ImageCount = 0;
-        //int MenuId = 0;
-        //string ToolTip = "";
         bool CloseFlag = false;
-        //bool flag = false;
         public static int stmt_flag = 0;
         public static int inward_flag = 0;
         public frmMDI()

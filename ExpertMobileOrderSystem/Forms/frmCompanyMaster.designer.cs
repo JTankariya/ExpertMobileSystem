@@ -29,13 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmWithoutCompanyMaster));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.txtm2 = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmCompanyMaster));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.txtcompCode = new System.Windows.Forms.TextBox();
-            this.Label63 = new System.Windows.Forms.Label();
             this.lblid = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.btnView = new System.Windows.Forms.Button();
@@ -91,6 +88,7 @@
             this.txtcompVAT = new System.Windows.Forms.TextBox();
             this.txtCompAutho = new System.Windows.Forms.TextBox();
             this.label31 = new System.Windows.Forms.Label();
+            this.chkIsDefault = new System.Windows.Forms.CheckBox();
             this.statusStrip1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -98,28 +96,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvCompany)).BeginInit();
             this.CompanyDetail.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // txtm2
-            // 
-            this.txtm2.BackColor = System.Drawing.Color.White;
-            this.txtm2.Location = new System.Drawing.Point(110, 414);
-            this.txtm2.MaxLength = 15;
-            this.txtm2.Name = "txtm2";
-            this.txtm2.Size = new System.Drawing.Size(23, 23);
-            this.txtm2.TabIndex = 3;
-            this.txtm2.Tag = "Enter Mobile No.2";
-            this.txtm2.Visible = false;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(41, 421);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(55, 16);
-            this.label2.TabIndex = 41;
-            this.label2.Text = "Mobile:";
-            this.label2.Visible = false;
             // 
             // txtcompCode
             // 
@@ -133,17 +109,6 @@
             this.txtcompCode.Text = "CompanyCode";
             this.txtcompCode.Visible = false;
             this.txtcompCode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtphone2_KeyPress);
-            // 
-            // Label63
-            // 
-            this.Label63.AutoSize = true;
-            this.Label63.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label63.Location = new System.Drawing.Point(34, 382);
-            this.Label63.Name = "Label63";
-            this.Label63.Size = new System.Drawing.Size(62, 16);
-            this.Label63.TabIndex = 37;
-            this.Label63.Text = "Phone2:";
-            this.Label63.Visible = false;
             // 
             // lblid
             // 
@@ -272,10 +237,7 @@
             // 
             this.groupBox5.BackColor = System.Drawing.Color.Transparent;
             this.groupBox5.Controls.Add(this.tabControl1);
-            this.groupBox5.Controls.Add(this.txtm2);
             this.groupBox5.Controls.Add(this.txtcompCode);
-            this.groupBox5.Controls.Add(this.label2);
-            this.groupBox5.Controls.Add(this.Label63);
             this.groupBox5.Controls.Add(this.btnView);
             this.groupBox5.Controls.Add(this.btnAdd);
             this.groupBox5.Controls.Add(this.btnDelete);
@@ -298,6 +260,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.chkIsDefault);
             this.tabPage1.Controls.Add(this.dgvCompany);
             this.tabPage1.Controls.Add(this.btnBrowseFolder);
             this.tabPage1.Controls.Add(this.txtpath);
@@ -315,8 +278,8 @@
             this.dgvCompany.AllowUserToAddRows = false;
             this.dgvCompany.AllowUserToDeleteRows = false;
             this.dgvCompany.AllowUserToResizeRows = false;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Verdana", 8.25F);
-            this.dgvCompany.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Verdana", 8.25F);
+            this.dgvCompany.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvCompany.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
@@ -328,8 +291,8 @@
             this.dgvCompany.Name = "dgvCompany";
             this.dgvCompany.ReadOnly = true;
             this.dgvCompany.RowHeadersVisible = false;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Verdana", 8.25F);
-            this.dgvCompany.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Verdana", 8.25F);
+            this.dgvCompany.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvCompany.Size = new System.Drawing.Size(766, 249);
             this.dgvCompany.TabIndex = 88;
             this.dgvCompany.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCompany_CellContentDoubleClick);
@@ -337,9 +300,9 @@
             // btnBrowseFolder
             // 
             this.btnBrowseFolder.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBrowseFolder.Location = new System.Drawing.Point(649, 11);
+            this.btnBrowseFolder.Location = new System.Drawing.Point(444, 18);
             this.btnBrowseFolder.Name = "btnBrowseFolder";
-            this.btnBrowseFolder.Size = new System.Drawing.Size(124, 29);
+            this.btnBrowseFolder.Size = new System.Drawing.Size(121, 23);
             this.btnBrowseFolder.TabIndex = 87;
             this.btnBrowseFolder.Text = "Browse Folder";
             this.btnBrowseFolder.UseVisualStyleBackColor = true;
@@ -352,7 +315,7 @@
             this.txtpath.MaxLength = 250;
             this.txtpath.Name = "txtpath";
             this.txtpath.ReadOnly = true;
-            this.txtpath.Size = new System.Drawing.Size(527, 23);
+            this.txtpath.Size = new System.Drawing.Size(465, 23);
             this.txtpath.TabIndex = 85;
             this.txtpath.Tag = "Enter Party Name.";
             // 
@@ -469,7 +432,7 @@
             this.label3.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(434, 36);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(67, 16);
+            this.label3.Size = new System.Drawing.Size(66, 16);
             this.label3.TabIndex = 138;
             this.label3.Text = "To Date:";
             // 
@@ -499,7 +462,7 @@
             this.label21.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label21.Location = new System.Drawing.Point(54, 187);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(67, 16);
+            this.label21.Size = new System.Drawing.Size(66, 16);
             this.label21.TabIndex = 134;
             this.label21.Text = "Website:";
             // 
@@ -662,7 +625,7 @@
             this.label15.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label15.Location = new System.Drawing.Point(441, 251);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(60, 16);
+            this.label15.Size = new System.Drawing.Size(59, 16);
             this.label15.TabIndex = 118;
             this.label15.Text = "TANNO:";
             this.label15.Click += new System.EventHandler(this.label15_Click);
@@ -732,7 +695,7 @@
             this.label19.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label19.Location = new System.Drawing.Point(460, 191);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(41, 16);
+            this.label19.Size = new System.Drawing.Size(40, 16);
             this.label19.TabIndex = 112;
             this.label19.Text = "CST:";
             // 
@@ -777,6 +740,16 @@
             this.label31.TabIndex = 107;
             this.label31.Text = "Authorised:";
             // 
+            // chkIsDefault
+            // 
+            this.chkIsDefault.AutoSize = true;
+            this.chkIsDefault.Location = new System.Drawing.Point(633, 20);
+            this.chkIsDefault.Name = "chkIsDefault";
+            this.chkIsDefault.Size = new System.Drawing.Size(146, 20);
+            this.chkIsDefault.TabIndex = 89;
+            this.chkIsDefault.Text = "Default Company?";
+            this.chkIsDefault.UseVisualStyleBackColor = true;
+            // 
             // frmCompanyMaster
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -815,15 +788,12 @@
         #endregion
 
         public System.Windows.Forms.TextBox txtcompCode;
-        internal System.Windows.Forms.Label Label63;
         public System.Windows.Forms.Label lblid;
         private System.Windows.Forms.ToolTip toolTip1;
         internal System.Windows.Forms.Button btnView;
         internal System.Windows.Forms.Button btnAdd;
         internal System.Windows.Forms.Button btnDelete;
         internal System.Windows.Forms.Button btnSave;
-        public System.Windows.Forms.TextBox txtm2;
-        internal System.Windows.Forms.Label label2;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.ToolStripStatusLabel ControlMessage;
@@ -873,6 +843,7 @@
         public System.Windows.Forms.TextBox txtcompVAT;
         public System.Windows.Forms.TextBox txtCompAutho;
         internal System.Windows.Forms.Label label31;
+        private System.Windows.Forms.CheckBox chkIsDefault;
        // public System.Windows.Forms.DateTimePicker dtpdate;
         //this.dtpdate.CustomFormat = "dd/MM/yyyy";
     }

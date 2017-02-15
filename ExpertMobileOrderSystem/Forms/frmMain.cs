@@ -172,7 +172,7 @@ namespace ExpertMobileOrderSystem
                                 toolUploadProgress.Value = 0;
                                 toolUploadStatus.Text = "Processing Existing " + tableName + ".dbf : ";
                             }));
-                            CompareTwoDataTable(dtLocalAct, dtExpertAct, (TableNames)Enum.Parse(typeof(TableNames), tName));
+                            CompareTwoDataTable(dtLocalAct, dtExpertAct, tName);
                             DataTable localTable = new DataTable();
                             List<string> tableColumns = GetTableColumns((TableNames)Enum.Parse(typeof(TableNames), tName), false);
                             this.Invoke(new MethodInvoker(delegate
@@ -183,11 +183,11 @@ namespace ExpertMobileOrderSystem
                             }));
                             for (var i = 0; i < dtDeleteFromLocal.Rows.Count; i++)
                             {
-                                strQueries.Add(InsertUpdateQueries.GetQueries((TableNames)Enum.Parse(typeof(TableNames), tName), OperationTypes.DELETE, null, dtDeleteFromLocal.Rows[i], ClientCompanyId, tableColumns));
+                                strQueries.Add(InsertUpdateQueries.GetQueries(tName, OperationTypes.DELETE, null, dtDeleteFromLocal.Rows[i], ClientCompanyId, tableColumns));
                             }
                             foreach (DataRow row in dtModifiedRecord.Rows)
                             {
-                                strQueries.Add(InsertUpdateQueries.GetQueries((TableNames)Enum.Parse(typeof(TableNames), tName), OperationTypes.DELETE, null, row, ClientCompanyId, tableColumns));
+                                strQueries.Add(InsertUpdateQueries.GetQueries(tName, OperationTypes.DELETE, null, row, ClientCompanyId, tableColumns));
                                 this.Invoke(new MethodInvoker(delegate
                                 {
                                     toolUploadProgress.Value = toolUploadProgress.Value + 1;
@@ -195,7 +195,7 @@ namespace ExpertMobileOrderSystem
                             }
                             foreach (DataRow row in dtUnModifiedRecord.Rows)
                             {
-                                strQueries.Add(InsertUpdateQueries.GetQueries((TableNames)Enum.Parse(typeof(TableNames), tName), OperationTypes.INSERT, row, null, ClientCompanyId, tableColumns));
+                                strQueries.Add(InsertUpdateQueries.GetQueries(tName, OperationTypes.INSERT, row, null, ClientCompanyId, tableColumns));
                                 this.Invoke(new MethodInvoker(delegate
                                 {
                                     toolUploadProgress.Value = toolUploadProgress.Value + 1;
@@ -204,7 +204,7 @@ namespace ExpertMobileOrderSystem
 
                             foreach (DataRow row in dtNewlyInsertInLocal.Rows)
                             {
-                                strQueries.Add(InsertUpdateQueries.GetQueries((TableNames)Enum.Parse(typeof(TableNames), tName), OperationTypes.INSERT, row, null, ClientCompanyId, tableColumns));
+                                strQueries.Add(InsertUpdateQueries.GetQueries(tName, OperationTypes.INSERT, row, null, ClientCompanyId, tableColumns));
                                 this.Invoke(new MethodInvoker(delegate
                                 {
                                     toolUploadProgress.Value = toolUploadProgress.Value + 1;
@@ -223,7 +223,7 @@ namespace ExpertMobileOrderSystem
                                 }));
                                 CheckExpertTmpFile(dr, tableName + ".DBF", UploadingExpertDir);
                                 var columnName = GetExperColumnNamesForInsert(tableColumns);
-                                strQueries.Add(InsertUpdateQueries.GetQueries((TableNames)Enum.Parse(typeof(TableNames), tName), OperationTypes.DELETE, null, null, ClientCompanyId, tableColumns));
+                                strQueries.Add(InsertUpdateQueries.GetQueries(tName, OperationTypes.DELETE, null, null, ClientCompanyId, tableColumns));
                                 var dt = GetDataFromExpert(expconn, "select " + string.Join(",", columnName.ToArray()) + " from [" + tableName + "]");
 
                                 this.Invoke(new MethodInvoker(delegate
@@ -237,7 +237,7 @@ namespace ExpertMobileOrderSystem
                                     {
                                         toolUploadProgress.Value = i;
                                     }));
-                                    strQueries.Add(InsertUpdateQueries.GetQueries((TableNames)Enum.Parse(typeof(TableNames), tName), OperationTypes.INSERT, dt.Rows[i], null, ClientCompanyId, tableColumns));
+                                    strQueries.Add(InsertUpdateQueries.GetQueries(tName, OperationTypes.INSERT, dt.Rows[i], null, ClientCompanyId, tableColumns));
                                 }
                             }
                         }
@@ -308,7 +308,7 @@ namespace ExpertMobileOrderSystem
                                         strQueries.Add("Update " + tName + " set Code = '" + newCode + "',OperationFlag=NULL where ClientCompanyId=" + ClientCompanyId + " and Code='" + oldCode + "' and OperationFlag is not null");
                                     }
                                 }
-                                expertQueries.Add(InsertUpdateQueries.GetQueriesForExpert((TableNames)Enum.Parse(typeof(TableNames), tName), OperationTypes.INSERT, dtToInsertInExpert.Rows[i], null, ClientCompanyId, tableColumns) + "~" + tName + "~Code~" + dtToInsertInExpert.Rows[i]["Code"]);
+                                expertQueries.Add(InsertUpdateQueries.GetQueriesForExpert(tName, OperationTypes.INSERT, dtToInsertInExpert.Rows[i], null, ClientCompanyId, tableColumns) + "~" + tName + "~Code~" + dtToInsertInExpert.Rows[i]["Code"]);
                             }
 
                         }
@@ -519,7 +519,7 @@ namespace ExpertMobileOrderSystem
             return dtData;
         }
 
-        private void CompareTwoDataTable(DataTable dtLocal, DataTable dtExpert, TableNames tName)
+        private void CompareTwoDataTable(DataTable dtLocal, DataTable dtExpert, string tName)
         {
 
             dtModifiedRecord = new DataTable();
@@ -529,7 +529,7 @@ namespace ExpertMobileOrderSystem
             switch (tName)
             {
                 #region ACT
-                case TableNames.OSACT:
+                case TableNames.OrderACT:
                     var changed = (from table1 in dtLocal.AsEnumerable()
                                    join table2 in dtExpert.AsEnumerable() on table1.Field<string>("Code") equals table2.Field<string>("Code")
                                    where table1.Field<string>("Code") != table2.Field<string>("Code") || table1.Field<string>("Name") != table2.Field<string>("Name") || table1.Field<string>("Group") != table2.Field<string>("Group") || table1.Field<double?>("Bal_Op") != table2.Field<double?>("Bal_Op") || table1.Field<string>("Bal_Dc") != table2.Field<string>("Bal_Dc") || table1.Field<double?>("OpBal") != table2.Field<double?>("OpBal") || table1.Field<double?>("TotDr") != table2.Field<double?>("TotDr") || table1.Field<double?>("TotCr") != table2.Field<double?>("TotCr") || table1.Field<double?>("ClBal") != table2.Field<double?>("ClBal") || table1.Field<string>("Add1") != table2.Field<string>("Add1") || table1.Field<string>("Add2") != table2.Field<string>("Add2") || table1.Field<string>("Add3") != table2.Field<string>("Add3") || table1.Field<string>("StNo") != table2.Field<string>("StNo") || table1.Field<string>("Cstno") != table2.Field<string>("Cstno") || table1.Field<string>("Phone") != table2.Field<string>("Phone") || table1.Field<string>("Mobile") != table2.Field<string>("Mobile") || table1.Field<string>("Email") != table2.Field<string>("Email") || table1.Field<string>("Zone") != table2.Field<string>("Zone") || table1.Field<string>("Category") != table2.Field<string>("Category") || table1.Field<string>("State") != table2.Field<string>("State") || table1.Field<string>("ItNo") != table2.Field<string>("ItNo") || table1.Field<string>("LicNo") != table2.Field<string>("LicNo") || table1.Field<string>("VatNo") != table2.Field<string>("VatNo") || table1.Field<string>("FaxNo") != table2.Field<string>("FaxNo") || table1.Field<double?>("Cr_Days") != table2.Field<double?>("Cr_Days") || table1.Field<double?>("Act_Type") != table2.Field<double?>("Act_Type") || table1.Field<string>("BSGroup") != table2.Field<string>("BSGroup") || table1.Field<string>("Remarks") != table2.Field<string>("Remarks")
@@ -568,7 +568,7 @@ namespace ExpertMobileOrderSystem
                 #endregion
 
                 #region PGROUP
-                case TableNames.OSPGROUP:
+                case TableNames.OrderPGroup:
 
                     changed = (from table1 in dtLocal.AsEnumerable()
                                join table2 in dtExpert.AsEnumerable() on table1.Field<string>("Code") equals table2.Field<string>("Code")
@@ -609,7 +609,7 @@ namespace ExpertMobileOrderSystem
                 #endregion
 
                 #region PRODUCT
-                case TableNames.OSPRODUCT:
+                case TableNames.OrderProduct:
                     changed = (from table1 in dtLocal.AsEnumerable()
                                join table2 in dtExpert.AsEnumerable() on table1.Field<string>("Code") equals table2.Field<string>("Code")
                                where table1.Field<string>("Code") != table2.Field<string>("Code") || table1.Field<string>("Name") != table2.Field<string>("Name") || table1.Field<string>("Group") != table2.Field<string>("Group") || table1.Field<string>("Desc") != table2.Field<string>("Desc") || table1.Field<Boolean>("Batch") != table2.Field<Boolean>("Batch") || table1.Field<Boolean>("DUnit") != table2.Field<Boolean>("Dunit") || table1.Field<string>("Unit1") != table2.Field<string>("Unit1") || table1.Field<string>("Unit2") != table2.Field<string>("Unit2") || table1.Field<string>("Unit3") != table2.Field<string>("Unit3") || table1.Field<string>("Unit4") != table2.Field<string>("Unit4") || table1.Field<string>("Unit5") != table2.Field<string>("Unit5") || table1.Field<string>("Unit6") != table2.Field<string>("Unit6") || table1.Field<double?>("Ratio2") != table2.Field<double?>("Ratio2") || table1.Field<double?>("Ratio3") != table2.Field<double?>("Ratio3") || table1.Field<double?>("Ratio4") != table2.Field<double?>("Ratio4") || table1.Field<double?>("Ratio5") != table2.Field<double?>("Ratio5") || table1.Field<double?>("Ratio6") != table2.Field<double?>("Ratio6") || table1.Field<double?>("Op_Qty") != table2.Field<double?>("Op_Qty") || table1.Field<double?>("TotIn") != table2.Field<double?>("TotIn") || table1.Field<double?>("TotOut") != table2.Field<double?>("TotOut") || table1.Field<double?>("Cl_Qty") != table2.Field<double?>("Cl_Qty") || table1.Field<double?>("Op_Value") != table2.Field<double?>("Op_Value") || table1.Field<double?>("Op_Rate") != table2.Field<double?>("Op_Rate") || table1.Field<double?>("Sl_Rate") != table2.Field<double?>("Sl_Rate") || table1.Field<double?>("Pu_Rate") != table2.Field<double?>("Pu_Rate") || table1.Field<double?>("Op_Package") != table2.Field<double?>("Op_Package") || table1.Field<string>("I_VatCode") != table2.Field<string>("I_VatCode") || table1.Field<string>("O_VatCode") != table2.Field<string>("O_VatCode")
@@ -649,7 +649,7 @@ namespace ExpertMobileOrderSystem
                 #endregion
 
                 #region RATE
-                case TableNames.OSRATE:
+                case TableNames.OrderRate:
                     changed = (from table1 in dtLocal.AsEnumerable()
                                join table2 in dtExpert.AsEnumerable() on table1.Field<string>("Link") equals table2.Field<string>("Link")
                                where table1.Field<string>("Link") != table2.Field<string>("Link") || table1.Field<string>("Name") != table2.Field<string>("Name") || table1.Field<DateTime>("FDate") != table2.Field<DateTime>("FDate") || table1.Field<DateTime>("TDate") != table2.Field<DateTime>("TDate")
@@ -689,7 +689,7 @@ namespace ExpertMobileOrderSystem
                 #endregion
 
                 #region RATE2
-                case TableNames.OSRATE2:
+                case TableNames.OrderRate2:
                     changed = (from table1 in dtLocal.AsEnumerable()
                                join table2 in dtExpert.AsEnumerable() on table1.Field<string>("Link") equals table2.Field<string>("Link")
                                where table1.Field<string>("Link") != table2.Field<string>("Link") || table1.Field<string>("Code") != table2.Field<string>("Code") || table1.Field<string>("BatchNo") != table2.Field<string>("BatchNo") || table1.Field<string>("SL_Rate") != table2.Field<string>("SL_Rate") || table1.Field<string>("Remarks") != table2.Field<string>("Remarks") || table1.Field<decimal>("IT_Desc") != table2.Field<decimal>("IT_Desc") || table1.Field<decimal>("IT_Tax") != table2.Field<decimal>("IT_Tax") || table1.Field<decimal>("IT_OC") != table2.Field<decimal>("IT_OC") || table1.Field<string>("DSLab") != table2.Field<string>("DSLab")
@@ -794,6 +794,11 @@ namespace ExpertMobileOrderSystem
         {
             frmCustomerMaster customer = new frmCustomerMaster();
             customer.ShowDialog();
+        }
+
+        private void notifyIcon1_DoubleClick(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Normal;
         }
     }
 }

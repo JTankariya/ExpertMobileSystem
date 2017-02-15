@@ -23,13 +23,13 @@ namespace ExpertMobileOrderSystem
 
         public frmCompanyMaster()
         {
-           
+
             InitializeComponent();
             Load += frmPartymaster_Load;
             try
             { this.Icon = new System.Drawing.Icon(Application.StartupPath + "\\MOBILE.ico"); }
             catch { }
-           
+
         }
         private void draw(object sender, PaintEventArgs e)
         {
@@ -198,32 +198,31 @@ namespace ExpertMobileOrderSystem
         }
         private void btnSave_Click(object sender, EventArgs e)
         {
-
             if (!Validate_form())
                 return;
-            string pathmysql = txtpath.Text.Replace("\\","\\\\");
+            string pathmysql = txtpath.Text.Replace("\\", "\\\\");
             btnSave.Enabled = false;
             try
             {
+                if (!isAlreadyExistCompany())
+                    return;
                 ArrayList Queries = new ArrayList();
+                if (chkIsDefault.Checked)
+                    Queries.Add("update [Order.ClientCompanyMaster] set IsDefault=0 where ClientId=" + Operation.currClient.Id);
                 if (lblid.Text == "0")
                 {
-                    if (!isAlreadyExistCompany())
-                        return;
                     Queries.Add("insert into [Order.ClientCompanyMaster] ( ClientID,CompanyName,CompanyFromDate,CompanyToDate,CompanyAdd1,CompanyAdd2,CompanyAdd3,CompanyAdd4 " +
-                        ",CompanyPhone, CompanyMobileNo, CompanyEmail, CompanyWebsite, CompanyVAT, CompanyCST, CompanyITNO, CompanyLICNO, CompanyTANNO, CompanyAuthorised, CompanyRemarks, ExpertPath, CompanyCode) " +
+                        ",CompanyPhone, CompanyMobileNo, CompanyEmail, CompanyWebsite, CompanyVAT, CompanyCST, CompanyITNO, CompanyLICNO, CompanyTANNO, CompanyAuthorised, CompanyRemarks, ExpertPath, CompanyCode,IsDefault) " +
                        " values(" + Operation.currClient.Id + ",'" + txtcompname.Text + "','" + dtpfromdate.Value.ToString("yyyy-MM-dd") + "','" + dtptodate.Value.ToString("yyyy-MM-dd") + "'" +
                        ",'" + txtadd1.Text + "','" + txtadd2.Text + "','" + txtadd3.Text + "','" + txtadd4.Text + "','" + txtcompphone.Text + "','" + txtcompmobile.Text + "'" +
-                        ",'" + txtcompemail.Text + "','" + txtwebsite.Text + "','" + txtcompVAT.Text + "','" + txtcompCST.Text + "','" + txtcompITNO.Text + "','" + txtcompLICNO.Text + "','" + txtTANNO.Text + "','" + txtCompAutho.Text + "','" + txtremark.Text + "','" + pathmysql + "'," + txtcompCode.Text + ")");
+                       ",'" + txtcompemail.Text + "','" + txtwebsite.Text + "','" + txtcompVAT.Text + "','" + txtcompCST.Text + "','" + txtcompITNO.Text + "','" + txtcompLICNO.Text + "','" + txtTANNO.Text + "','" + txtCompAutho.Text + "','" + txtremark.Text + "','" + pathmysql + "'," + txtcompCode.Text + "," + Convert.ToString(chkIsDefault.Checked ? 1 : 0) + ")");
                 }
                 else
                 {
-                    if (!isAlreadyExistCompany())
-                        return;
                     string Update = "update  [Order.ClientCompanyMaster] set  CompanyName='" + txtcompname.Text + "',CompanyFromDate='" + dtpfromdate.Value.ToString("yyyy-MM-dd") + "',CompanyToDate='" + dtptodate.Value.ToString("yyyy-MM-dd") + "'" +
                     ",CompanyAdd1='" + txtadd1.Text + "',CompanyAdd2='" + txtadd2.Text + "',CompanyAdd3='" + txtadd3.Text + "',CompanyAdd4='" + txtadd4.Text + "' " +
                         ",CompanyPhone='" + txtcompphone.Text + "', CompanyMobileNo='" + txtcompmobile.Text + "', CompanyEmail='" + txtcompemail.Text + "', CompanyWebsite='" + txtwebsite.Text + "', CompanyVAT='" + txtcompVAT.Text + "', CompanyCST='" + txtcompCST.Text + "', CompanyITNO='" + txtcompITNO.Text + "', CompanyLICNO='" + txtcompLICNO.Text + "'" +
-                        ", CompanyTANNO='" + txtTANNO.Text + "', CompanyAuthorised='" + txtCompAutho.Text + "', CompanyRemarks='" + txtremark.Text + "', ExpertPath='" + pathmysql + "',CompanyCode='" + txtcompCode.Text + "' Where ClientCompanyID = " + lblid.Text + "";
+                        ", CompanyTANNO='" + txtTANNO.Text + "', CompanyAuthorised='" + txtCompAutho.Text + "', CompanyRemarks='" + txtremark.Text + "', ExpertPath='" + pathmysql + "',CompanyCode='" + txtcompCode.Text + "',IsDefault=" + Convert.ToString(chkIsDefault.Checked ? 1 : 0) + " Where ClientCompanyID = " + lblid.Text + "";
                     Queries.Add(Update);
                 }
                 if (Operation.ExecuteTransaction(Queries, Operation.Conn))
@@ -236,7 +235,7 @@ namespace ExpertMobileOrderSystem
                 else
                 {
                     MessageBox.Show("Error while Saving, Please Try after Some Time.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                   
+
                 }
             }
             catch (Exception ex)
@@ -307,7 +306,6 @@ namespace ExpertMobileOrderSystem
             {
                 if (dt.Rows.Count > 0)
                 {
-
                     lblid.Text = dt.Rows[0]["ClientCompanyId"].ToString();
                     txtcompname.Text = dt.Rows[0]["CompanyName"].ToString();
                     dtpfromdate.Value = Convert.ToDateTime(dt.Rows[0]["CompanyFromDate"]);
@@ -331,6 +329,7 @@ namespace ExpertMobileOrderSystem
                     txtCompAutho.Text = dt.Rows[0]["CompanyAuthorised"].ToString();
                     txtremark.Text = dt.Rows[0]["CompanyRemarks"].ToString();
                     txtcompCode.Text = dt.Rows[0]["CompanyCode"].ToString();
+                    chkIsDefault.Checked = Convert.ToBoolean(dt.Rows[0]["IsDefault"].ToString());
                     btnDelete.Enabled = true;
                 }
             }
@@ -392,13 +391,13 @@ namespace ExpertMobileOrderSystem
 
         private void chkviewPass_CheckedChanged(object sender, EventArgs e)
         {
-         
+
         }
 
         private void btnBrowseFolder_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dialog = new FolderBrowserDialog();
-dialog.SelectedPath = (txtpath.Text == "" ? "C:\\" : txtpath.Text) ;
+            dialog.SelectedPath = (txtpath.Text == "" ? "C:\\" : txtpath.Text);
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 string ExpertFolder = dialog.SelectedPath;

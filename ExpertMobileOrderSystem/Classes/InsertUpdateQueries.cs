@@ -9,7 +9,7 @@ namespace ExpertMobileOrderSystem.Classes
 {
     public class InsertUpdateQueries
     {
-        public static string GetQueries(TableNames tableName, OperationTypes operationType, DataRow drNew, DataRow drOld, int ClientCompanyId, List<string> columns)
+        public static string GetQueries(string tableName, OperationTypes operationType, DataRow drNew, DataRow drOld, int ClientCompanyId, List<string> columns)
         {
             #region Insert
             if (operationType == OperationTypes.INSERT)
@@ -65,11 +65,11 @@ namespace ExpertMobileOrderSystem.Classes
             {
                 switch (tableName)
                 {
-                    case TableNames.OSPGROUP:
-                    case TableNames.OSPRODUCT:
-                    case TableNames.OSRATE:
-                    case TableNames.OSRATE2:
-                    case TableNames.OSACT:
+                    case TableNames.OrderPGroup:
+                    case TableNames.OrderProduct:
+                    case TableNames.OrderRate:
+                    case TableNames.OrderRate2:
+                    case TableNames.OrderACT:
                         if (operationType == OperationTypes.UPDATE)
                         {
                             var strQuery = GetUpdateQuery(columns, drNew, ClientCompanyId);
@@ -94,7 +94,7 @@ namespace ExpertMobileOrderSystem.Classes
             }
         }
 
-        public static string GetQueriesForExpert(TableNames tableName, OperationTypes operationType, DataRow drNew, DataRow drOld, int ClientCompanyId, List<string> columns)
+        public static string GetQueriesForExpert(string tableName, OperationTypes operationType, DataRow drNew, DataRow drOld, int ClientCompanyId, List<string> columns)
         {
             #region Insert
             if (operationType == OperationTypes.INSERT)
@@ -140,11 +140,11 @@ namespace ExpertMobileOrderSystem.Classes
             {
                 switch (tableName)
                 {
-                    case TableNames.OSPGROUP:
-                    case TableNames.OSPRODUCT:
-                    case TableNames.OSRATE:
-                    case TableNames.OSRATE2:
-                    case TableNames.OSACT:
+                    case TableNames.OrderPGroup:
+                    case TableNames.OrderProduct:
+                    case TableNames.OrderRate:
+                    case TableNames.OrderRate2:
+                    case TableNames.OrderACT:
                         if (operationType == OperationTypes.UPDATE)
                         {
                             var strQuery = GetUpdateQuery(columns, drNew, ClientCompanyId);

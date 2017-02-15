@@ -65,7 +65,7 @@ namespace ExpertMobileOrderSystem
             {
                 if (_billableCompany == null)
                 {
-                    var dt = Operation.GetDataTable("select * from [Order.ClientCompanyMaster] where ClientId=" + Id + " and IsWithout=0", Operation.Conn);
+                    var dt = Operation.GetDataTable("select * from [Order.ClientCompanyMaster] where ClientId=" + Id + " and IsWithout=0 order by [Order.ClientCompanyMaster].IsDefault desc", Operation.Conn);
                     if (dt != null && dt.Rows.Count > 0)
                         _billableCompany = dt.Rows;
                 }

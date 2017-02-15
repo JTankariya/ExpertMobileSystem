@@ -70,7 +70,7 @@
             // toolUserInfo
             // 
             this.toolUserInfo.Name = "toolUserInfo";
-            this.toolUserInfo.Size = new System.Drawing.Size(780, 17);
+            this.toolUserInfo.Size = new System.Drawing.Size(709, 17);
             this.toolUserInfo.Spring = true;
             this.toolUserInfo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.toolUserInfo.TextDirection = System.Windows.Forms.ToolStripTextDirection.Horizontal;
@@ -83,6 +83,7 @@
             this.notifyIcon1.ContextMenuStrip = this.contextMenuStrip1;
             this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
             this.notifyIcon1.Text = "Expert Order Sync";
+            this.notifyIcon1.DoubleClick += new System.EventHandler(this.notifyIcon1_DoubleClick);
             // 
             // contextMenuStrip1
             // 
