@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data;
-using ExpertMobileOrderSystem.enums;
 
 namespace ExpertMobileOrderSystem.Classes
 {
@@ -83,7 +82,7 @@ namespace ExpertMobileOrderSystem.Classes
                             }
                             else
                             {
-                                return "Delete from [" + tableName + "] where ClientCompanyId=" + ClientCompanyId;
+                                return "Delete from [" + tableName + "] where ClientCompanyId=" + ClientCompanyId + " and OperationFlag=NULL";
                             }
                         }
                         break;
@@ -133,7 +132,7 @@ namespace ExpertMobileOrderSystem.Classes
                 columnNames = columnNames.TrimEnd(',');
                 columnValues = columnValues.TrimEnd(',');
 
-                return "INSERT INTO " + tableName.ToString().Substring(2, tableName.ToString().Length - 2) + "(" + columnNames + ") VALUES (" + columnValues + ")";
+                return "INSERT INTO " + tableName.ToString().Replace("Order.", "") + "(" + columnNames + ") VALUES (" + columnValues + ")";
             }
             #endregion
             else

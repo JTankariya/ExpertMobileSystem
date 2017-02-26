@@ -35,14 +35,14 @@ namespace ExpertMobileOrderSystem
                 else
                 {
                     Application.DoEvents();
-                    while (!Operation.IsInternetExits == true)
-                    {
-                        Application.DoEvents();
-                        if (Operation.IsInternetOnorOff())
-                            Operation.IsInternetExits = true;
-                        else
-                            Operation.IsInternetExits = false;
-                    }
+                    //while (!Operation.IsInternetExits == true)
+                    //{
+                    //    Application.DoEvents();
+                    //    if (Operation.IsInternetOnorOff())
+                    //        Operation.IsInternetExits = true;
+                    //    else
+                    //        Operation.IsInternetExits = false;
+                    //}
                 }
                 Operation.Conn = new SqlConnection(Operation.ConnStr);
 

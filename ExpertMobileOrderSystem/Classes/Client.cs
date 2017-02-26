@@ -26,8 +26,8 @@ namespace ExpertMobileOrderSystem
             NoOfDays = Convert.ToInt32(dr["NoOfDays"]);
             Password = dr["Password"].ToString();
             UserName = dr["UserName"].ToString();
-            TotalCreatedUser = Convert.ToInt32(dr["TotalCreatedUser"]);
-            TotalCreatedCompany = Convert.ToInt32(dr["TotalCreatedCompany"]);
+            TotalCreatedUser = (string.IsNullOrEmpty(Convert.ToString(dr["TotalCreatedUser"])) ? 0 : Convert.ToInt32(dr["TotalCreatedUser"]));
+            TotalCreatedCompany = (string.IsNullOrEmpty(Convert.ToString(dr["TotalCreatedCompany"])) ? 0 : Convert.ToInt32(dr["TotalCreatedCompany"]));
             QueryRights = Convert.ToBoolean(dr["QueryRights"]);
             IsWithout = Convert.ToBoolean(dr["IsWithout"]);
         }
@@ -58,7 +58,21 @@ namespace ExpertMobileOrderSystem
         public int CreatedDistributorId { get; set; }
         public bool IsWithout { get; set; }
         private DataRowCollection _billableCompany;
+        private DataRowCollection _companies;
         private DataRow _withoutCompany;
+        public DataRowCollection Companies
+        {
+            get
+            {
+                if (_companies == null)
+                {
+                    var dt = Operation.GetDataTable("select * from [Order.ClientCompanyMaster] where ClientId=" + Id + " order by [Order.ClientCompanyMaster].IsDefault desc", Operation.Conn);
+                    if (dt != null && dt.Rows.Count > 0)
+                        _companies = dt.Rows;
+                }
+                return _companies;
+            }
+        }
         public DataRowCollection BillableCompanies
         {
             get

@@ -14,6 +14,7 @@ using System.IO;
 using System.Drawing.Drawing2D;
 using System.Net.NetworkInformation;
 using System.Data.SqlClient;
+using System.Net.Cache;
 
 namespace ExpertMobileOrderSystem
 {
@@ -503,26 +504,45 @@ namespace ExpertMobileOrderSystem
 
         public static DateTime GetNetworkTime()
         {
-            const string ntpServer = "pool.ntp.org";
-            var ntpData = new byte[48];
-            ntpData[0] = 0x1B; //LeapIndicator = 0 (no warning), VersionNum = 3 (IPv4 only), Mode = 3 (Client Mode)
+            //const string ntpServer = "pool.ntp.org";
+            //var ntpData = new byte[48];
+            //ntpData[0] = 0x1B; //LeapIndicator = 0 (no warning), VersionNum = 3 (IPv4 only), Mode = 3 (Client Mode)
 
-            var addresses = Dns.GetHostEntry(ntpServer).AddressList;
-            var ipEndPoint = new IPEndPoint(addresses[0], 123);
-            var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            //var addresses = Dns.GetHostEntry(ntpServer).AddressList;
+            //var ipEndPoint = new IPEndPoint(addresses[0], 123);
+            //var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
 
-            socket.Connect(ipEndPoint);
-            socket.Send(ntpData);
-            socket.Receive(ntpData);
-            socket.Close();
+            //socket.Connect(ipEndPoint);
+            //socket.Send(ntpData);
+            //socket.Receive(ntpData);
+            //socket.Close();
 
-            ulong intPart = (ulong)ntpData[40] << 24 | (ulong)ntpData[41] << 16 | (ulong)ntpData[42] << 8 | (ulong)ntpData[43];
-            ulong fractPart = (ulong)ntpData[44] << 24 | (ulong)ntpData[45] << 16 | (ulong)ntpData[46] << 8 | (ulong)ntpData[47];
+            //ulong intPart = (ulong)ntpData[40] << 24 | (ulong)ntpData[41] << 16 | (ulong)ntpData[42] << 8 | (ulong)ntpData[43];
+            //ulong fractPart = (ulong)ntpData[44] << 24 | (ulong)ntpData[45] << 16 | (ulong)ntpData[46] << 8 | (ulong)ntpData[47];
 
-            var milliseconds = (intPart * 1000) + ((fractPart * 1000) / 0x100000000L);
-            var networkDateTime = (new DateTime(1900, 1, 1)).AddMilliseconds((long)milliseconds);
+            //var milliseconds = (intPart * 1000) + ((fractPart * 1000) / 0x100000000L);
+            //var networkDateTime = (new DateTime(1900, 1, 1)).AddMilliseconds((long)milliseconds);
 
-            return networkDateTime.AddHours(5.5);
+            //return networkDateTime.AddHours(5.5);
+            DateTime dateTime = DateTime.MinValue;
+
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://nist.time.gov/actualtime.cgi?lzbc=siqm9b");
+            request.Method = "GET";
+            request.Accept = "text/html, application/xhtml+xml, */*";
+            request.UserAgent = "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)";
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore); //No caching
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                StreamReader stream = new StreamReader(response.GetResponseStream());
+                string html = stream.ReadToEnd();//<timestamp time=\"1395772696469995\" delay=\"1395772696469995\"/>
+                string time = Regex.Match(html, @"(?<=\btime="")[^""]*").Value;
+                double milliseconds = Convert.ToInt64(time) / 1000.0;
+                dateTime = new DateTime(1970, 1, 1).AddMilliseconds(milliseconds).ToLocalTime();
+            }
+
+            return dateTime;
         }
         public static string EscapeLikeValue(string valueWithoutWildcards)
         {

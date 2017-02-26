@@ -10,9 +10,9 @@ using System.Diagnostics;
 using System.Data.SqlClient;
 using System.IO;
 using System.Data.OleDb;
-using ExpertMobileOrderSystem.enums;
 using ExpertMobileOrderSystem.Classes;
 using System.Threading;
+using System.Reflection;
 
 namespace ExpertMobileOrderSystem
 {
@@ -136,12 +136,13 @@ namespace ExpertMobileOrderSystem
             try
             {
                 Operation.writeLog("Upload Start Time : " + DateTime.Now.ToLongTimeString(), Operation.LogFile);
-                foreach (DataRow dr in Operation.currClient.BillableCompanies)
+                foreach (DataRow dr in Operation.currClient.Companies)
                 {
+                    List<string> toBeMovedTablesOnSuccess = new List<string>();
                     ClientCompanyId = Convert.ToInt32(dr["ClientCompanyId"]);
                     List<string> strQueries = new List<string>();
                     List<string> expertQueries = new List<string>();
-                    string UploadingExpertPath = dr["ExpertPath"].ToString();
+                    string UploadingExpertPath = dr["ExpertPath"].ToString().Replace("\\\\", "\\");
                     string UploadingExpertDir = Operation.RemoveSpecialCharacters(UploadingExpertPath) + "\\" + dr["CompanyCode"].ToString().Trim().PadLeft(3, '0');
 
                     OleDbConnection localconn = new OleDbConnection("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + Application.StartupPath + "\\" + UploadingExpertDir + ";Mode=ReadWrite;Extended Properties=dBASE IV;Persist Security Info=False");
@@ -150,15 +151,16 @@ namespace ExpertMobileOrderSystem
                     DataTable dtLocalAct, dtExpertAct;
                     Application.DoEvents();
                     List<string> tableNames = new List<string>();
-                    foreach (TableNames r in Enum.GetValues(typeof(TableNames)))
-                    {
-                        tableNames.Add(r.ToString());
-                    }
+                    var objTables = new TableNames();
+                    tableNames.AddRange(objTables.GetType().GetFields(BindingFlags.Public | BindingFlags.Static |
+               BindingFlags.FlattenHierarchy)
+    .Where(fi => fi.IsLiteral && !fi.IsInitOnly).Select(x => x.GetValue(objTables).ToString()));
                     var startTime = DateTime.Now;
                     Operation.GetIniValue();
+                    toBeMovedTablesOnSuccess.AddRange(tableNames.Select(x => x.Replace("Order.", "")));
                     foreach (string tName in tableNames)
                     {
-                        var tableName = tName.Substring(2, tName.Length - 2);
+                        var tableName = tName.Replace("Order.", "");
                         Operation.writeLog("====================================================================" + Environment.NewLine + tName + " Process Started: " + startTime.ToString("dd/MM/yyyy hh:mm:ss tt"), Operation.LogFile);
 
                         if (File.Exists(Application.StartupPath + "\\" + UploadingExpertDir + "\\" + tableName + ".DBF") && !Operation.ForceSync)
@@ -174,7 +176,7 @@ namespace ExpertMobileOrderSystem
                             }));
                             CompareTwoDataTable(dtLocalAct, dtExpertAct, tName);
                             DataTable localTable = new DataTable();
-                            List<string> tableColumns = GetTableColumns((TableNames)Enum.Parse(typeof(TableNames), tName), false);
+                            List<string> tableColumns = GetTableColumns(tableName, false);
                             this.Invoke(new MethodInvoker(delegate
                             {
                                 toolUploadProgress.Maximum = dtModifiedRecord.Rows.Count + dtDeleteFromLocal.Rows.Count + dtNewlyInsertInLocal.Rows.Count + dtUnModifiedRecord.Rows.Count + dtToInsertInExpert.Rows.Count;
@@ -215,7 +217,7 @@ namespace ExpertMobileOrderSystem
                         {
                             if (File.Exists(UploadingExpertPath + "\\" + dr["CompanyCode"].ToString().Trim().PadLeft(3, '0') + "\\" + tableName + ".DBF"))
                             {
-                                List<string> tableColumns = GetTableColumns((TableNames)Enum.Parse(typeof(TableNames), tName), true);
+                                List<string> tableColumns = GetTableColumns(tName, true);
                                 this.Invoke(new MethodInvoker(delegate
                                 {
                                     toolUploadProgress.Value = 0;
@@ -275,53 +277,331 @@ namespace ExpertMobileOrderSystem
                         }
                         else
                         {
-                            Operation.ExecuteNonQuery(string.Join(";", strQueries.ToArray()), Operation.Conn);
+                            if (strQueries.Count != 0)
+                            {
+                                Operation.ExecuteNonQuery(string.Join(";", strQueries.ToArray()), Operation.Conn);
+                            }
                         }
                         strQueries = new List<string>();
-                        foreach (string tName in tableNames)
-                        {
-                            var tableName = tName.Substring(2, tName.Length - 2);
-                            List<string> tableColumns = GetTableColumns((TableNames)Enum.Parse(typeof(TableNames), tName), false);
-                            dtToInsertInExpert = Operation.GetDataTable("select * from OS" + tableName + " where clientcompanyid=" + ClientCompanyId + " and OperationFlag is not null", Operation.Conn);
+                        var dtGroup = Operation.GetDataTable("select * from [Order.Group] where clientcompanyid=" + ClientCompanyId + " and OperationFlag is not null", Operation.Conn);
+                        var dtPGroup = Operation.GetDataTable("select * from [Order.PGroup] where clientcompanyid=" + ClientCompanyId + " and OperationFlag is not null", Operation.Conn);
+                        var dtProduct = Operation.GetDataTable("select * from [Order.Product] where clientcompanyid=" + ClientCompanyId + " and OperationFlag is not null", Operation.Conn);
+                        var dtACT = Operation.GetDataTable("select * from [Order.ACT] where clientcompanyid=" + ClientCompanyId + " and OperationFlag is not null", Operation.Conn);
+                        var dtOrder = Operation.GetDataTable("select * from [Order.Order] where clientcompanyid=" + ClientCompanyId + " and OperationFlag is not null", Operation.Conn);
+                        var dtOrder2 = Operation.GetDataTable("select * from [Order.Order2] where clientcompanyid=" + ClientCompanyId + " and OperationFlag is not null", Operation.Conn);
+                        //var dtRate = Operation.GetDataTable("select * from [Order.Rate] where clientcompanyid=" + ClientCompanyId + " and OperationFlag is not null", Operation.Conn);
+                        //var dtRate2 = Operation.GetDataTable("select * from [Order.Rate2] where clientcompanyid=" + ClientCompanyId + " and OperationFlag is not null", Operation.Conn);
 
-                            for (var i = 0; i < dtToInsertInExpert.Rows.Count; i++)
+                        #region PGROUP VERIFICATION AND UPDATIONS
+
+                        dtPGroup.DefaultView.RowFilter = "OperationFlag='I'";
+                        var dtInsertPGroup = dtPGroup.DefaultView.ToTable();
+                        var j = 0;
+                        List<string> tableColumns = GetTableColumns("Order.PGroup", false);
+                        foreach (DataRow iRow in dtInsertPGroup.Rows)
+                        {
+                            var dtcheckCode = GetDataFromExpert(expconn, "select * from PGroup where Code='" + iRow["Code"] + "' and Name <> '" + iRow["Name"] + "'");
+                            if (dtcheckCode.Rows.Count > 0)
                             {
-                                if (dtToInsertInExpert.Rows[i]["OperationFlag"].ToString() == "I")
+                                j++;
+                                //This is a case where new entry has been done in expert and in web with same code but with different name
+                                var newCode = 100001;
+                                var oldCode = 0;
+                                var dtMax = GetDataFromExpert(expconn, "select * from PGroup order by Code desc");
+                                if (dtMax != null && dtMax.Rows.Count > 0)
                                 {
-                                    var dtcheckCode = GetDataFromExpert(expconn, "select * from " + tableName + " where Code='" + dtToInsertInExpert.Rows[i]["Code"] + "' and Name <> '" + dtToInsertInExpert.Rows[i]["Name"] + "'");
-                                    if (dtcheckCode.Rows.Count > 0)
+                                    newCode = Convert.ToInt32(dtMax.Rows[0]["Code"]) + j;
+                                }
+                                else
+                                {
+                                    newCode = 100000 + j;
+                                }
+                                oldCode = Convert.ToInt32(iRow["Code"]);
+                                var dtProductUse = Operation.GetDataTable("select * from [Order.Product] where [Group]='" + iRow["Code"] + "'", Operation.Conn);
+                                if (dtProductUse != null && dtProductUse.Rows.Count > 0)
+                                {
+                                    foreach (DataRow drProduct in dtProductUse.Rows)
                                     {
-                                        //This is a case where new entry has been done in expert and in web with same code but with different name
-                                        var newCode = 100001;
-                                        var oldCode = 0;
-                                        var dtMax = GetDataFromExpert(expconn, "select * from PGroup order by Code desc");
-                                        if (dtMax != null && dtMax.Rows.Count > 0)
+                                        strQueries.Add("Update [Order.Product] set [Group]='" + newCode + "' where RefId='" + drProduct["RefId"].ToString() + "'");
+                                        foreach (DataRow pRow in dtProduct.Rows)
                                         {
-                                            newCode = Convert.ToInt32(dtMax.Rows[0]["Code"]) + 1;
+                                            if (pRow["Group"].ToString() == oldCode.ToString())
+                                            {
+                                                pRow["Group"] = newCode;
+                                            }
                                         }
-                                        else
-                                        {
-                                            newCode = 100001;
-                                        }
-                                        oldCode = Convert.ToInt32(dtToInsertInExpert.Rows[i]["Code"]);
-                                        dtToInsertInExpert.Rows[i]["Code"] = newCode;
-                                        strQueries.Add("Update " + tName + " set Code = '" + newCode + "',OperationFlag=NULL where ClientCompanyId=" + ClientCompanyId + " and Code='" + oldCode + "' and OperationFlag is not null");
                                     }
                                 }
-                                expertQueries.Add(InsertUpdateQueries.GetQueriesForExpert(tName, OperationTypes.INSERT, dtToInsertInExpert.Rows[i], null, ClientCompanyId, tableColumns) + "~" + tName + "~Code~" + dtToInsertInExpert.Rows[i]["Code"]);
+                                iRow["Code"] = newCode;
+                                strQueries.Add("Update [Order.PGroup] set Code = '" + newCode + "',OperationFlag=NULL where RefId='" + iRow["RefId"] + "'");
                             }
+                            else
+                            {
+                                strQueries.Add("Update [Order.PGroup] set OperationFlag=NULL where RefId='" + iRow["RefId"] + "'");
+                            }
+                            expertQueries.Add(InsertUpdateQueries.GetQueriesForExpert("Order.PGroup", OperationTypes.INSERT, iRow, null, ClientCompanyId, tableColumns) + "~Order.PGroup~Code~" + iRow["Code"]);
 
                         }
-                        if (expertQueries.Count > 0)
+
+                        #endregion
+
+                        #region GROUP VERIFICATION AND UPDATIONS
+
+                        dtGroup.DefaultView.RowFilter = "OperationFlag='I'";
+                        var dtInsertGroup = dtGroup.DefaultView.ToTable();
+                        j = 0;
+                        tableColumns = GetTableColumns("Order.Group", false);
+                        foreach (DataRow iRow in dtInsertGroup.Rows)
                         {
-                            for (var i = 0; i < expertQueries.Count; i++)
+                            var dtcheckCode = GetDataFromExpert(expconn, "select * from Group where Code='" + iRow["Code"] + "' and Name <> '" + iRow["Name"] + "'");
+                            if (dtcheckCode.Rows.Count > 0)
                             {
-                                if (Operation.ExecuteNonQuery(expertQueries[i].Split('~')[0], expliveconn) > 0)
+                                j++;
+                                //This is a case where new entry has been done in expert and in web with same code but with different name
+                                var newCode = 100001;
+                                var oldCode = 0;
+                                var dtMax = GetDataFromExpert(expconn, "select * from Group order by Code desc");
+                                if (dtMax != null && dtMax.Rows.Count > 0)
                                 {
-                                    Operation.ExecuteNonQuery("Update " + expertQueries[i].Split('~')[1] + " set OperationFlag=NULL where ClientCompanyId=" + ClientCompanyId + " and " + expertQueries[i].Split('~')[2] + "='" + expertQueries[i].Split('~')[3] + "'", Operation.Conn);
+                                    newCode = Convert.ToInt32(dtMax.Rows[0]["Code"]) + j;
                                 }
+                                else
+                                {
+                                    newCode = 100000 + j;
+                                }
+                                oldCode = Convert.ToInt32(iRow["Code"]);
+                                var dtACTUse = Operation.GetDataTable("select * from [Order.ACT] where [Group]='" + iRow["Code"] + "'", Operation.Conn);
+                                if (dtACTUse != null && dtACTUse.Rows.Count > 0)
+                                {
+                                    foreach (DataRow drACT in dtACTUse.Rows)
+                                    {
+                                        strQueries.Add("Update [Order.ACT] set [Group]='" + newCode + "' where RefId='" + drACT["RefId"].ToString() + "'");
+                                        foreach (DataRow pRow in dtACT.Rows)
+                                        {
+                                            if (pRow["Group"].ToString() == oldCode.ToString())
+                                            {
+                                                pRow["Group"] = newCode;
+                                            }
+                                        }
+                                    }
+                                }
+                                iRow["Code"] = newCode;
+                                strQueries.Add("Update [Order.Group] set Code = '" + newCode + "',OperationFlag=NULL where RefId='" + iRow["RefId"] + "'");
+                            }
+                            else
+                            {
+                                strQueries.Add("Update [Order.Group] set OperationFlag=NULL where RefId='" + iRow["RefId"] + "'");
+                            }
+                            expertQueries.Add(InsertUpdateQueries.GetQueriesForExpert("Order.Group", OperationTypes.INSERT, iRow, null, ClientCompanyId, tableColumns) + "~Order.Group~Code~" + iRow["Code"]);
+                        }
+
+                        #endregion
+
+                        #region PRODUCT VERIFICATION AND UPDATIONS
+
+                        dtProduct.DefaultView.RowFilter = "OperationFlag='I'";
+                        var dtInsertProduct = dtProduct.DefaultView.ToTable();
+                        tableColumns = GetTableColumns("Order.Product", false);
+                        j = 0;
+                        foreach (DataRow iRow in dtInsertProduct.Rows)
+                        {
+                            var dtcheckCode = GetDataFromExpert(expconn, "select * from Product where Code='" + iRow["Code"] + "' and Name <> '" + iRow["Name"] + "'");
+                            if (dtcheckCode.Rows.Count > 0)
+                            {
+                                j++;
+                                //This is a case where new entry has been done in expert and in web with same code but with different name
+                                var newCode = 100001;
+                                var oldCode = 0;
+                                var dtMax = GetDataFromExpert(expconn, "select * from Product order by Code desc");
+                                if (dtMax != null && dtMax.Rows.Count > 0)
+                                {
+                                    newCode = Convert.ToInt32(dtMax.Rows[0]["Code"]) + j;
+                                }
+                                else
+                                {
+                                    newCode = 100000 + j;
+                                }
+                                oldCode = Convert.ToInt32(iRow["Code"]);
+                                var dtOrderUse = Operation.GetDataTable("select * from [Order.Order2] where [Code]='" + iRow["Code"] + "'", Operation.Conn);
+                                if (dtOrderUse != null && dtOrderUse.Rows.Count > 0)
+                                {
+                                    foreach (DataRow drOrder in dtOrderUse.Rows)
+                                    {
+                                        strQueries.Add("Update [Order.Order2] set [Code]='" + newCode + "' where RefId='" + drOrder["RefId"].ToString() + "'");
+                                        foreach (DataRow pRow in dtOrder2.Rows)
+                                        {
+                                            if (pRow["Code"].ToString() == oldCode.ToString())
+                                            {
+                                                pRow["Code"] = newCode;
+                                            }
+                                        }
+                                    }
+                                }
+                                iRow["Code"] = newCode;
+                                strQueries.Add("Update [Order.Product] set Code = '" + newCode + "',OperationFlag=NULL where RefId='" + iRow["RefId"] + "'");
+                            }
+                            else
+                            {
+                                strQueries.Add("Update [Order.Product] set OperationFlag=NULL where RefId='" + iRow["RefId"] + "'");
+                            }
+                            expertQueries.Add(InsertUpdateQueries.GetQueriesForExpert("Order.Product", OperationTypes.INSERT, iRow, null, ClientCompanyId, tableColumns) + "~Order.Product~Code~" + iRow["Code"]);
+                        }
+
+                        #endregion
+
+                        #region ACT VERIFICATION AND UPDATIONS
+
+                        dtACT.DefaultView.RowFilter = "OperationFlag='I'";
+                        var dtInsertACT = dtACT.DefaultView.ToTable();
+                        j = 0;
+                        tableColumns = GetTableColumns("Order.ACT", false);
+                        foreach (DataRow iRow in dtInsertACT.Rows)
+                        {
+                            var dtcheckCode = GetDataFromExpert(expconn, "select * from ACT where Code='" + iRow["Code"] + "' and Name <> '" + iRow["Name"] + "'");
+                            if (dtcheckCode.Rows.Count > 0)
+                            {
+                                j++;
+                                //This is a case where new entry has been done in expert and in web with same code but with different name
+                                var newCode = 100001;
+                                var oldCode = 0;
+                                var dtMax = GetDataFromExpert(expconn, "select * from ACT order by Code desc");
+                                if (dtMax != null && dtMax.Rows.Count > 0)
+                                {
+                                    newCode = Convert.ToInt32(dtMax.Rows[0]["Code"]) + j;
+                                }
+                                else
+                                {
+                                    newCode = 100000 + j;
+                                }
+                                oldCode = Convert.ToInt32(iRow["Code"]);
+                                var dtOrderUse = Operation.GetDataTable("select * from [Order.Order] where [Code]='" + iRow["Code"] + "'", Operation.Conn);
+                                if (dtOrderUse != null && dtOrderUse.Rows.Count > 0)
+                                {
+                                    foreach (DataRow drOrder in dtOrderUse.Rows)
+                                    {
+                                        strQueries.Add("Update [Order.Order] set [Code]='" + newCode + "' where RefId='" + drOrder["RefId"].ToString() + "'");
+                                        foreach (DataRow pRow in dtOrder.Rows)
+                                        {
+                                            if (pRow["Code"].ToString() == oldCode.ToString())
+                                            {
+                                                pRow["Code"] = newCode;
+                                            }
+                                        }
+                                    }
+                                }
+                                iRow["Code"] = newCode;
+                                strQueries.Add("Update [Order.ACT] set Code = '" + newCode + "',OperationFlag=NULL where RefId='" + iRow["RefId"] + "'");
+                            }
+                            else
+                            {
+                                strQueries.Add("Update [Order.ACT] set OperationFlag=NULL where RefId='" + iRow["RefId"] + "'");
+                            }
+                            expertQueries.Add(InsertUpdateQueries.GetQueriesForExpert("Order.ACT", OperationTypes.INSERT, iRow, null, ClientCompanyId, tableColumns) + "~Order.ACT~Code~" + iRow["Code"]);
+                        }
+
+                        #endregion
+
+                        #region ORDER VERIFICATION AND UPDATIONS
+
+                        dtOrder.DefaultView.RowFilter = "OperationFlag='I'";
+                        var dtInsertOrder = dtOrder.DefaultView.ToTable();
+                        j = 0;
+                        tableColumns = GetTableColumns("Order.Order", false);
+                        var orderDetailColumns = GetTableColumns("Order.Order2", false);
+                        foreach (DataRow iRow in dtInsertOrder.Rows)
+                        {
+                            var dtcheckCode = GetDataFromExpert(expconn, "select * from Order where ORD_NO='" + iRow["ORD_NO"] + "'");
+                            var newORD_NO = 100001;
+                            var oldORD_NO = Convert.ToInt32(iRow["ORD_NO"]);
+                            if (dtcheckCode.Rows.Count > 0)
+                            {
+                                j++;
+                                //This is a case where new entry has been done in expert and in web with same code but with different name
+                                var dtMax = GetDataFromExpert(expconn, "select * from Order order by ORD_NO desc");
+                                if (dtMax != null && dtMax.Rows.Count > 0)
+                                {
+                                    newORD_NO = Convert.ToInt32(dtMax.Rows[0]["ORD_NO"]) + j;
+                                }
+                                else
+                                {
+                                    newORD_NO = j;
+                                }
+                                oldORD_NO = Convert.ToInt32(iRow["ORD_NO"]);
+                                iRow["ORD_NO"] = newORD_NO;
+                                strQueries.Add("Update [Order.Order] set ORD_NO = '" + newORD_NO + "',OperationFlag=NULL where RefId='" + iRow["RefId"] + "'");
+                            }
+                            else
+                            {
+                                strQueries.Add("Update [Order.Order] set OperationFlag=NULL where RefId='" + iRow["RefId"] + "'");
+                            }
+                            dtOrder2.DefaultView.RowFilter = "ORD_NO='" + oldORD_NO + "'";
+                            var dtOrderDetail = dtOrder2.DefaultView.ToTable();
+                            expertQueries.Add(InsertUpdateQueries.GetQueriesForExpert("Order.Order", OperationTypes.INSERT, iRow, null, ClientCompanyId, tableColumns) + "~Order.Order~ORD_NO~" + iRow["ORD_NO"]);
+                            foreach (DataRow detailRow in dtOrderDetail.Rows)
+                            {
+                                expertQueries.Add(InsertUpdateQueries.GetQueriesForExpert("Order.Order2", OperationTypes.INSERT, detailRow, null, ClientCompanyId, orderDetailColumns) + "~Order.Order2~ORD_NO~" + detailRow["ORD_NO"]);
+                                strQueries.Add("Update [Order.Order2] set OperationFlag=NULL where RefId='" + detailRow["RefId"] + "'");
                             }
                         }
+
+                        #endregion                        
+
+                        //foreach (string webTableName in tableNames)
+                        //{
+                        //    var expTableName = webTableName.Replace("Order.", "");
+                        //    List<string> tableColumns = GetTableColumns(webTableName, false);
+                        //    dtToInsertInExpert = Operation.GetDataTable("select * from [" + webTableName + "] where clientcompanyid=" + ClientCompanyId + " and OperationFlag is not null", Operation.Conn);
+
+                        //    for (var i = 0; i < dtToInsertInExpert.Rows.Count; i++)
+                        //    {
+                        //        if (dtToInsertInExpert.Rows[i]["OperationFlag"].ToString() == "I" && (expTableName == "ACT" || expTableName == "PGroup" || expTableName == "Group" || expTableName == "Product"))
+                        //        {
+                        //            var dtcheckCode = GetDataFromExpert(expconn, "select * from " + expTableName + " where Code='" + dtToInsertInExpert.Rows[i]["Code"] + "' and Name <> '" + dtToInsertInExpert.Rows[i]["Name"] + "'");
+                        //            if (dtcheckCode.Rows.Count > 0)
+                        //            {
+                        //                //This is a case where new entry has been done in expert and in web with same code but with different name
+                        //                var newCode = 100001;
+                        //                var oldCode = 0;
+                        //                var dtMax = GetDataFromExpert(expconn, "select * from " + expTableName + " order by Code desc");
+                        //                if (dtMax != null && dtMax.Rows.Count > 0)
+                        //                {
+                        //                    newCode = Convert.ToInt32(dtMax.Rows[0]["Code"]) + (i + 1);
+                        //                }
+                        //                else
+                        //                {
+                        //                    newCode = 100000 + (i + 1);
+                        //                }
+                        //                oldCode = Convert.ToInt32(dtToInsertInExpert.Rows[i]["Code"]);
+                        //                if (expTableName == "Group")
+                        //                {
+                        //                    var dtActUse = Operation.GetDataTable("select * from [Order.ACT] where [Group]='" + dtToInsertInExpert.Rows[i]["Code"] + "'", Operation.Conn);
+                        //                    if (dtActUse != null && dtActUse.Rows.Count > 0)
+                        //                    {
+                        //                        foreach (DataRow drAct in dtActUse.Rows)
+                        //                        {
+                        //                            strQueries.Add("Update [Order.ACT] set [Group]='" + newCode + "' where ClientCompanyId=" + ClientCompanyId + " and Code='" + drAct["Code"].ToString() + "'");
+                        //                        }
+                        //                    }
+                        //                }
+                        //                if (expTableName == "PGroup")
+                        //                {
+                        //                    var dtProductUse = Operation.GetDataTable("select * from [Order.Product] where [Group]='" + dtToInsertInExpert.Rows[i]["Code"] + "'", Operation.Conn);
+                        //                    if (dtProductUse != null && dtProductUse.Rows.Count > 0)
+                        //                    {
+                        //                        foreach (DataRow drProduct in dtProductUse.Rows)
+                        //                        {
+                        //                            strQueries.Add("Update [Order.Product] set [Group]='" + newCode + "' where ClientCompanyId=" + ClientCompanyId + " and Code='" + drProduct["Code"].ToString() + "'");
+                        //                        }
+                        //                    }
+                        //                }
+                        //                dtToInsertInExpert.Rows[i]["Code"] = newCode;
+                        //                strQueries.Add("Update [" + webTableName + "] set Code = '" + newCode + "',OperationFlag=NULL where ClientCompanyId=" + ClientCompanyId + " and Code='" + oldCode + "' and OperationFlag is not null");
+                        //            }
+                        //        }
+                        //        expertQueries.Add(InsertUpdateQueries.GetQueriesForExpert(webTableName, OperationTypes.INSERT, dtToInsertInExpert.Rows[i], null, ClientCompanyId, tableColumns) + "~" + webTableName + "~Code~" + dtToInsertInExpert.Rows[i]["Code"]);
+                        //    }
+
+                        //}
                         if (strQueries.Count > 5000)
                         {
                             Application.DoEvents();
@@ -344,18 +624,26 @@ namespace ExpertMobileOrderSystem
                         }
                         else
                         {
-                            Operation.ExecuteNonQuery(string.Join(";", strQueries.ToArray()), Operation.Conn);
+                            if (strQueries.Count != 0)
+                            {
+                                Operation.ExecuteNonQuery(string.Join(";", strQueries.ToArray()), Operation.Conn);
+                            }
                         }
+                        if (expertQueries.Count > 0)
+                        {
+                            for (var i = 0; i < expertQueries.Count; i++)
+                            {
+                                if (Operation.ExecuteNonQuery(expertQueries[i].Split('~')[0], expliveconn) > 0)
+                                {
+                                    //Operation.ExecuteNonQuery("Update [" + expertQueries[i].Split('~')[1] + "] set OperationFlag=NULL where ClientCompanyId=" + ClientCompanyId + " and " + expertQueries[i].Split('~')[2] + "='" + expertQueries[i].Split('~')[3] + "'", Operation.Conn);
+                                }
+                            }
+                        }
+
                         if (Operation.gotError == false)
                         {
                             Operation.writeLog("====================================================================" + Environment.NewLine + "Query execution Ends at: " + DateTime.Now.ToString("dd/MM/yyyy hh:mm:ss tt"), Operation.LogFile);
-                            List<string> tables = new List<string>();
-                            foreach (TableNames r in Enum.GetValues(typeof(TableNames)))
-                            {
-                                var tableName = r.ToString().Substring(2, r.ToString().Length - 2);
-                                tables.Add(tableName.ToString() + ".DBF");
-                            }
-                            CopyExpertToLocal(dr, string.Join(",", tables.ToArray()), UploadingExpertDir);
+                            CopyExpertToLocal(dr, string.Join(",", toBeMovedTablesOnSuccess.ToArray()), UploadingExpertDir);
                         }
                         else
                         {
@@ -400,7 +688,7 @@ namespace ExpertMobileOrderSystem
             return temp;
         }
 
-        private List<string> GetTableColumns(TableNames tableName, bool isFirstTime)
+        private List<string> GetTableColumns(string tableName, bool isFirstTime)
         {
             Operation.GetIniValue();
             List<string> columns = new List<string>();
@@ -417,7 +705,7 @@ namespace ExpertMobileOrderSystem
             return columns;
         }
 
-        private List<string> ReadColumnListFromFile(TableNames tableNames)
+        private List<string> ReadColumnListFromFile(string tableNames)
         {
             List<string> columns = new List<string>();
             var tableColumns = File.ReadAllText(Application.StartupPath + "\\Columns.txt").Split(';');
@@ -443,7 +731,7 @@ namespace ExpertMobileOrderSystem
             return columns;
         }
 
-        private List<string> GetColumnListFromServer(TableNames tableName)
+        private List<string> GetColumnListFromServer(string tableName)
         {
             List<string> columns = new List<string>();
             var dt = Operation.GetDataTable("SELECT *, Column_Name as Name,data_type as Type" +
@@ -475,13 +763,13 @@ namespace ExpertMobileOrderSystem
                     {
                         for (var i = 0; i < files.Length; i++)
                         {
-                            if (File.Exists(Application.StartupPath + "\\" + UploadingExpertDir + "\\" + files[i]))
+                            if (File.Exists(Application.StartupPath + "\\" + UploadingExpertDir + "\\" + files[i] + ".DBF"))
                             {
-                                File.Delete(Application.StartupPath + "\\" + UploadingExpertDir + "\\" + files[i]);
+                                File.Delete(Application.StartupPath + "\\" + UploadingExpertDir + "\\" + files[i] + ".DBF");
                             }
-                            if (File.Exists(dr["ExpertPath"].ToString() + "\\" + dr["CompanyCode"].ToString().Trim().PadLeft(3, '0') + "\\" + files[i]))
+                            if (File.Exists(dr["ExpertPath"].ToString() + "\\" + dr["CompanyCode"].ToString().Trim().PadLeft(3, '0') + "\\" + files[i] + ".DBF"))
                             {
-                                File.Copy(dr["ExpertPath"].ToString() + "\\" + dr["CompanyCode"].ToString().Trim().PadLeft(3, '0') + "\\" + files[i], Application.StartupPath + "\\" + UploadingExpertDir + "\\" + files[i], true);
+                                File.Copy(dr["ExpertPath"].ToString() + "\\" + dr["CompanyCode"].ToString().Trim().PadLeft(3, '0') + "\\" + files[i] + ".DBF", Application.StartupPath + "\\" + UploadingExpertDir + "\\" + files[i] + ".DBF", true);
                             }
                         }
                     }
