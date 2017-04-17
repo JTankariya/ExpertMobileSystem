@@ -31,80 +31,6 @@ namespace ExpertMobileOrderSystem
         private void frmMain_Load(object sender, EventArgs e)
         {
             toolUserInfo.Text = "Welcome " + Operation.currClient.UserName;
-            //try
-            //{
-            //    if (Operation.IsInternetOnorOff())
-            //    {
-            //        Operation.IsInternetExits = true;
-            //    }
-            //    else
-            //    {
-            //        Application.DoEvents();
-            //        while (!Operation.IsInternetExits == true)
-            //        {
-            //            Application.DoEvents();
-            //            if (Operation.IsInternetOnorOff())
-            //                Operation.IsInternetExits = true;
-            //            else
-            //                Operation.IsInternetExits = false;
-            //        }
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    Operation.writeLog("====================================================================" + Environment.NewLine + "Error Msg: " + ex.Message + Environment.NewLine + Environment.NewLine + "--------------------------------------------------------------------" + Environment.NewLine + "Error Stack : " + ex.StackTrace + Environment.NewLine + "====================================================================" + Environment.NewLine, Operation.ErrorLog);
-            //}
-
-            //Application.EnableVisualStyles();
-            //Operation.Conn = new SqlConnection(Operation.ConnStr);
-            //try
-            //{
-            //    string path = Application.StartupPath + "\\UserDetail.ini";
-            //    if (File.Exists(path))
-            //    {
-            //        string fileUserDetail = File.ReadAllText(path);
-            //        string fileUserDetailDecrypt = Operation.Decryptdata(fileUserDetail);
-            //        string[] lines = fileUserDetailDecrypt.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-            //        string[] hdd = lines[0].Split(':');
-            //        string[] mac = lines[1].Split(':');
-            //        string[] myuser = lines[2].Split(':');
-            //        string[] mypass = lines[3].Split(':');
-            //        string username = Operation.Decryptdata(myuser[1].ToString());
-            //        string pass = mypass[1].ToString();
-            //        string userHDD = HardwareInfo.GetHDDSerialNo().ToString();
-            //        string userMAC = HardwareInfo.GetMACAddress().ToString();
-            //        if (Operation.Decryptdata(hdd[1].ToString()).Contains(userHDD))
-            //        {
-            //            string str = "select * from [Order.ClientMaster] where UserName = '" + username + "' and Password = '" + pass.Trim() + "' ";
-            //            try
-            //            {
-            //                DataTable dt = Operation.GetDataTable(str, Operation.Conn);
-            //                if (dt.Rows.Count > 0)
-            //                {
-            //                    Operation.LogFile = Application.StartupPath + "\\LogFile.txt";
-            //                    Operation.Clientid = dt.Rows[0]["Clientid"].ToString();
-            //                    Operation.ClientUserName = dt.Rows[0]["Username"].ToString();
-            //                    new frmUserLogin().SetCompanyInfo(dt);
-            //                    Operation.CurrentDate = Operation.GetNetworkTime();
-            //                }
-            //                else
-            //                {
-            //                    this.Hide();
-            //                }
-            //            }
-            //            catch (Exception ex)
-            //            {
-            //                Operation.writeLog("====================================================================" + Environment.NewLine + "Error Msg: " + ex.Message + Environment.NewLine + Environment.NewLine + "--------------------------------------------------------------------" + Environment.NewLine + "Error Stack : " + ex.StackTrace + Environment.NewLine + "====================================================================" + Environment.NewLine, Operation.ErrorLog);
-            //                return;
-            //            }
-            //        }
-            //    }
-
-            //}
-            //catch
-            //{
-
-            //}
         }
 
         private void btnSync_Click(object sender, EventArgs e)
@@ -286,11 +212,10 @@ namespace ExpertMobileOrderSystem
                         var dtGroup = Operation.GetDataTable("select * from [Order.Group] where clientcompanyid=" + ClientCompanyId + " and OperationFlag is not null", Operation.Conn);
                         var dtPGroup = Operation.GetDataTable("select * from [Order.PGroup] where clientcompanyid=" + ClientCompanyId + " and OperationFlag is not null", Operation.Conn);
                         var dtProduct = Operation.GetDataTable("select * from [Order.Product] where clientcompanyid=" + ClientCompanyId + " and OperationFlag is not null", Operation.Conn);
+                        var dtBatch = Operation.GetDataTable("select * from [Order.Batch] where clientcompanyid=" + ClientCompanyId + " and OperationFlag is not null", Operation.Conn);
                         var dtACT = Operation.GetDataTable("select * from [Order.ACT] where clientcompanyid=" + ClientCompanyId + " and OperationFlag is not null", Operation.Conn);
                         var dtOrder = Operation.GetDataTable("select * from [Order.Order] where clientcompanyid=" + ClientCompanyId + " and OperationFlag is not null", Operation.Conn);
                         var dtOrder2 = Operation.GetDataTable("select * from [Order.Order2] where clientcompanyid=" + ClientCompanyId + " and OperationFlag is not null", Operation.Conn);
-                        //var dtRate = Operation.GetDataTable("select * from [Order.Rate] where clientcompanyid=" + ClientCompanyId + " and OperationFlag is not null", Operation.Conn);
-                        //var dtRate2 = Operation.GetDataTable("select * from [Order.Rate2] where clientcompanyid=" + ClientCompanyId + " and OperationFlag is not null", Operation.Conn);
 
                         #region PGROUP VERIFICATION AND UPDATIONS
 
@@ -342,6 +267,13 @@ namespace ExpertMobileOrderSystem
                             expertQueries.Add(InsertUpdateQueries.GetQueriesForExpert("Order.PGroup", OperationTypes.INSERT, iRow, null, ClientCompanyId, tableColumns) + "~Order.PGroup~Code~" + iRow["Code"]);
 
                         }
+                        //dtPGroup.DefaultView.RowFilter = "OperationFlag='U'";
+                        //var dtUpdatePGroup = dtPGroup.DefaultView.ToTable();
+                        //foreach (DataRow iRow in dtUpdatePGroup.Rows)
+                        //{
+                        //    expertQueries.Add(InsertUpdateQueries.GetQueriesForExpert("Order.PGroup", OperationTypes.UPDATE, iRow, iRow, ClientCompanyId, tableColumns) + "~Order.PGroup~Code~" + iRow["Code"]);
+                        //    strQueries.Add("Update [Order.PGroup] set OperationFlag=NULL where RefId='" + iRow["RefId"] + "'");
+                        //}
 
                         #endregion
 
@@ -394,6 +326,13 @@ namespace ExpertMobileOrderSystem
                             }
                             expertQueries.Add(InsertUpdateQueries.GetQueriesForExpert("Order.Group", OperationTypes.INSERT, iRow, null, ClientCompanyId, tableColumns) + "~Order.Group~Code~" + iRow["Code"]);
                         }
+                        //dtGroup.DefaultView.RowFilter = "OperationFlag='U'";
+                        //var dtUpdateGroup = dtGroup.DefaultView.ToTable();
+                        //foreach (DataRow iRow in dtInsertGroup.Rows)
+                        //{
+                        //    expertQueries.Add(InsertUpdateQueries.GetQueriesForExpert("Order.Group", OperationTypes.UPDATE, iRow, null, ClientCompanyId, tableColumns) + "~Order.Group~Code~" + iRow["Code"]);
+                        //    strQueries.Add("Update [Order.Group] set OperationFlag=NULL where RefId='" + iRow["RefId"] + "'");
+                        //}
 
                         #endregion
 
@@ -445,6 +384,58 @@ namespace ExpertMobileOrderSystem
                                 strQueries.Add("Update [Order.Product] set OperationFlag=NULL where RefId='" + iRow["RefId"] + "'");
                             }
                             expertQueries.Add(InsertUpdateQueries.GetQueriesForExpert("Order.Product", OperationTypes.INSERT, iRow, null, ClientCompanyId, tableColumns) + "~Order.Product~Code~" + iRow["Code"]);
+                        }
+
+                        #endregion
+
+                        #region BATCH VERIFICATION AND UPDATIONS
+
+                        dtBatch.DefaultView.RowFilter = "OperationFlag='I'";
+                        var dtInsertBatch = dtBatch.DefaultView.ToTable();
+                        tableColumns = GetTableColumns("Order.Batch", false);
+                        j = 0;
+                        foreach (DataRow iRow in dtInsertBatch.Rows)
+                        {
+                            var dtcheckCode = GetDataFromExpert(expconn, "select * from [Order.Batch] where Code='" + iRow["Code"] + "' and BatchNo <> '" + iRow["BatchNo"] + "'");
+                            if (dtcheckCode.Rows.Count > 0)
+                            {
+                                j++;
+                                //This is a case where new entry has been done in expert and in web with same code but with different name
+                                var newCode = 100001;
+                                var oldCode = 0;
+                                var dtMax = GetDataFromExpert(expconn, "select * from [Order.Bacth] order by Code desc");
+                                if (dtMax != null && dtMax.Rows.Count > 0)
+                                {
+                                    newCode = Convert.ToInt32(dtMax.Rows[0]["Code"]) + j;
+                                }
+                                else
+                                {
+                                    newCode = 100000 + j;
+                                }
+                                oldCode = Convert.ToInt32(iRow["Code"]);
+                                var dtOrderUse = Operation.GetDataTable("select * from [Order.Order2] where [BatchNo]='" + iRow["BatchNo"] + "'", Operation.Conn);
+                                if (dtOrderUse != null && dtOrderUse.Rows.Count > 0)
+                                {
+                                    foreach (DataRow drOrder in dtOrderUse.Rows)
+                                    {
+                                        strQueries.Add("Update [Order.Order2] set [BatchNo]='" + newCode + "' where RefId='" + drOrder["RefId"].ToString() + "'");
+                                        foreach (DataRow pRow in dtOrder2.Rows)
+                                        {
+                                            if (pRow["BatchNo"].ToString() == oldCode.ToString())
+                                            {
+                                                pRow["BatchNo"] = newCode;
+                                            }
+                                        }
+                                    }
+                                }
+                                iRow["BatchNo"] = newCode;
+                                strQueries.Add("Update [Order.Batch] set BatchNo = '" + newCode + "',OperationFlag=NULL where RefId='" + iRow["RefId"] + "'");
+                            }
+                            else
+                            {
+                                strQueries.Add("Update [Order.Batch] set OperationFlag=NULL where RefId='" + iRow["RefId"] + "'");
+                            }
+                            expertQueries.Add(InsertUpdateQueries.GetQueriesForExpert("Order.Batch", OperationTypes.INSERT, iRow, null, ClientCompanyId, tableColumns) + "~Order.Batch~Code~" + iRow["Code"]);
                         }
 
                         #endregion
@@ -510,14 +501,14 @@ namespace ExpertMobileOrderSystem
                         var orderDetailColumns = GetTableColumns("Order.Order2", false);
                         foreach (DataRow iRow in dtInsertOrder.Rows)
                         {
-                            var dtcheckCode = GetDataFromExpert(expconn, "select * from Order where ORD_NO='" + iRow["ORD_NO"] + "'");
+                            var dtcheckCode = GetDataFromExpert(expconn, "select * from [Order.Order] where ORD_NO='" + iRow["ORD_NO"] + "'");
                             var newORD_NO = 100001;
                             var oldORD_NO = Convert.ToInt32(iRow["ORD_NO"]);
                             if (dtcheckCode.Rows.Count > 0)
                             {
                                 j++;
                                 //This is a case where new entry has been done in expert and in web with same code but with different name
-                                var dtMax = GetDataFromExpert(expconn, "select * from Order order by ORD_NO desc");
+                                var dtMax = GetDataFromExpert(expconn, "select * from [Order.Order] order by ORD_NO desc");
                                 if (dtMax != null && dtMax.Rows.Count > 0)
                                 {
                                     newORD_NO = Convert.ToInt32(dtMax.Rows[0]["ORD_NO"]) + j;
@@ -544,64 +535,9 @@ namespace ExpertMobileOrderSystem
                             }
                         }
 
-                        #endregion                        
+                        #endregion
 
-                        //foreach (string webTableName in tableNames)
-                        //{
-                        //    var expTableName = webTableName.Replace("Order.", "");
-                        //    List<string> tableColumns = GetTableColumns(webTableName, false);
-                        //    dtToInsertInExpert = Operation.GetDataTable("select * from [" + webTableName + "] where clientcompanyid=" + ClientCompanyId + " and OperationFlag is not null", Operation.Conn);
 
-                        //    for (var i = 0; i < dtToInsertInExpert.Rows.Count; i++)
-                        //    {
-                        //        if (dtToInsertInExpert.Rows[i]["OperationFlag"].ToString() == "I" && (expTableName == "ACT" || expTableName == "PGroup" || expTableName == "Group" || expTableName == "Product"))
-                        //        {
-                        //            var dtcheckCode = GetDataFromExpert(expconn, "select * from " + expTableName + " where Code='" + dtToInsertInExpert.Rows[i]["Code"] + "' and Name <> '" + dtToInsertInExpert.Rows[i]["Name"] + "'");
-                        //            if (dtcheckCode.Rows.Count > 0)
-                        //            {
-                        //                //This is a case where new entry has been done in expert and in web with same code but with different name
-                        //                var newCode = 100001;
-                        //                var oldCode = 0;
-                        //                var dtMax = GetDataFromExpert(expconn, "select * from " + expTableName + " order by Code desc");
-                        //                if (dtMax != null && dtMax.Rows.Count > 0)
-                        //                {
-                        //                    newCode = Convert.ToInt32(dtMax.Rows[0]["Code"]) + (i + 1);
-                        //                }
-                        //                else
-                        //                {
-                        //                    newCode = 100000 + (i + 1);
-                        //                }
-                        //                oldCode = Convert.ToInt32(dtToInsertInExpert.Rows[i]["Code"]);
-                        //                if (expTableName == "Group")
-                        //                {
-                        //                    var dtActUse = Operation.GetDataTable("select * from [Order.ACT] where [Group]='" + dtToInsertInExpert.Rows[i]["Code"] + "'", Operation.Conn);
-                        //                    if (dtActUse != null && dtActUse.Rows.Count > 0)
-                        //                    {
-                        //                        foreach (DataRow drAct in dtActUse.Rows)
-                        //                        {
-                        //                            strQueries.Add("Update [Order.ACT] set [Group]='" + newCode + "' where ClientCompanyId=" + ClientCompanyId + " and Code='" + drAct["Code"].ToString() + "'");
-                        //                        }
-                        //                    }
-                        //                }
-                        //                if (expTableName == "PGroup")
-                        //                {
-                        //                    var dtProductUse = Operation.GetDataTable("select * from [Order.Product] where [Group]='" + dtToInsertInExpert.Rows[i]["Code"] + "'", Operation.Conn);
-                        //                    if (dtProductUse != null && dtProductUse.Rows.Count > 0)
-                        //                    {
-                        //                        foreach (DataRow drProduct in dtProductUse.Rows)
-                        //                        {
-                        //                            strQueries.Add("Update [Order.Product] set [Group]='" + newCode + "' where ClientCompanyId=" + ClientCompanyId + " and Code='" + drProduct["Code"].ToString() + "'");
-                        //                        }
-                        //                    }
-                        //                }
-                        //                dtToInsertInExpert.Rows[i]["Code"] = newCode;
-                        //                strQueries.Add("Update [" + webTableName + "] set Code = '" + newCode + "',OperationFlag=NULL where ClientCompanyId=" + ClientCompanyId + " and Code='" + oldCode + "' and OperationFlag is not null");
-                        //            }
-                        //        }
-                        //        expertQueries.Add(InsertUpdateQueries.GetQueriesForExpert(webTableName, OperationTypes.INSERT, dtToInsertInExpert.Rows[i], null, ClientCompanyId, tableColumns) + "~" + webTableName + "~Code~" + dtToInsertInExpert.Rows[i]["Code"]);
-                        //    }
-
-                        //}
                         if (strQueries.Count > 5000)
                         {
                             Application.DoEvents();
@@ -940,7 +876,7 @@ namespace ExpertMobileOrderSystem
                 case TableNames.OrderRate:
                     changed = (from table1 in dtLocal.AsEnumerable()
                                join table2 in dtExpert.AsEnumerable() on table1.Field<string>("Link") equals table2.Field<string>("Link")
-                               where table1.Field<string>("Link") != table2.Field<string>("Link") || table1.Field<string>("Name") != table2.Field<string>("Name") || table1.Field<DateTime>("FDate") != table2.Field<DateTime>("FDate") || table1.Field<DateTime>("TDate") != table2.Field<DateTime>("TDate")
+                               where table1.Field<string>("Link") != table2.Field<string>("Link") || table1.Field<string>("Name") != table2.Field<string>("Name") || table1.Field<DateTime?>("FDate") != table2.Field<DateTime?>("FDate") || table1.Field<DateTime?>("TDate") != table2.Field<DateTime?>("TDate")
                                select table1);
 
                     if (changed != null && changed.Count() > 0)
@@ -948,7 +884,7 @@ namespace ExpertMobileOrderSystem
 
                     unchanged = (from table2 in dtExpert.AsEnumerable()
                                  join table1 in dtLocal.AsEnumerable() on table2.Field<string>("Link") equals table1.Field<string>("Link")
-                                 where table1.Field<string>("Link") != table2.Field<string>("Link") || table1.Field<string>("Name") != table2.Field<string>("Name") || table1.Field<DateTime>("FDate") != table2.Field<DateTime>("FDate") || table1.Field<DateTime>("TDate") != table2.Field<DateTime>("TDate")
+                                 where table1.Field<string>("Link") != table2.Field<string>("Link") || table1.Field<string>("Name") != table2.Field<string>("Name") || table1.Field<DateTime?>("FDate") != table2.Field<DateTime?>("FDate") || table1.Field<DateTime?>("TDate") != table2.Field<DateTime?>("TDate")
                                  select table2);
 
                     if (unchanged != null && unchanged.Count() > 0)
@@ -980,7 +916,7 @@ namespace ExpertMobileOrderSystem
                 case TableNames.OrderRate2:
                     changed = (from table1 in dtLocal.AsEnumerable()
                                join table2 in dtExpert.AsEnumerable() on table1.Field<string>("Link") equals table2.Field<string>("Link")
-                               where table1.Field<string>("Link") != table2.Field<string>("Link") || table1.Field<string>("Code") != table2.Field<string>("Code") || table1.Field<string>("BatchNo") != table2.Field<string>("BatchNo") || table1.Field<string>("SL_Rate") != table2.Field<string>("SL_Rate") || table1.Field<string>("Remarks") != table2.Field<string>("Remarks") || table1.Field<decimal>("IT_Desc") != table2.Field<decimal>("IT_Desc") || table1.Field<decimal>("IT_Tax") != table2.Field<decimal>("IT_Tax") || table1.Field<decimal>("IT_OC") != table2.Field<decimal>("IT_OC") || table1.Field<string>("DSLab") != table2.Field<string>("DSLab")
+                               where table1.Field<string>("Link") != table2.Field<string>("Link") || table1.Field<string>("Code") != table2.Field<string>("Code") || table1.Field<string>("BatchNo") != table2.Field<string>("BatchNo") || table1.Field<decimal>("SL_Rate") != table2.Field<decimal>("SL_Rate") || table1.Field<string>("Remarks") != table2.Field<string>("Remarks") || table1.Field<decimal>("IT_Desc") != table2.Field<decimal>("IT_Desc") || table1.Field<decimal>("IT_Tax") != table2.Field<decimal>("IT_Tax") || table1.Field<decimal>("IT_OC") != table2.Field<decimal>("IT_OC")
                                select table1);
 
                     if (changed != null && changed.Count() > 0)
@@ -988,7 +924,7 @@ namespace ExpertMobileOrderSystem
 
                     unchanged = (from table2 in dtExpert.AsEnumerable()
                                  join table1 in dtLocal.AsEnumerable() on table2.Field<string>("Link") equals table1.Field<string>("Link")
-                                 where table1.Field<string>("Link") != table2.Field<string>("Link") || table1.Field<string>("Code") != table2.Field<string>("Code") || table1.Field<string>("BatchNo") != table2.Field<string>("BatchNo") || table1.Field<string>("SL_Rate") != table2.Field<string>("SL_Rate") || table1.Field<string>("Remarks") != table2.Field<string>("Remarks") || table1.Field<decimal>("IT_Desc") != table2.Field<decimal>("IT_Desc") || table1.Field<decimal>("IT_Tax") != table2.Field<decimal>("IT_Tax") || table1.Field<decimal>("IT_OC") != table2.Field<decimal>("IT_OC") || table1.Field<string>("DSLab") != table2.Field<string>("DSLab")
+                                 where table1.Field<string>("Link") != table2.Field<string>("Link") || table1.Field<string>("Code") != table2.Field<string>("Code") || table1.Field<string>("BatchNo") != table2.Field<string>("BatchNo") || table1.Field<decimal>("SL_Rate") != table2.Field<decimal>("SL_Rate") || table1.Field<string>("Remarks") != table2.Field<string>("Remarks") || table1.Field<decimal>("IT_Desc") != table2.Field<decimal>("IT_Desc") || table1.Field<decimal>("IT_Tax") != table2.Field<decimal>("IT_Tax") || table1.Field<decimal>("IT_OC") != table2.Field<decimal>("IT_OC")
                                  select table2);
 
                     if (unchanged != null && unchanged.Count() > 0)
@@ -1020,8 +956,15 @@ namespace ExpertMobileOrderSystem
 
         private void btnEmployees_Click(object sender, EventArgs e)
         {
-            frmUserMaster user = new frmUserMaster();
-            user.ShowDialog();
+            if (Operation.currClient.NoOfAccessUsers <= Operation.currClient.TotalCreatedUser)
+            {
+                MessageBox.Show("You have Created Maximum Number Of User.\n To Add More user Please Contact Administrator.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                frmUserMaster user = new frmUserMaster();
+                user.ShowDialog();
+            }            
         }
 
         private void btnCompanies_Click(object sender, EventArgs e)
@@ -1080,12 +1023,39 @@ namespace ExpertMobileOrderSystem
 
         private void btnCustomers_Click(object sender, EventArgs e)
         {
-            frmCustomerMaster customer = new frmCustomerMaster();
-            customer.ShowDialog();
+            if (Operation.currClient.BillableCompanies == null || Operation.currClient.BillableCompanies.Count == 0)
+            {
+                MessageBox.Show("Please select you companies first from company setup master", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            }
+            else
+            {
+                if (Operation.currClient.NoOfAccessUsers <= Operation.currClient.TotalCreatedUser)
+                {
+                    MessageBox.Show("You have Created Maximum Number Of User.\n To Add More user Please Contact Administrator.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    frmCustomerMaster customer = new frmCustomerMaster();
+                    customer.ShowDialog();
+                }
+            }
+
         }
 
         private void notifyIcon1_DoubleClick(object sender, EventArgs e)
         {
+            this.WindowState = FormWindowState.Normal;
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+        }
+
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.Show();
             this.WindowState = FormWindowState.Normal;
         }
     }

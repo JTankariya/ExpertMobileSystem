@@ -132,7 +132,7 @@ namespace ExpertMobileOrderSystem.Classes
                 columnNames = columnNames.TrimEnd(',');
                 columnValues = columnValues.TrimEnd(',');
 
-                return "INSERT INTO " + tableName.ToString().Replace("Order.", "") + "(" + columnNames + ") VALUES (" + columnValues + ")";
+                return "INSERT INTO [" + tableName.ToString().Replace("Order.", "") + "](" + columnNames + ") VALUES (" + columnValues + ")";
             }
             #endregion
             else
@@ -147,17 +147,17 @@ namespace ExpertMobileOrderSystem.Classes
                         if (operationType == OperationTypes.UPDATE)
                         {
                             var strQuery = GetUpdateQuery(columns, drNew, ClientCompanyId);
-                            return "UPDATE [dbo].[" + tableName.ToString().Substring(2, tableName.ToString().Length - 2) + "] SET " + strQuery + " WHERE ClientCompanyId=" + ClientCompanyId + " and " + (!string.IsNullOrEmpty(Convert.ToString(drOld["Code"])) ? "Code='" + Convert.ToString(drOld["Code"]) + "'" : "IsNull(Code,'')=''");
+                            return "UPDATE [dbo].[" + tableName.Replace("Order.", "") + "] SET " + strQuery + " WHERE ClientCompanyId=" + ClientCompanyId + " and " + (!string.IsNullOrEmpty(Convert.ToString(drOld["Code"])) ? "Code='" + Convert.ToString(drOld["Code"]) + "'" : "IsNull(Code,'')=''");
                         }
                         else if (operationType == OperationTypes.DELETE)
                         {
                             if (drOld != null)
                             {
-                                return "Delete from [" + tableName.ToString().Substring(2, tableName.ToString().Length - 2) + "] where ClientCompanyId=" + ClientCompanyId + " and " + (!string.IsNullOrEmpty(Convert.ToString(drOld["Code"])) ? "Code='" + Convert.ToString(drOld["Code"]) + "'" : "IsNull(Code,'')=''");
+                                return "Delete from [" + tableName.Replace("Order.", "") + "] where ClientCompanyId=" + ClientCompanyId + " and " + (!string.IsNullOrEmpty(Convert.ToString(drOld["Code"])) ? "Code='" + Convert.ToString(drOld["Code"]) + "'" : "IsNull(Code,'')=''");
                             }
                             else
                             {
-                                return "Delete from [" + tableName.ToString().Substring(2, tableName.ToString().Length - 2) + "] where ClientCompanyId=" + ClientCompanyId;
+                                return "Delete from [" + tableName.Replace("Order.", "") + "] where ClientCompanyId=" + ClientCompanyId;
                             }
                         }
                         break;
@@ -178,6 +178,30 @@ namespace ExpertMobileOrderSystem.Classes
                     strQuery += "[ClientCompanyID]=" + ClientCompanyId + ",";
                 }
                 else if (columns[i].Split('(')[0].ToString().ToUpper() != "REFID")
+                {
+                    if (drNew[columns[i].Split('(')[0]].GetType() == typeof(Boolean))
+                    {
+                        strQuery += "[" + columns[i].Split('(')[0] + "]='" + (Convert.ToBoolean(drNew[columns[i].Split('(')[0]]) ? "1" : "0") + "',";
+                    }
+                    else if (drNew[columns[i].Split('(')[0]].GetType() == typeof(DateTime))
+                    {
+                        strQuery += "[" + columns[i].Split('(')[0] + "]='" + Convert.ToDateTime(drNew[columns[i].Split('(')[0]]).ToString("yyyy-MM-dd") + "',";
+                    }
+                    else
+                    {
+                        strQuery += "[" + columns[i].Split('(')[0] + "]='" + Operation.EscapeLikeValue(Convert.ToString(drNew[columns[i].Split('(')[0]])) + "',";
+                    }
+                }
+            }
+            strQuery = strQuery.TrimEnd(',');
+            return strQuery;
+        }
+        private static string GetExpertUpdateQuery(List<string> columns, DataRow drNew, int ClientCompanyId)
+        {
+            var strQuery = "";
+            for (var i = 0; i < columns.Count; i++)
+            {
+                if (columns[i].Split('(')[0].ToString().ToUpper() != "CLIENTCOMPANYID" && columns[i].Split('(')[0].ToString().ToUpper() != "OPERATIONFLAG" && columns[i].Split('(')[0].ToString().ToUpper() != "REFID")
                 {
                     if (drNew[columns[i].Split('(')[0]].GetType() == typeof(Boolean))
                     {

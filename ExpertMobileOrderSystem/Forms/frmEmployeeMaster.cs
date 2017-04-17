@@ -75,19 +75,8 @@ namespace ExpertMobileOrderSystem
             if (Loaded == false)
             {
                 btnAdd_Click(sender, e);
-                CheckMaximumUser();
                 Loaded = true;
             }
-
-        }
-        private bool CheckMaximumUser()
-        {
-            if (Operation.currClient.NoOfAccessUsers <= Operation.currClient.TotalCreatedUser)
-            {
-                MessageBox.Show("You have Created Maximum Number Of User.\n To Add More user Please Contact Administrator.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-            return true;
         }
 
         private void frmPartymaster_KeyDown(object sender, KeyEventArgs e)
@@ -109,14 +98,6 @@ namespace ExpertMobileOrderSystem
         }
         private bool Validate_form()
         {
-            if (lblid.Text == "0")
-            {
-                if (!CheckMaximumUser())
-                {
-                    return false;
-                }
-            }
-
             if (txtFirstname.Text == "")
             {
                 MessageBox.Show("Please Enter First Name.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -163,6 +144,18 @@ namespace ExpertMobileOrderSystem
                 return false;
 
             }
+            var qu = "select * from [Order.ClientUserMaster] where UserName='" + txtUserName.Text.Trim() + "'";
+            if (lblid.Text != "0")
+            {
+                qu += " and Id<>" + lblid.Text;
+            }
+            DataTable dtUsers = Operation.GetDataTable(qu, Operation.Conn);
+            if (dtUsers != null && dtUsers.Rows.Count > 0)
+            {
+                MessageBox.Show("Username is already exist, Please enter another username.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtUserName.Focus();
+                return false;
+            }
             return true;
         }
         private void btnAdd_Click(object sender, EventArgs e)
@@ -178,29 +171,6 @@ namespace ExpertMobileOrderSystem
             btnDelete.Enabled = false;
         }
 
-        private bool IncreaseCreatedUserCount()
-        {
-            ArrayList IncreaseQ = new ArrayList();
-            Operation.currClient.TotalCreatedUser += 1;
-
-            IncreaseQ.Add("update [Order.ClientMaster] set TotalCreatedUser = " + Operation.currClient.TotalCreatedUser + " where ClientID = " + Operation.currClient.Id + "");
-            if (!Operation.ExecuteTransaction(IncreaseQ, Operation.Conn))
-                return false;
-            else
-                return true;
-        }
-        private bool DecreaseCreatedUserCount()
-        {
-
-            ArrayList DecreaseQ = new ArrayList();
-            Operation.currClient.TotalCreatedUser -= 1;
-
-            DecreaseQ.Add("update [Order.ClientMaster] set TotalCreatedUser = " + Operation.currClient.TotalCreatedUser + " where ClientID = " + Operation.currClient.Id + "");
-            if (!Operation.ExecuteTransaction(DecreaseQ, Operation.Conn))
-                return false;
-            else
-                return true;
-        }
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (!Validate_form())
@@ -213,6 +183,7 @@ namespace ExpertMobileOrderSystem
                 {
                     Queries.Add("Insert into [Order.ClientUserMaster] ( Clientid ,Password,MobileNo,FirstName,LastName,AccountExpiredOn,CreatedDate,UserTypeId,UserName ) " +
                         "values(" + Operation.currClient.Id + ",'" + Operation.Encryptdata(txtPassword.Text) + "','" + txtmobile.Text + "','" + txtFirstname.Text + "','" + txtLastname.Text + "','" + dtpdate.Value.ToString("yyyy-MM-dd") + "','" + DateTime.Today.ToString("yyyy-MM-dd") + "'," + UserTypes.DISTRIBUTOR + ",'" + txtUserName.Text + "')");
+                    Queries.Add("update [Order.ClientMaster] set TotalCreatedUser = " + (Operation.currClient.TotalCreatedUser + 1) + " where ID = " + Operation.currClient.Id);
                 }
                 else
                 {
@@ -222,9 +193,7 @@ namespace ExpertMobileOrderSystem
                 if (Operation.ExecuteTransaction(Queries, Operation.Conn))
                 {
                     MessageBox.Show("Record Saved Succeessfully.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    if (lblid.Text == "0")
-                        IncreaseCreatedUserCount();
-                    CheckMaximumUser();
+                    Operation.currClient.Refresh();
                     btnAdd_Click(sender, e);
                 }
                 else
@@ -250,7 +219,7 @@ namespace ExpertMobileOrderSystem
         private void fillgrid()
         {
             frmSearch view = new frmSearch();
-            Operation.gViewQuery = "select Clientid,CreatedDate,FirstName, LastName, MobileNo, AccountExpiredOn from [Order.ClientUserMaster] where ClientId = " + Operation.currClient.Id + "";
+            Operation.gViewQuery = "select Clientid,CreatedDate,FirstName, LastName, MobileNo, AccountExpiredOn from [Order.ClientUserMaster] where ClientId = " + Operation.currClient.Id + " and PartyCode is null";
             Operation.Bindgrid(Operation.gViewQuery, view.dgvSearch);
             view.dgvSearch.Columns[0].Visible = false;
             view.OrderByColoumn = "CreatedDate";
@@ -273,7 +242,7 @@ namespace ExpertMobileOrderSystem
             {
                 if (dt.Rows.Count > 0)
                 {
-                    lblid.Text = dt.Rows[0]["ClientID"].ToString();
+                    lblid.Text = dt.Rows[0]["Id"].ToString();
                     txtmobile.Text = dt.Rows[0]["MobileNo"].ToString();
                     txtFirstname.Text = dt.Rows[0]["FirstName"].ToString();
                     txtUserName.Text = dt.Rows[0]["UserName"].ToString();
@@ -303,8 +272,7 @@ namespace ExpertMobileOrderSystem
                 string query = null;
                 query = "Delete from [Order.ClientUserMaster] where ClientID= " + lblid.Text.Trim();
                 Operation.ExecuteNonQuery(query, Operation.Conn);
-                DecreaseCreatedUserCount();
-                CheckMaximumUser();
+                Operation.ExecuteNonQuery("update [Order.ClientMaster] set TotalCreatedUser = " + (Operation.currClient.TotalCreatedUser - 1) + " where ID = " + Operation.currClient.Id, Operation.Conn);
                 MessageBox.Show("Record Deleted Succeessfully.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
                 lblid.Text = "0";
                 btnAdd_Click(sender, e);

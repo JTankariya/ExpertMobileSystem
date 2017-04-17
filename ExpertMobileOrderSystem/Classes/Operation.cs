@@ -23,8 +23,8 @@ namespace ExpertMobileOrderSystem
         public static Form lastScreen;
         public static string IniFile = "ExpertUploadSettings.ini";
         public static string DBFIniFile = "Database.ini";
-        //public static string ConnStr = @"server=208.91.198.59;user id=mehul;password=mitesh@8277_;database=ExpertMobile;persist security info=True";
-        public static string ConnStr = @"server=DESKTOP-GS5OJK2\SQLEXPRESS;database=ExpertMobile21012017;Integrated Security=True";
+        public static string ConnStr = @"server=208.91.198.59;user id=mehul;password=mitesh@8277_;database=ExpertOrderSystem;persist security info=True";
+        //public static string ConnStr = @"server=DESKTOP-GS5OJK2\SQLEXPRESS;database=ExpertMobile21012017;Integrated Security=True";
         public static string LogFile = "Logfile.ini";
         public static string ErrorLog = "ErrorLog.txt";
         public static Boolean IsInternetExits = false;

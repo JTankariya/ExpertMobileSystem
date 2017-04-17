@@ -107,9 +107,6 @@ namespace ExpertMobileOrderSystem
                 {
                     ExpertMobileOrderSystem.Operation.CloseSplash();
                     MessageBox.Show("UserName or Password is not Correct, Please Try Again", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                    string Authentication;//TO SOLVE:authentication with old password no longer supported, use 4.1 style passwords.
-                    Authentication = "SET SESSION old_passwords=0; \n SET PASSWORD=PASSWORD('dms@1001_');";
-                    Operation.ExecuteNonQuery(Authentication, Operation.Conn);
                     txtUserName.Focus();
                     return;
                 }

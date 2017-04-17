@@ -215,12 +215,12 @@ namespace ExpertMobileOrderSystem
                         Queries.Add("update  [Order.ClientCompanyMaster] set  CompanyName='" + txtcompname.Text + "',CompanyFromDate='" + dtpfromdate.Value.ToString("yyyy-MM-dd") + "',CompanyToDate='" + dtptodate.Value.ToString("yyyy-MM-dd") + "'" +
                         ",CompanyAdd1='" + txtadd1.Text + "',CompanyAdd2='" + txtadd2.Text + "',CompanyAdd3='" + txtadd3.Text + "',CompanyAdd4='" + txtadd4.Text + "' " +
                             ",CompanyPhone='" + txtcompphone.Text + "', CompanyMobileNo='" + txtcompmobile.Text + "', CompanyEmail='" + txtcompemail.Text + "', CompanyWebsite='" + txtwebsite.Text + "', CompanyVAT='" + txtcompVAT.Text + "', CompanyCST='" + txtcompCST.Text + "', CompanyITNO='" + txtcompITNO.Text + "', CompanyLICNO='" + txtcompLICNO.Text + "'" +
-                            ", CompanyTANNO='" + txtTANNO.Text + "', CompanyAuthorised='" + txtCompAutho.Text + "', CompanyRemarks='" + txtremark.Text + "', ExpertPath='" + pathmysql + "',CompanyCode='" + txtcompCode.Text + "' Where ClientCompanyID = " + lblid.Text + "");
+                            ", CompanyTANNO='" + txtTANNO.Text + "', CompanyAuthorised='" + txtCompAutho.Text + "', CompanyRemarks='" + txtremark.Text + "', ExpertPath='" + pathmysql + "',CompanyCode='" + txtcompCode.Text + "' Where ClientCompanyID = " + lblBillableId.Text + "");
                         dgvWCompany_CellContentDoubleClick(null, null);
                         Queries.Add("update  [Order.ClientCompanyMaster] set  CompanyName='" + txtcompname.Text + "',CompanyFromDate='" + dtpfromdate.Value.ToString("yyyy-MM-dd") + "',CompanyToDate='" + dtptodate.Value.ToString("yyyy-MM-dd") + "'" +
                         ",CompanyAdd1='" + txtadd1.Text + "',CompanyAdd2='" + txtadd2.Text + "',CompanyAdd3='" + txtadd3.Text + "',CompanyAdd4='" + txtadd4.Text + "' " +
                             ",CompanyPhone='" + txtcompphone.Text + "', CompanyMobileNo='" + txtcompmobile.Text + "', CompanyEmail='" + txtcompemail.Text + "', CompanyWebsite='" + txtwebsite.Text + "', CompanyVAT='" + txtcompVAT.Text + "', CompanyCST='" + txtcompCST.Text + "', CompanyITNO='" + txtcompITNO.Text + "', CompanyLICNO='" + txtcompLICNO.Text + "'" +
-                            ", CompanyTANNO='" + txtTANNO.Text + "', CompanyAuthorised='" + txtCompAutho.Text + "', CompanyRemarks='" + txtremark.Text + "', ExpertPath='" + pathmysql + "',CompanyCode='" + txtcompCode.Text + "' Where ClientCompanyID = " + lblid.Text + "");
+                            ", CompanyTANNO='" + txtTANNO.Text + "', CompanyAuthorised='" + txtCompAutho.Text + "', CompanyRemarks='" + txtremark.Text + "', ExpertPath='" + pathmysql + "',CompanyCode='" + txtcompCode.Text + "' Where ClientCompanyID = " + lblWithoutId.Text + "");
 
                     }
                     if (Operation.ExecuteTransaction(Queries, Operation.Conn))

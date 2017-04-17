@@ -59,6 +59,7 @@
             this.ControlMessage = new System.Windows.Forms.ToolStripStatusLabel();
             this.ControlLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip2 = new System.Windows.Forms.ToolTip(this.components);
+            this.label2 = new System.Windows.Forms.Label();
             this.grpInfo.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -89,7 +90,7 @@
             this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSave.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSave.Image = global::ExpertMobileOrderSystem.Properties.Resources.accept;
-            this.btnSave.Location = new System.Drawing.Point(239, 185);
+            this.btnSave.Location = new System.Drawing.Point(239, 194);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(71, 60);
             this.btnSave.TabIndex = 2;
@@ -106,7 +107,7 @@
             this.btnView.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnView.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnView.Image = global::ExpertMobileOrderSystem.Properties.Resources.search2;
-            this.btnView.Location = new System.Drawing.Point(446, 185);
+            this.btnView.Location = new System.Drawing.Point(446, 194);
             this.btnView.Name = "btnView";
             this.btnView.Size = new System.Drawing.Size(71, 60);
             this.btnView.TabIndex = 3;
@@ -122,7 +123,7 @@
             this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAdd.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAdd.Image = ((System.Drawing.Image)(resources.GetObject("btnAdd.Image")));
-            this.btnAdd.Location = new System.Drawing.Point(142, 187);
+            this.btnAdd.Location = new System.Drawing.Point(142, 196);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(71, 58);
             this.btnAdd.TabIndex = 1;
@@ -139,7 +140,7 @@
             this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDelete.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDelete.Image = global::ExpertMobileOrderSystem.Properties.Resources.close1;
-            this.btnDelete.Location = new System.Drawing.Point(342, 185);
+            this.btnDelete.Location = new System.Drawing.Point(342, 194);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(71, 60);
             this.btnDelete.TabIndex = 2;
@@ -152,6 +153,7 @@
             // grpInfo
             // 
             this.grpInfo.BackColor = System.Drawing.Color.Transparent;
+            this.grpInfo.Controls.Add(this.label2);
             this.grpInfo.Controls.Add(this.txtUserName);
             this.grpInfo.Controls.Add(this.label6);
             this.grpInfo.Controls.Add(this.cmbParty);
@@ -171,7 +173,7 @@
             this.grpInfo.Controls.Add(this.label4);
             this.grpInfo.Location = new System.Drawing.Point(10, 8);
             this.grpInfo.Name = "grpInfo";
-            this.grpInfo.Size = new System.Drawing.Size(640, 171);
+            this.grpInfo.Size = new System.Drawing.Size(640, 182);
             this.grpInfo.TabIndex = 0;
             this.grpInfo.TabStop = false;
             this.grpInfo.Text = "Customer Information";
@@ -179,7 +181,7 @@
             // txtUserName
             // 
             this.txtUserName.BackColor = System.Drawing.Color.White;
-            this.txtUserName.Location = new System.Drawing.Point(409, 23);
+            this.txtUserName.Location = new System.Drawing.Point(409, 65);
             this.txtUserName.MaxLength = 15;
             this.txtUserName.Name = "txtUserName";
             this.txtUserName.Size = new System.Drawing.Size(218, 23);
@@ -190,7 +192,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(314, 26);
+            this.label6.Location = new System.Drawing.Point(314, 68);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(89, 16);
             this.label6.TabIndex = 67;
@@ -201,7 +203,7 @@
             this.cmbParty.FormattingEnabled = true;
             this.cmbParty.Location = new System.Drawing.Point(91, 22);
             this.cmbParty.Name = "cmbParty";
-            this.cmbParty.Size = new System.Drawing.Size(218, 24);
+            this.cmbParty.Size = new System.Drawing.Size(536, 24);
             this.cmbParty.TabIndex = 0;
             // 
             // label5
@@ -217,7 +219,7 @@
             // txtmobile
             // 
             this.txtmobile.BackColor = System.Drawing.Color.White;
-            this.txtmobile.Location = new System.Drawing.Point(91, 138);
+            this.txtmobile.Location = new System.Drawing.Point(91, 151);
             this.txtmobile.MaxLength = 15;
             this.txtmobile.Name = "txtmobile";
             this.txtmobile.Size = new System.Drawing.Size(218, 23);
@@ -228,7 +230,7 @@
             // 
             this.Label54.AutoSize = true;
             this.Label54.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Label54.Location = new System.Drawing.Point(30, 139);
+            this.Label54.Location = new System.Drawing.Point(30, 152);
             this.Label54.Name = "Label54";
             this.Label54.Size = new System.Drawing.Size(55, 16);
             this.Label54.TabIndex = 62;
@@ -237,7 +239,7 @@
             // chkviewPass
             // 
             this.chkviewPass.AutoSize = true;
-            this.chkviewPass.Location = new System.Drawing.Point(409, 111);
+            this.chkviewPass.Location = new System.Drawing.Point(409, 151);
             this.chkviewPass.Name = "chkviewPass";
             this.chkviewPass.Size = new System.Drawing.Size(125, 20);
             this.chkviewPass.TabIndex = 6;
@@ -248,7 +250,7 @@
             // dtpdate
             // 
             this.dtpdate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpdate.Location = new System.Drawing.Point(91, 109);
+            this.dtpdate.Location = new System.Drawing.Point(91, 122);
             this.dtpdate.Name = "dtpdate";
             this.dtpdate.Size = new System.Drawing.Size(218, 23);
             this.dtpdate.TabIndex = 7;
@@ -257,7 +259,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(-4, 112);
+            this.label7.Location = new System.Drawing.Point(-4, 125);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(89, 16);
             this.label7.TabIndex = 49;
@@ -267,7 +269,7 @@
             // 
             this.txtrepass.BackColor = System.Drawing.Color.White;
             this.txtrepass.CharacterCasing = System.Windows.Forms.CharacterCasing.Lower;
-            this.txtrepass.Location = new System.Drawing.Point(409, 80);
+            this.txtrepass.Location = new System.Drawing.Point(409, 122);
             this.txtrepass.MaxLength = 100;
             this.txtrepass.Name = "txtrepass";
             this.txtrepass.PasswordChar = '*';
@@ -279,7 +281,7 @@
             // 
             this.txtPassword.BackColor = System.Drawing.Color.White;
             this.txtPassword.CharacterCasing = System.Windows.Forms.CharacterCasing.Lower;
-            this.txtPassword.Location = new System.Drawing.Point(409, 52);
+            this.txtPassword.Location = new System.Drawing.Point(409, 94);
             this.txtPassword.MaxLength = 100;
             this.txtPassword.Name = "txtPassword";
             this.txtPassword.PasswordChar = '*';
@@ -291,7 +293,7 @@
             // 
             this.lnlpass.AutoSize = true;
             this.lnlpass.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lnlpass.Location = new System.Drawing.Point(314, 55);
+            this.lnlpass.Location = new System.Drawing.Point(314, 97);
             this.lnlpass.Name = "lnlpass";
             this.lnlpass.Size = new System.Drawing.Size(76, 16);
             this.lnlpass.TabIndex = 51;
@@ -301,7 +303,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(314, 83);
+            this.label1.Location = new System.Drawing.Point(314, 125);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(77, 16);
             this.label1.TabIndex = 52;
@@ -310,7 +312,7 @@
             // txtFirstname
             // 
             this.txtFirstname.BackColor = System.Drawing.Color.White;
-            this.txtFirstname.Location = new System.Drawing.Point(91, 52);
+            this.txtFirstname.Location = new System.Drawing.Point(91, 65);
             this.txtFirstname.MaxLength = 250;
             this.txtFirstname.Name = "txtFirstname";
             this.txtFirstname.Size = new System.Drawing.Size(218, 23);
@@ -321,7 +323,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(1, 55);
+            this.label3.Location = new System.Drawing.Point(1, 68);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(84, 16);
             this.label3.TabIndex = 54;
@@ -330,7 +332,7 @@
             // txtLastname
             // 
             this.txtLastname.BackColor = System.Drawing.Color.White;
-            this.txtLastname.Location = new System.Drawing.Point(91, 80);
+            this.txtLastname.Location = new System.Drawing.Point(91, 93);
             this.txtLastname.MaxLength = 250;
             this.txtLastname.Name = "txtLastname";
             this.txtLastname.Size = new System.Drawing.Size(218, 23);
@@ -341,7 +343,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(2, 83);
+            this.label4.Location = new System.Drawing.Point(2, 96);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(83, 16);
             this.label4.TabIndex = 56;
@@ -385,6 +387,18 @@
             this.toolTip2.ReshowDelay = 100;
             this.toolTip2.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.toolTip2.ToolTipTitle = "Information";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Verdana", 6.5F, System.Drawing.FontStyle.Bold);
+            this.label2.ForeColor = System.Drawing.Color.Red;
+            this.label2.Location = new System.Drawing.Point(199, 49);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(428, 12);
+            this.label2.TabIndex = 68;
+            this.label2.Text = "* If you are not able to see expert\'s sundry debtors, then please sync your data " +
+                "first";
             // 
             // frmCustomerMaster
             // 
@@ -451,5 +465,6 @@
         internal System.Windows.Forms.Label label5;
         public System.Windows.Forms.TextBox txtUserName;
         internal System.Windows.Forms.Label label6;
+        internal System.Windows.Forms.Label label2;
     }
 }

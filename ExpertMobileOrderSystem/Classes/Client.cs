@@ -108,5 +108,32 @@ namespace ExpertMobileOrderSystem
                 _withoutCompany = value;
             }
         }
+
+        public void Refresh()
+        {
+            var dt = Operation.GetDataTable("select * from [Order.ClientMaster] where ClientId=" + Id, Operation.Conn);
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                AccountExpiredOn = Convert.ToDateTime(dt.Rows[0]["AccountExpiredOn"]);
+                Id = Convert.ToInt32(dt.Rows[0]["Id"]);
+                CreatedDate = Convert.ToDateTime(dt.Rows[0]["CreatedDate"]);
+                CompanyAddress = dt.Rows[0]["CompanyAddress"].ToString();
+                CompanyName = dt.Rows[0]["CompanyName"].ToString();
+                CreatedAdminID = Convert.ToInt32(dt.Rows[0]["CreatedAdminID"]);
+                Email = dt.Rows[0]["Email"].ToString();
+                FirstName = dt.Rows[0]["FirstName"].ToString();
+                LastName = dt.Rows[0]["LastName"].ToString();
+                MobileNo = dt.Rows[0]["MobileNo"].ToString();
+                NoOfAccessUsers = Convert.ToInt32(dt.Rows[0]["NoOfAccessUsers"]);
+                NoOfCompanyPerUser = Convert.ToInt32(dt.Rows[0]["NoOfCompanyPerUser"]);
+                NoOfDays = Convert.ToInt32(dt.Rows[0]["NoOfDays"]);
+                Password = dt.Rows[0]["Password"].ToString();
+                UserName = dt.Rows[0]["UserName"].ToString();
+                TotalCreatedUser = (string.IsNullOrEmpty(Convert.ToString(dt.Rows[0]["TotalCreatedUser"])) ? 0 : Convert.ToInt32(dt.Rows[0]["TotalCreatedUser"]));
+                TotalCreatedCompany = (string.IsNullOrEmpty(Convert.ToString(dt.Rows[0]["TotalCreatedCompany"])) ? 0 : Convert.ToInt32(dt.Rows[0]["TotalCreatedCompany"]));
+                QueryRights = Convert.ToBoolean(dt.Rows[0]["QueryRights"]);
+                IsWithout = Convert.ToBoolean(dt.Rows[0]["IsWithout"]);
+            }
+        }
     }
 }

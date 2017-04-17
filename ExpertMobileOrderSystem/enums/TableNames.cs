@@ -15,6 +15,7 @@ namespace ExpertMobileOrderSystem
         public const string OrderOrder2 = "Order.Order2";        
         public const string OrderRate = "Order.Rate";
         public const string OrderRate2 = "Order.Rate2";
+        public const string OrderBatch = "Order.Batch";
     }
 
     public enum OperationTypes

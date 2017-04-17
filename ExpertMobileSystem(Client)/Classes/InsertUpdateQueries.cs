@@ -222,7 +222,7 @@ namespace ExpertMobileSystem_Client_.Classes
                             " and " + (!string.IsNullOrEmpty(Convert.ToString(drOld["Stk_Qty"])) ? "Stk_Qty='" + Convert.ToString(drOld["Stk_Qty"]) + "'" : "IsNull(Stk_Qty,0)=0") +
                             " and " + (!string.IsNullOrEmpty(Convert.ToString(drOld["Division"])) ? "Division='" + Convert.ToString(drOld["Division"]) + "'" : "IsNull(Division,'')=''") +
                             " and " + (!string.IsNullOrEmpty(Convert.ToString(drOld["Cv_Code"])) ? "Cv_Code='" + Convert.ToString(drOld["Cv_Code"]) + "'" : "IsNull(Cv_Code,'')=''") +
-                            " and " + (!string.IsNullOrEmpty(Convert.ToString(drOld["Batch_No"])) ? "Batch_No='" + Convert.ToString(drOld["Batch_No"]) + "'" : "IsNull(Batch_No,'')=''") +
+                            " and " + (!string.IsNullOrEmpty(Convert.ToString(drOld["BatchNo"])) ? "BatchNo='" + Convert.ToString(drOld["BatchNo"]) + "'" : "IsNull(BatchNo,'')=''") +
                             " and " + (!string.IsNullOrEmpty(Convert.ToString(drOld["Rate"])) ? "Rate='" + Convert.ToString(drOld["Rate"]) + "'" : "IsNull(Rate,0)=0");
                         }
                         else if (operationType == OperationTypes.DELETE)
@@ -238,7 +238,7 @@ namespace ExpertMobileSystem_Client_.Classes
                             " and " + (!string.IsNullOrEmpty(Convert.ToString(drOld["Stk_Qty"])) ? "Stk_Qty='" + Convert.ToString(drOld["Stk_Qty"]) + "'" : "IsNull(Stk_Qty,0)=0") +
                             " and " + (!string.IsNullOrEmpty(Convert.ToString(drOld["Division"])) ? "Division='" + Convert.ToString(drOld["Division"]) + "'" : "IsNull(Division,'')=''") +
                             " and " + (!string.IsNullOrEmpty(Convert.ToString(drOld["Cv_Code"])) ? "Cv_Code='" + Convert.ToString(drOld["Cv_Code"]) + "'" : "IsNull(Cv_Code,'')=''") +
-                            " and " + (!string.IsNullOrEmpty(Convert.ToString(drOld["Batch_No"])) ? "Batch_No='" + Convert.ToString(drOld["Batch_No"]) + "'" : "IsNull(Batch_No,'')=''") +
+                            " and " + (!string.IsNullOrEmpty(Convert.ToString(drOld["BatchNo"])) ? "BatchNo='" + Convert.ToString(drOld["BatchNo"]) + "'" : "IsNull(BatchNo,'')=''") +
                             " and " + (!string.IsNullOrEmpty(Convert.ToString(drOld["Rate"])) ? "Rate='" + Convert.ToString(drOld["Rate"]) + "'" : "IsNull(Rate,0)=0");
                             }
                             else
