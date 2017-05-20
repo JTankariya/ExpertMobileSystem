@@ -55,31 +55,36 @@ namespace ExpertMobileOrderSystem
         }
         private void FillPartyCombo(bool isUpdate)
         {
+            var query = "";
+            DataRow company = null;
             if (Operation.currClient.IsWithout)
             {
-                var company = Operation.currClient.BillableCompanies[0];
-                var query = "";
-                if (!isUpdate)
-                {
-                    query = "select * from [Order.ACT] where [Group]='100003' and clientcompanyid=" +
+                company = Operation.currClient.BillableCompanies[0];                
+            }
+            else
+            {
+                company = Operation.currClient.DefaultCompany;                
+            }
+            if (!isUpdate)
+            {
+                query = "select * from [Order.ACT] where [Group]='100003' and clientcompanyid=" +
+                company["ClientCompanyId"] + " and Code not in (select PartyCode from [Order.ClientUserMaster]" +
+                " where ClientId=" + Operation.currClient.Id + " and UserTypeId=" +
+                UserTypes.CUSTOMER.ToString() + ")";
+            }
+            else
+            {
+                query = "select * from [Order.ACT] where [Group]='100003' and clientcompanyid=" +
                     company["ClientCompanyId"] + " and Code not in (select PartyCode from [Order.ClientUserMaster]" +
                     " where ClientId=" + Operation.currClient.Id + " and UserTypeId=" +
-                    UserTypes.CUSTOMER.ToString() + ")";
-                }
-                else
-                {
-                    query = "select * from [Order.ACT] where [Group]='100003' and clientcompanyid=" +
-                        company["ClientCompanyId"] + " and Code not in (select PartyCode from [Order.ClientUserMaster]" +
-                        " where ClientId=" + Operation.currClient.Id + " and UserTypeId=" +
-                        UserTypes.CUSTOMER.ToString() + " and Id!=" + lblid.Text + ")";
-                }
-                var dtParty = Operation.GetDataTable(query, Operation.Conn);
-                if (dtParty != null && dtParty.Rows.Count > 0)
-                {
-                    cmbParty.DataSource = dtParty;
-                    cmbParty.DisplayMember = "Name";
-                    cmbParty.ValueMember = "Code";
-                }
+                    UserTypes.CUSTOMER.ToString() + " and Id!=" + lblid.Text + ")";
+            }
+            var dtParty = Operation.GetDataTable(query, Operation.Conn);
+            if (dtParty != null && dtParty.Rows.Count > 0)
+            {
+                cmbParty.DataSource = dtParty;
+                cmbParty.DisplayMember = "Name";
+                cmbParty.ValueMember = "Code";
             }
         }
 

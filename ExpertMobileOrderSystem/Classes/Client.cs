@@ -60,6 +60,7 @@ namespace ExpertMobileOrderSystem
         private DataRowCollection _billableCompany;
         private DataRowCollection _companies;
         private DataRow _withoutCompany;
+        private DataRow _defaultCompany;
         public DataRowCollection Companies
         {
             get
@@ -106,6 +107,23 @@ namespace ExpertMobileOrderSystem
             set
             {
                 _withoutCompany = value;
+            }
+        }
+        public DataRow DefaultCompany
+        {
+            get
+            {
+                if (_defaultCompany == null)
+                {
+                    var dt = Operation.GetDataTable("select * from [Order.ClientCompanyMaster] where ClientId=" + Id + " and IsDefault=1", Operation.Conn);
+                    if (dt != null && dt.Rows.Count > 0)
+                        _defaultCompany = dt.Rows[0];
+                }
+                return _defaultCompany;
+            }
+            set
+            {
+                _defaultCompany = value;
             }
         }
 

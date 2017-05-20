@@ -964,7 +964,7 @@ namespace ExpertMobileOrderSystem
             {
                 frmUserMaster user = new frmUserMaster();
                 user.ShowDialog();
-            }            
+            }
         }
 
         private void btnCompanies_Click(object sender, EventArgs e)
@@ -1023,22 +1023,23 @@ namespace ExpertMobileOrderSystem
 
         private void btnCustomers_Click(object sender, EventArgs e)
         {
-            if (Operation.currClient.BillableCompanies == null || Operation.currClient.BillableCompanies.Count == 0)
+            if (Operation.currClient.IsWithout && (Operation.currClient.BillableCompanies == null || Operation.currClient.BillableCompanies.Count == 0))
             {
                 MessageBox.Show("Please select you companies first from company setup master", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                return;
             }
-            else
+            if (Operation.currClient.Companies == null || Operation.currClient.Companies.Count == 0 || Operation.currClient.DefaultCompany == null)
             {
-                if (Operation.currClient.NoOfAccessUsers <= Operation.currClient.TotalCreatedUser)
-                {
-                    MessageBox.Show("You have Created Maximum Number Of User.\n To Add More user Please Contact Administrator.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                else
-                {
-                    frmCustomerMaster customer = new frmCustomerMaster();
-                    customer.ShowDialog();
-                }
+                MessageBox.Show("Please select you companies first from company setup master", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                return;
             }
+            if (Operation.currClient.NoOfAccessUsers <= Operation.currClient.TotalCreatedUser)
+            {
+                MessageBox.Show("You have Created Maximum Number Of User.\n To Add More user Please Contact Administrator.", Operation.MsgTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            frmCustomerMaster customer = new frmCustomerMaster();
+            customer.ShowDialog();
 
         }
 
